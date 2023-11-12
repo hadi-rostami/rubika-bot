@@ -37,7 +37,7 @@ data = {
     },
     "gruops": [],
     "access_bot": ['ChangeInfo', 'PinMessages', 'DeleteGlobalAllMessages', 'BanMember', 'SetAdmin', 'SetJoinLink', 'SetMemberAccess', 'ViewMembers', 'ViewAdmins', 'SendMessages', 'AddMember', 'ViewInfo', 'ViewMessages', 'DeleteLocalMessages', 'EditMyMessages', 'DeleteGlobalMyMessages'],
-    "creators": ["u0Dk9oQ0e69943dfead1dfa82c83d204", "u0BzqrM0cdc4fb9109ee520732f3d797"],
+    "creators": [""],
     "urls": [
         "https://api.codebazan.ir/font/?type=fa&text=",
         "https://api.codebazan.ir/font/?text=",

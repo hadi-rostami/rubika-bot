@@ -10,5 +10,6 @@ pip install rubpy==6.4.7
 pip install sqlite3
 
 
+
  بعد از نصب فایل پایتونی را ران کنید 
  

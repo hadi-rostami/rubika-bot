@@ -1,0 +1,18 @@
+{
+  "groups": {},
+  "creators": [],
+  "games": [
+    {
+      "text": "بیو",
+      "url": "https://api.codebazan.ir/bio/"
+    },
+    {
+      "text": "جوک",
+      "url": "https://api.codebazan.ir/jok/"
+    },
+    {
+      "text": "دیالوگ",
+      "url": "https://api.codebazan.ir/dialog/"
+    }
+  ]
+}

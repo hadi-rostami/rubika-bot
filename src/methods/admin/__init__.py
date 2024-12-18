@@ -4,3 +4,5 @@ from .status_events import status_events
 from .learned_bot import learned_bot
 from .list_conversations import list_conversations
 from .delete_learned_bot import delete_learned_bot
+from .update_looks import update_looks
+from .get_status_look import get_status_look

@@ -2,13 +2,16 @@ async def group_model(group_title: str, admins: list):
     return {
         "title": group_title,
         "admins": admins,
-        "looks": {
-            "Music": False,
-            "Voice": False,
-            "Video": False,
-            "Gif": False,
-            "Image": False,
-        },
+        "looks": [
+            {"en_name": "Text", "fa_name": "متن", "value": False},
+            {"en_name": "Music", "fa_name": "اهنگ", "value": False},
+            {"en_name": "Voice", "fa_name": "ویس", "value": False},
+            {"en_name": "Video", "fa_name": "ویدیو", "value": False},
+            {"en_name": "Gif", "fa_name": "گیف", "value": False},
+            {"en_name": "Image", "fa_name": "عکس", "value": False},
+            {"en_name": "File", "fa_name": "فایل", "value": False},
+            {"en_name": "VideoMessage", "fa_name": "ویدیو گرد", "value": False},
+        ],
         "spam": {
             "spams": {},
             "msgs": 4,

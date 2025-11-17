@@ -20,7 +20,7 @@ export default async function polling(this: Bot) {
           Number(m.new_message?.time || m.updated_message?.time) | 0;
 
 
-        if (nowTime - messageTime < 2) {
+        if (nowTime - messageTime < 10) {
           for (let { prefix, filters, handler } of this.handlers.update) {
             const ctx = { ...m, store: {} };
             const passed = await checkFilters(ctx, filters);

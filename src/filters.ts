@@ -1,4 +1,4 @@
-import { Message } from "./types/interfaces";
+import { Update } from "./types/interfaces";
 
 export default class Filters {
   static findKey(message: any, key: string): any {
@@ -32,59 +32,59 @@ export default class Filters {
     return undefined;
   }
 
-  static isText(message: Message): boolean {
+  static isText(message: Update): boolean {
     return !!Filters.findKey(message, "text");
   }
 
-  static isLocation(message: Message): boolean {
+  static isLocation(message: Update): boolean {
     return !!Filters.findKey(message, "location");
   }
 
-  static isSticker(message: Message): boolean {
+  static isSticker(message: Update): boolean {
     return !!Filters.findKey(message, "sticker");
   }
 
-  static isForward(message: Message): boolean {
+  static isForward(message: Update): boolean {
     return !!Filters.findKey(message, "forwarded_from");
   }
 
-  static isReply(message: Message): boolean {
+  static isReply(message: Update): boolean {
     return !!Filters.findKey(message, "reply_to_message_id");
   }
 
-  static isContact(message: Message): boolean {
+  static isContact(message: Update): boolean {
     return !!Filters.findKey(message, "contact_message");
   }
 
-  static isPoll(message: Message): boolean {
+  static isPoll(message: Update): boolean {
     return !!Filters.findKey(message, "poll");
   }
 
-  static isLiveLocation(message: Message): boolean {
+  static isLiveLocation(message: Update): boolean {
     return !!Filters.findKey(message, "live_location");
   }
 
-  static isFile(message: Message): boolean {
+  static isFile(message: Update): boolean {
     return !!Filters.findKey(message, "file");
   }
 
-  static isMention(message: Message): boolean {
+  static isMention(message: Update): boolean {
     return !!Filters.findKey(
-      message.metadata?.meta_data_parts,
+      message.new_message?.metadata?.meta_data_parts,
       "link"
     );
   }
 
-  static isMarkdown(message: Message): boolean {
+  static isMarkdown(message: Update): boolean {
     return !!Filters.findKey(message, "metadata");
   }
 
-  static isDelete(message: Message): boolean {
+  static isDelete(message: Update): boolean {
     return !!Filters.findKey(message, "removed_message_id");
   }
 
-  static kypadID(button_id: string): (message: Message) => boolean {
-    return (message: Message) => {
+  static kypadID(button_id: string): (message: Update) => boolean {
+    return (message: Update) => {
       const res = Filters.findKey(message, "button_id");
       return res === button_id;
     };

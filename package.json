@@ -2,30 +2,18 @@
   "name": "rubika-bot",
   "version": "1.0.0",
   "author": "Hadi Rostami",
-  "main": "./lib/index.js",
-  "module": "index.ts",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
+  "main": "src/index.ts",
   "description": "A modern library for Rubika built with Bun.",
   "files": [
-    "lib/",
+    "src/",
     "README.md"
   ],
   "keywords": [
     "javascript",
     "Rubika",
-    "library",
+    "bun",
     "rubika-bot"
   ],
   "license": "MIT",
-  "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "prepack": "bun run build"
-  },
   "type": "module"
 }

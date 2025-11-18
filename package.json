@@ -1,6 +1,6 @@
 {
   "name": "rubika",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "author": "Hadi Rostami",
   "main": "src/index.ts",
   "description": "A modern library for Rubika built with Bun.",

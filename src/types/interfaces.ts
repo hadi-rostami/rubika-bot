@@ -15,13 +15,15 @@ import {
 } from "./enums";
 
 export interface Chat {
-  chat_id: string;
-  chat_type: ChatTypeEnum;
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  title: string;
-  username: string;
+  chat: {
+    chat_id: string;
+    chat_type: ChatTypeEnum;
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    title: string;
+    username: string;
+  };
 }
 
 export interface File {

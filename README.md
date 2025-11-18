@@ -1,13 +1,13 @@
 <p align="center">
-  <h1 style="color:#fff;">› rubika-bot Framework</h1>
+  <h1 style="color:#fff;">› rubika Framework</h1>
   <p><b>فریم‌ورک قدرتمند و پرسرعت جاوااسکریپت برای ربات‌های روبیکا</b></p>
 </p>
 
 ---
 
-## › معرفی rubika-bot
+## › معرفی rubika
 
-**rubika-bot** یک فریم‌ورک سبک، مدرن و کاملاً **غیرهمزمان** برای توسعه ربات‌های روبیکا است.  
+**rubika** یک فریم‌ورک سبک، مدرن و کاملاً **غیرهمزمان** برای توسعه ربات‌های روبیکا است.  
 با معماری **Filter-Base** و **Type-Safe**، شما می‌توانید:
 
 - ربات‌هایی سریع و کم‌حجم بسازید
@@ -19,15 +19,15 @@
 ## › نصب و شروع سریع
 
 ```bash
-bun add rubika-bot
+bun add rubika
 ```
 
 ## › نمونه کد ساده
 
 ```js
-const { Bot, Filters } = require("rubika-bot");
+const { Bot, Filters } = require("rubika");
 
-const bot = new Bot("rubika-bot");
+const bot = new Bot("rubika");
 
 bot.command("/start", async (ctx, bot) => {
   await bot.sendMessage(ctx.chat_id, "🤖 ربات استارت شد");

@@ -1,127 +1,173 @@
-import { MarkdownEntity } from "../types/utils";
+import { MarkdownType, MetaDataPart, MetadataResult } from "../types/utils";
 
-class Markdown {
-  static markdownRegExp =
-    /(^|\s|\n)(````?)([\s\S]+?)(````?)([\s\n\.,:?!;]|$)|(^|\s)(`|\*\*|__|~~|--|\|\||\^\^)([^\n]+?)\7([\s\.,:?!;]|$)|@([a-zA-Z0-9]+)\s*\((.+?)\)|\[(.+?)\]\((.+?)\)/m;
+const MENTION_PREFIX_TYPES: Record<string, string> = {
+  u: "User",
+  g: "Group",
+  c: "Channel",
+  b: "Bot",
+};
 
-  static markdownEntities: Record<string, string> = {
-    "`": "Mono",
-    "**": "Bold",
-    __: "Italic",
-    "||": "Spoiler",
-    "~~": "Strike",
-    "--": "Underline",
-    "^^": "Quote",
-  };
+function buildUtf16PrefixLengths(text: string): number[] {
+  const prefixLengths: number[] = [0];
+  let total = 0;
+  for (const char of text) {
+    total += char.codePointAt(0)! > 0xffff ? 2 : 1;
+    prefixLengths.push(total);
+  }
+  return prefixLengths;
+}
 
-  static toMetadata(text: string): {
-    text: string;
-    metadata?: { meta_data_parts: MarkdownEntity[] };
-  } {
-    let entities: MarkdownEntity[] = [];
-    let match: RegExpMatchArray | null;
-    let remainingText = text;
-    let parsedTextParts: string[] = [];
+const MARKDOWN_RE =
+  /(?:^(?:> ?[^\n]*\n?)+)|```([\s\S]*?)```|\*\*([^\n*]+?)\*\*|`([^\n`]+?)`|__([^\n_]+?)__|--([^\n-]+?)--|~~([^\n~]+?)~~|\|\|([^\n|]+?)\|\||\[([^\]]+?)\]\((\S+)\)/gms;
+
+const MARKDOWN_TYPE_SEQUENCE: [string, [MarkdownType, number | null]][] = [
+  [">", ["Quote", null]],
+  ["```", ["Pre", 1]],
+  ["**", ["Bold", 2]],
+  ["`", ["Mono", 3]],
+  ["__", ["Italic", 4]],
+  ["--", ["Underline", 5]],
+  ["~~", ["Strike", 6]],
+  ["||", ["Spoiler", 7]],
+  ["[", ["Link", 8]],
+];
+
+export default class Markdown {
+  static toMetadata(text: string): MetadataResult {
+    const metaDataParts: MetaDataPart[] = [];
+    let currentText = text;
     let offset = 0;
+    let charOffset = 0;
+    const utf16Prefix = buildUtf16PrefixLengths(text);
 
-    while ((match = remainingText.match(this.markdownRegExp))) {
-      const matchIndex = offset + (match.index || 0);
-      parsedTextParts.push(remainingText.substring(0, match.index!));
-      let matchedContent = match[3] || match[8] || match[11] || match[13];
+    let match: RegExpExecArray | null;
+    const globalRegex = new RegExp(MARKDOWN_RE, "gms");
 
-      if (matchedContent) {
-        offset -= matchedContent.length;
-        matchedContent = matchedContent.trim();
-        offset += matchedContent.length;
+    while ((match = globalRegex.exec(text)) !== null) {
+      const group = match[0];
+      const start = match.index;
+      const end = start + group.length;
+      const adjustedStart = utf16Prefix[start] - offset;
+      const adjustedCharStart = start - charOffset;
 
-        if (/^`*$/.test(matchedContent)) {
-          parsedTextParts.push(match[0]);
-        } else if (match[3]) {
-          if (match[5] === "\n") {
-            match[5] = "";
-            offset -= 1;
+      for (const [prefix, [mdType, groupIdx]] of MARKDOWN_TYPE_SEQUENCE) {
+        if (group.startsWith(prefix)) {
+          let content = "";
+          let contentLength = 0;
+          let charContentLength = 0;
+
+          if (mdType === "Quote") {
+            const quoteLines = group.split("\n");
+            const contentLines = quoteLines.map((line) => {
+              if (line.startsWith("> ")) return line.slice(2);
+              if (line.startsWith(">")) return line.slice(1);
+              return line;
+            });
+            content = contentLines.join("\n");
+            charContentLength = content.length;
+            contentLength = Markdown.getUtf16Length(content);
+
+            const innerMeta = this.toMetadata(content);
+            content = innerMeta.text;
+            contentLength = Markdown.getUtf16Length(content);
+            charContentLength = content.length;
+
+            if (innerMeta.metadata) {
+              for (const part of innerMeta.metadata.meta_data_parts) {
+                part.from_index += adjustedStart;
+                metaDataParts.push(part);
+              }
+            }
+          } else {
+            if (groupIdx !== null && match[groupIdx] !== undefined) {
+              content = match[groupIdx] || "";
+              const groupStart = match.index + group.indexOf(content);
+              const groupEnd = groupStart + content.length;
+              contentLength = utf16Prefix[groupEnd] - utf16Prefix[groupStart];
+              charContentLength = content.length;
+
+              if (mdType !== "Pre" && mdType !== "Link") {
+                const innerMeta = this.toMetadata(content);
+                content = innerMeta.text;
+                contentLength = Markdown.getUtf16Length(content);
+                charContentLength = content.length;
+
+                if (innerMeta.metadata) {
+                  for (const part of innerMeta.metadata.meta_data_parts) {
+                    part.from_index += adjustedStart;
+                    metaDataParts.push(part);
+                  }
+                }
+              }
+            } else {
+              content = "";
+              contentLength = 0;
+              charContentLength = 0;
+            }
           }
-          parsedTextParts.push(match[1] + matchedContent + match[5]);
-          entities.push({
-            type: "Pre",
-            language: "",
-            from_index: matchIndex + match[1].length,
-            length: matchedContent.length,
-          });
-          offset -= match[2].length + match[4].length;
-        } else if (match[7]) {
-          parsedTextParts.push(match[6] + matchedContent + match[9]);
-          entities.push({
-            type: this.markdownEntities[match[7]],
-            from_index: matchIndex + match[6].length,
-            length: matchedContent.length,
-          });
-          offset -= 2 * match[7].length;
-        } else if (match[11]) {
-          parsedTextParts.push(matchedContent);
-          entities.push({
-            type: "MentionText",
-            mention_text_object_guid: match[10],
-            from_index: matchIndex,
-            length: matchedContent.length,
-            mention_text_object_type: "User",
-          });
-          offset -= match[0].length - matchedContent.length;
-        } else if (match[12]) {
-          const [label, url] = [match[12], match[13]];
 
-          let mentionType: string | undefined;
-          if (url.length === 32) {
-            if (url.startsWith("u")) mentionType = "User";
-            else if (url.startsWith("g")) mentionType = "Group";
-            else if (url.startsWith("c")) mentionType = "Channel";
-          }
-
-          parsedTextParts.push(label);
-          const metaDataPart: MarkdownEntity = {
-            type: mentionType ? "MentionText" : "Link",
-            from_index: matchIndex,
-            length: label.length,
+          const metaDataPart: MetaDataPart = {
+            type: mdType,
+            from_index: adjustedStart,
+            length: contentLength,
           };
 
-          if (mentionType) {
-            metaDataPart.mention_text_object_guid = url;
-            metaDataPart.mention_text_object_type = mentionType;
-          } else {
-            metaDataPart.link = { type: "hyperlink", hyperlink_data: { url } };
+          // تنظیمات بر اساس نوع
+          if (mdType === "Pre") {
+            const lines = content.split("\n", 2);
+            const language =
+              lines.length > 1 && lines[0].trim() ? lines[0].trim() : "";
+            metaDataPart.language = language;
+            if (language) {
+              content = lines.slice(1).join("\n");
+              contentLength = Markdown.getUtf16Length(content);
+              charContentLength = content.length;
+            }
+          } else if (mdType === "Link") {
+            const url = match[9];
+            const mentionType = MENTION_PREFIX_TYPES[url?.[0]] || "hyperlink";
+
+            if (mentionType === "hyperlink") {
+              metaDataPart.link_url = url;
+              metaDataPart.link = {
+                type: mentionType,
+                hyperlink_data: { url },
+              };
+            } else {
+              metaDataPart.type = "MentionText";
+              metaDataPart.mention_text_object_guid = url;
+              metaDataPart.mention_text_user_id = url;
+              metaDataPart.mention_text_object_type = mentionType;
+            }
           }
 
-          entities.push(metaDataPart);
-          offset -= match[0].length - label.length;
-        }
+          metaDataParts.push(metaDataPart);
+          currentText =
+            currentText.slice(0, adjustedCharStart) +
+            content +
+            currentText.slice(end - charOffset);
 
-        remainingText = remainingText.substring(match.index! + match[0].length);
-        offset += match.index! + match[0].length;
+          const markupLength = utf16Prefix[end] - utf16Prefix[start];
+          const charMarkupLength = end - start;
+          offset += markupLength - contentLength;
+          charOffset += charMarkupLength - charContentLength;
+
+          break;
+        }
       }
     }
 
-    parsedTextParts.push(remainingText);
-    let resultText = parsedTextParts.join("");
-    if (!resultText.replace(/\s+/g, "").length) {
-      resultText = text;
-      entities.splice(0, entities.length);
-    }
-    if (!entities.length) {
-      resultText = resultText.trim();
-    }
-
-    let returnData: {
-      text: string;
-      metadata?: { meta_data_parts: MarkdownEntity[] };
-    } = {
-      text: resultText,
+    return {
+      text: currentText.trim(),
+      ...(metaDataParts.length > 0 && {
+        metadata: { meta_data_parts: metaDataParts },
+      }),
     };
+  }
 
-    if (entities.length > 0)
-      returnData.metadata = { meta_data_parts: entities };
-
-    return returnData;
+  static getUtf16Length(str: string): number {
+    return str.split("").reduce((len, char) => {
+      return len + (char.codePointAt(0)! > 0xffff ? 2 : 1);
+    }, 0);
   }
 }
-
-export default Markdown;

@@ -13,6 +13,7 @@ async function sendVoice(
 	disable_notification = false,
 	reply_to_message_id?: string,
 	chat_keypad_type?: ChatKeypadTypeEnum,
+	auto_delete: number | boolean = false,
 ) {
 	return await this._sendFile(
 		chat_id,
@@ -24,6 +25,7 @@ async function sendVoice(
 		disable_notification,
 		reply_to_message_id,
 		chat_keypad_type,
+		auto_delete
 	);
 }
 

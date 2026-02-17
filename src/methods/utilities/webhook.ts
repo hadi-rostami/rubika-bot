@@ -11,7 +11,7 @@ async function setupWebhook(
   url: string,
   host: string = "0.0.0.0",
   port: number = 3000,
-  updates: UpdateEndpointTypeEnum[] = []
+  updates: UpdateEndpointTypeEnum[] = [],
 ) {
   // create server
   Bun.serve({
@@ -43,8 +43,9 @@ async function setupWebhook(
     const res = await this.updateBotEndpoints(url, update);
 
     if (res.status !== "Done") {
-      console.error(
-        `[ setupWebhook ] status updateBotEndpoints is ${res.status} for update: ${update}`
+      throw this.logger.error(
+        `[setupWebhook] status updateBotEndpoints is ${res.status} for update: ${update}`,
+        "warn",
       );
     }
   }

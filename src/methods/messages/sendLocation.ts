@@ -11,7 +11,8 @@ async function sendLocation(
   inline_keypad?: Keypad,
   disable_notification = false,
   reply_to_message_id?: string,
-  chat_keypad_type?: ChatKeypadTypeEnum
+  chat_keypad_type?: ChatKeypadTypeEnum,
+  auto_delete: number | boolean = false,
 ) {
   const data = {
     chat_id,
@@ -31,8 +32,12 @@ async function sendLocation(
   if (inline_keypad && chat_keypad_type) {
     data.chat_keypad_type = ChatKeypadTypeEnum.None;
   }
+  
+  const res = await this.builder("sendLocation", data);
 
-  return await this.builder("sendLocation", data);
+  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
+
+  return res;
 }
 
 export default sendLocation;

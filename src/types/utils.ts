@@ -1,3 +1,5 @@
+import Update from "../contexts/update";
+
 export type MarkdownType =
   | "Quote"
   | "Pre"
@@ -25,10 +27,16 @@ export interface MetaDataPart {
   mention_text_object_type?: string;
 }
 
-
 export interface MetadataResult {
   text: string;
   metadata?: {
     meta_data_parts: MetaDataPart[];
   };
 }
+
+// antiSpam
+export type SpamCallbackType = (ctx: Update) => Promise<void>;
+export type OptionSpamType = {
+  spam_time: number;
+  spam_limit: number;
+};

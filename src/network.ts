@@ -17,7 +17,7 @@ export default class Network {
         });
         if (res.status === 200) {
           const responseData = await res.json();
-          
+
           return JSON.parse(
             JSON.stringify(responseData, (_, v) =>
               typeof v === "bigint" ? v.toString() : v

@@ -7,9 +7,12 @@ async function run(
   host?: string,
   port: number = 3000,
   updates: UpdateEndpointTypeEnum[] = [
+    UpdateEndpointTypeEnum.SearchSelectionItems,
     UpdateEndpointTypeEnum.ReceiveInlineMessage,
+    UpdateEndpointTypeEnum.GetSelectionItem,
     UpdateEndpointTypeEnum.ReceiveUpdate,
-  ]
+    UpdateEndpointTypeEnum.ReceiveQuery,
+  ],
 ) {
   while (!this.initialize) {
     await this.network.delay(2000);

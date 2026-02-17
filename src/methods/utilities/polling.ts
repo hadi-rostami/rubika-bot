@@ -1,7 +1,8 @@
 import fs from "fs";
 import Bot from "../../bot";
-import checkFilters from "../../utils/checkFilter";
+import { checkFilters } from "../../utils";
 import { UpdateTypeEnum } from "../../types/enums";
+import Update from "../../contexts/update";
 
 const checkTypes = [UpdateTypeEnum.UpdatedMessage, UpdateTypeEnum.NewMessage];
 
@@ -19,10 +20,9 @@ export default async function polling(this: Bot) {
         const messageTime =
           Number(m.new_message?.time || m.updated_message?.time) | 0;
 
-
         if (nowTime - messageTime < 10) {
           for (let { prefix, filters, handler } of this.handlers.update) {
-            const ctx = { ...m, store: {} };
+            const ctx = new Update(m, this);
             const passed = await checkFilters(ctx, filters);
 
             if (passed) {
@@ -36,7 +36,7 @@ export default async function polling(this: Bot) {
                 if (prefix instanceof RegExp && !prefix.test(text)) continue;
               }
 
-              await handler(ctx, this);
+              await handler(ctx);
             }
           }
         }
@@ -47,7 +47,7 @@ export default async function polling(this: Bot) {
         saveOffset(next_offset_id as string);
       }
     } catch (e) {
-      console.error("Error occurred while polling:", e);
+      this.logger.error("Error occurred while polling:" + e, "warn");
     }
   }, 1000);
 }

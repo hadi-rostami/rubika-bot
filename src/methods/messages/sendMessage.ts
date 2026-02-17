@@ -1,9 +1,8 @@
 import Bot from "../..";
-import { InlineKeypad, Keypad } from "../../types/interfaces";
-import { ChatKeypadTypeEnum } from "../../types/enums";
+import { Markdown } from "../../utils";
 import { SendType } from "../../types/methods";
-import Markdown from "../../utils/parser";
-
+import { ChatKeypadTypeEnum } from "../../types/enums";
+import { InlineKeypad, Keypad } from "../../types/interfaces";
 
 async function sendMessage(
   this: Bot,
@@ -13,15 +12,15 @@ async function sendMessage(
   inline_keypad?: InlineKeypad,
   disable_notification = false,
   reply_to_message_id?: string,
-  chat_keypad_type?: ChatKeypadTypeEnum
+  chat_keypad_type?: ChatKeypadTypeEnum,
+  auto_delete: number | boolean = false,
 ) {
-  
   let data: SendType = {
     chat_id,
     disable_notification,
   };
 
-  if (text) data = { ...data, ...Markdown.toMetadata(text.trim()) };  
+  if (text) data = { ...data, ...Markdown.toMetadata(text.trim()) };
   if (chat_keypad) data.chat_keypad = chat_keypad;
   if (inline_keypad) data.inline_keypad = inline_keypad;
   if (chat_keypad_type) data.chat_keypad_type = chat_keypad_type;
@@ -35,7 +34,11 @@ async function sendMessage(
     data.chat_keypad_type = ChatKeypadTypeEnum.None;
   }
 
-  return await this.builder("sendMessage", data);
+  const res = await this.builder("sendMessage", data);
+
+  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
+
+  return res;
 }
 
 export default sendMessage;

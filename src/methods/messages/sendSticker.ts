@@ -11,7 +11,8 @@ async function sendSticker(
   inline_keypad?: InlineKeypad,
   disable_notification = false,
   reply_to_message_id?: string,
-  chat_keypad_type?: ChatKeypadTypeEnum
+  chat_keypad_type?: ChatKeypadTypeEnum,
+  auto_delete: number | boolean = false,
 ) {
   let data: SendType = {
     chat_id,
@@ -32,7 +33,10 @@ async function sendSticker(
     data.chat_keypad_type = ChatKeypadTypeEnum.None;
   }
 
-  return await this.builder("sendSticker", data);
+  const res = await this.builder("sendSticker", data);
+  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
+  
+  return res;
 }
 
 export default sendSticker;

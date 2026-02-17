@@ -1,5 +1,5 @@
 import Bot from "../..";
-import Markdown from "../../utils/parser";
+import { Markdown } from "../../utils";
 import { FileSource, SendType } from "../../types/methods";
 import { InlineKeypad, Keypad } from "../../types/interfaces";
 import { ChatKeypadTypeEnum, FileTypeEnum } from "../../types/enums";
@@ -14,7 +14,8 @@ async function _sendFile(
   inline_keypad?: InlineKeypad,
   disable_notification = false,
   reply_to_message_id?: string,
-  chat_keypad_type?: ChatKeypadTypeEnum
+  chat_keypad_type?: ChatKeypadTypeEnum,
+  auto_delete: number | boolean = false,
 ) {
   const { upload_url } = await this.requestSendFile(type);
   const {
@@ -41,7 +42,11 @@ async function _sendFile(
     data.chat_keypad_type = ChatKeypadTypeEnum.None;
   }
 
-  return await this.builder("sendFile", data);
+  const res = await this.builder("sendFile", data);
+
+  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
+
+  return res;
 }
 
 export default _sendFile;

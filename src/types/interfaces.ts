@@ -224,27 +224,6 @@ export interface Message {
   live_location?: LiveLocation;
 }
 
-export interface Update {
-  type: UpdateTypeEnum;
-  chat_id: string;
-  removed_message_id?: string;
-  new_message?: Message;
-  updated_message?: Message;
-  updated_payment?: PaymentStatus;
-  store?: Record<string, any>;
-}
-
-export interface InlineMessage {
-  sender_id: string;
-  text: string;
-  file?: File;
-  location?: Location;
-  aux_data?: AuxData;
-  message_id: string;
-  chat_id: string;
-  store?: Record<string, any>;
-}
-
 export interface BotInfo {
   bot_id: string;
   bot_title: string;

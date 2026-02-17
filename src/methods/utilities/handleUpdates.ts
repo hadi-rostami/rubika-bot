@@ -1,6 +1,8 @@
 import Bot from "../../bot";
+import Inline from "../../contexts/inline";
+import Update from "../../contexts/update";
 import { UpdateTypeEnum } from "../../types/enums";
-import checkFilters from "../../utils/checkFilter";
+import { checkFilters } from "../../utils";
 
 const checkTypes = [UpdateTypeEnum.UpdatedMessage, UpdateTypeEnum.NewMessage];
 
@@ -14,13 +16,13 @@ async function handleUpdates(this: Bot, req: Request) {
 
   const data = JSON.parse(
     JSON.stringify(responseData, (_, v) =>
-      typeof v === "bigint" ? v.toString() : v
-    )
+      typeof v === "bigint" ? v.toString() : v,
+    ),
   );
 
   if (data?.update) {
     for (let { prefix, filters, handler } of this.handlers.update) {
-      const ctx = { ...data.update, store: {} };
+      const ctx = new Update(data.update, this);
       const passed = await checkFilters(ctx, filters);
 
       if (passed) {
@@ -33,15 +35,15 @@ async function handleUpdates(this: Bot, req: Request) {
           if (prefix instanceof RegExp && !prefix.test(text)) continue;
         }
 
-        await handler(ctx, this);
+        await handler(ctx);
       }
     }
   } else if (data?.inline_message) {
     for (let { filters, handler } of this.handlers.inline) {
-      const ctx = { ...data.inline_message, store: {} };
+      const ctx = new Inline(data.inline_message, this);
       const passed = await checkFilters(ctx, filters);
 
-      if (passed) await handler(ctx, this);
+      if (passed) await handler(ctx);
     }
   }
 }

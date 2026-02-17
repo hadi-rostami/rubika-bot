@@ -1,5 +1,5 @@
 import Bot from "../../bot";
-import prompt from "../../utils/prompt";
+import { prompt } from "../../utils";
 
 async function start(this: Bot, token?: string) {
   if (!this.token) {
@@ -14,7 +14,7 @@ async function start(this: Bot, token?: string) {
     const res = await this.getMe();
     this.bot = res.bot;
   } catch (err) {
-    throw new Error(`[start] error in token maby:${err}`);
+    throw this.logger.error(`[start] error in token maby:${err}`, "warn");
   }
 
   this.initialize = true;

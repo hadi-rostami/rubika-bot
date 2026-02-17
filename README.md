@@ -33,7 +33,7 @@ bot.command("/start", async (ctx, bot) => {
   await bot.sendMessage(ctx.chat_id, "🤖 ربات استارت شد");
 });
 
-bot.on("message", [Filters.isText], async (ctx, bot) => {
+bot.on("update", [Filters.isText], async (ctx, bot) => {
   await bot.sendMessage(ctx.chat_id, "سلام 😎");
 });
 

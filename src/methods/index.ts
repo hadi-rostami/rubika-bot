@@ -170,6 +170,20 @@ export default class Methods {
     return Chat.getChat.apply(this, args);
   }
 
+  async banChatMember(
+    this: Bot,
+    ...args: Parameters<typeof Chat.banChatMember>
+  ): Promise<any> {
+    return Chat.banChatMember.apply(this, args);
+  }
+
+  async unbanChatMember(
+    this: Bot,
+    ...args: Parameters<typeof Chat.unbanChatMember>
+  ): Promise<any> {
+    return Chat.unbanChatMember.apply(this, args);
+  }
+
   // utilities
   async start(
     this: Bot,

@@ -1,3 +1,6 @@
+import banChatMember from './banChatMember';
 import getChat from './getChat';
+import unbanChatMember from './unbanChatMember';
 
-export { getChat };
+
+export { getChat, banChatMember, unbanChatMember };

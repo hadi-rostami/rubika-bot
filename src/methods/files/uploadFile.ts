@@ -7,7 +7,7 @@ async function uploadFile(
   this: Bot,
   url: string,
   source: FileSource,
-  filename?: string
+  filename?: string,
 ) {
   let fileData: ArrayBuffer;
   let detectedFilename: string;
@@ -18,8 +18,9 @@ async function uploadFile(
       console.log(`[ uploadFile ] Downloading from URL: ${source}`);
       const res = await fetch(source);
       if (!res.ok) {
-        throw new Error(
-          `Failed to download file: ${res.status} ${res.statusText}`
+        throw this.logger.error(
+          `Failed to download file: ${res.status} ${res.statusText}`,
+          "error",
         );
       }
 
@@ -29,7 +30,7 @@ async function uploadFile(
     } else {
       // file path
       if (!Bun.file(source).size) {
-        throw new Error(`File not found: ${source}`);
+        throw this.logger.error(`File not found: ${source}`, "warn");
       }
       fileData = await Bun.file(source).arrayBuffer();
       detectedFilename = filename || basename(source);
@@ -39,12 +40,12 @@ async function uploadFile(
     if (source instanceof Buffer) {
       fileData = source.buffer.slice(
         source.byteOffset,
-        source.byteOffset + source.byteLength
+        source.byteOffset + source.byteLength,
       ) as ArrayBuffer;
     } else if (source instanceof Uint8Array) {
       fileData = source.buffer.slice(
         source.byteOffset,
-        source.byteOffset + source.byteLength
+        source.byteOffset + source.byteLength,
       ) as ArrayBuffer;
     } else {
       fileData = source;
@@ -63,13 +64,16 @@ async function uploadFile(
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`HTTP ${res.status}: ${text}`);
+    throw this.logger.error(`HTTP ${res.status}: ${text}`, "warn");
   }
 
   const response = await res.json();
 
   if (response.status !== "OK") {
-    throw new Error(`Upload failed: ${JSON.stringify(response)}`);
+    throw this.logger.error(
+      `Upload failed: ${JSON.stringify(response)}`,
+      "warn",
+    );
   }
 
   return response;

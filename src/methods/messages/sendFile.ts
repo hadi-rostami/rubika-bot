@@ -12,7 +12,8 @@ async function sendFile(
   inline_keypad?: InlineKeypad,
   disable_notification = false,
   reply_to_message_id?: string,
-  chat_keypad_type?: ChatKeypadTypeEnum
+  chat_keypad_type?: ChatKeypadTypeEnum,
+  auto_delete: number | boolean = false,
 ) {
   return await this._sendFile(
     chat_id,
@@ -23,7 +24,8 @@ async function sendFile(
     inline_keypad,
     disable_notification,
     reply_to_message_id,
-    chat_keypad_type
+    chat_keypad_type,
+    auto_delete,
   );
 }
 

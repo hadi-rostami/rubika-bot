@@ -1,3 +1,14 @@
+---
+slug: /methods/editmessagetext
+id: learn-bot-editmessagetext-method
+sidebar_position: 2
+sidebar_label: متد editMessageText
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `editMessageText`
 
 ویرایش متن یک پیام قبلاً ارسال شده در یک چت.

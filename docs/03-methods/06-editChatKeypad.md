@@ -1,3 +1,14 @@
+---
+slug: /methods/editchatkeypad
+id: learn-bot-editchatkeypad-method
+sidebar_position: 2
+sidebar_label: متد editChatKeypad
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `editChatKeypad`
 
 ویرایش `chat_keypad` قبلاً ارسال شده در یک چت.

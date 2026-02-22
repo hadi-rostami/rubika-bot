@@ -1,3 +1,14 @@
+---
+slug: /methods/sendmusic
+id: learn-bot-sendmusic-method
+sidebar_position: 2
+sidebar_label: متد sendMusic
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendMusic`
 
 ارسال موزیک با ربات

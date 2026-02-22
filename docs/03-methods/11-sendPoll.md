@@ -1,3 +1,14 @@
+---
+slug: /methods/sendpoll
+id: learn-bot-sendpoll-method
+sidebar_position: 2
+sidebar_label: متد sendPoll
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendPoll`
 
 ارسال نظرسنجی با ربات.

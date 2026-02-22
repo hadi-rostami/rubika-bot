@@ -1,3 +1,14 @@
+---
+slug: /methods/unbanchatmember
+id: learn-bot-unbanchatmember-method
+sidebar_position: 2
+sidebar_label: متد unbanChatMember
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `unbanChatMember`
 
 استفاده از متد `unbanChatMember` برای حذف مسدود کردن کاربر از گروه یا کانال

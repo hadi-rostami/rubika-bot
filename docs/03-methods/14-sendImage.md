@@ -1,3 +1,14 @@
+---
+slug: /methods/sendimage
+id: learn-bot-sendimage-method
+sidebar_position: 2
+sidebar_label: متد sendImage
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendImage`
 
 ارسال تصویر با ربات

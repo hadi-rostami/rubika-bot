@@ -1,3 +1,14 @@
+---
+slug: /methods/extras-method
+id: learn-bot-extras-method-method
+sidebar_position: 2
+sidebar_label: متد های extras
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `extras-method`
 
 ## `run`

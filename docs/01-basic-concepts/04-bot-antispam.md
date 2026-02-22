@@ -1,3 +1,14 @@
+---
+slug: /basic-concepts/bot-antispam
+id: learn-bot-antispam
+sidebar_position: 2
+sidebar_label: کلاس AntiSpam 
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس AntiSpam – سیستم تشخیص و جلوگیری از اسپم
 
 کلاس `AntiSpam` ابزاری برای مدیریت و جلوگیری از پیام‌های تکراری (Flood) در ربات است. این کلاس با رصد تعداد پیام‌های ارسالی هر کاربر در یک بازه زمانی مشخص، رفتارهای مشکوک را شناسایی کرده و تابع/callback تعریف شده را اجرا می‌کند.

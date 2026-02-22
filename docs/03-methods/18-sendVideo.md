@@ -1,3 +1,14 @@
+---
+slug: /methods/sendvideo
+id: learn-bot-sendvideo-method
+sidebar_position: 2
+sidebar_label: متد sendVideo
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendVideo`
 
 ارسال ویدیو با ربات

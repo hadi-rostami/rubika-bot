@@ -1,3 +1,14 @@
+---
+slug: /contexts/inline
+id: learn-bot-contexts-inline
+sidebar_position: 2
+sidebar_label: کانتکست Inline
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس Inline – کانتکست مدیریت رویدادها
 
 کلاس `Inline` نمایان‌گر context مربوط به پیام‌های اینلاین (inline) دریافت‌شده از روبیکاست. این کلاس به‌صورت خودکار توسط rubika هنگام دریافت رویداد `"inline"` ساخته شده و به هندلر پاس داده می‌شود.

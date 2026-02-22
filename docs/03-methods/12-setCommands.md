@@ -1,3 +1,14 @@
+---
+slug: /methods/setcommands
+id: learn-bot-setcommands-method
+sidebar_position: 2
+sidebar_label: متد setCommands
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `setCommands`
 
 افزودن دستور به ربات.

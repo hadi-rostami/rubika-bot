@@ -1,3 +1,14 @@
+---
+slug: /methods/forwardmessage
+id: learn-bot-forwardmessage-method
+sidebar_position: 2
+sidebar_label: متد forwardMessage
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `forwardMessage`
 
 باز ارسال کردن پیام به چت دیگر.

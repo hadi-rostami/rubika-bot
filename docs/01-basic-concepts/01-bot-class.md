@@ -1,3 +1,14 @@
+---
+slug: /basic-concepts/bot-class
+id: learn-bot-class
+sidebar_position: 2
+sidebar_label: کلاس Bot
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس Bot – ساختار اصلی ربات در Rubika
 
 کلاس `Bot` هسته‌ی اصلی برای ایجاد و مدیریت ربات در کتابخانه Rubika است. این کلاس با ترکیب ماژول‌های مختلف مانند مدیریت نشست (Session)، شبکه (Network)، متدها و هندلرها، ساختار پایه‌ای برای اجرای ربات‌ها را فراهم می‌کند.

@@ -1,7 +1,7 @@
-import prompt from "./prompt";
-import Markdown from "./parser";
-import AntiSpam from "./antiSpam";
 import checkFilters from "./checkFilter";
+import Markdown from "./parser";
 import Utils from "./formater";
+import Logger from "./errors";
+import prompt from "./prompt";
 
-export { prompt, checkFilters, AntiSpam, Utils, Markdown };
+export { checkFilters, Logger, Utils, Markdown, prompt };

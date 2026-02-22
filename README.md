@@ -1,6 +1,6 @@
 <p align="center">
   <h1 style="color:#fff;">› rubika Framework</h1>
-  <p><b>فریم‌ورک قدرتمند و پرسرعت جاوااسکریپت برای ربات‌های روبیکا</b></p>
+  <p><b>فریم‌ورک قدرتمند و پرسرعت جاوااسکریپت برای ربات‌/سلف‌های روبیکا</b></p>
 </p>
 
 ---
@@ -10,9 +10,9 @@
 **rubika** یک فریم‌ورک سبک، مدرن و کاملاً **غیرهمزمان** برای توسعه ربات‌های روبیکا است.  
 با معماری **Filter-Base** و **Type-Safe**، شما می‌توانید:
 
-- ربات‌هایی سریع و کم‌حجم بسازید
-- سیستم فرمان‌دهی و مدیریت پیام حرفه‌ای داشته باشید
-- با قابلیت **اسکِیبل و قابل گسترش**، پروژه‌های بزرگ هم مدیریت کنید
+- ربات‌/سلف‌ هایی سریع و کم‌حجم بسازید.
+- سیستم فرمان‌دهی و مدیریت پیام حرفه‌ای داشته باشید.
+- با قابلیت **اسکِیبل و قابل گسترش**، پروژه‌های بزرگ هم مدیریت کنید.
 
 ---
 
@@ -22,22 +22,62 @@
 bun add rubika
 ```
 
-## › نمونه کد ساده
+## › نمونه کد ساده ربات
 
-```js
-const { Bot, Filters } = require("rubika");
+```ts
+import Bot, { Filters } from "rubika/bot";
 
-const bot = new Bot("rubika");
+const bot = new Bot("TOKEN_BOT");
 
-bot.command("/start", async (ctx, bot) => {
-  await bot.sendMessage(ctx.chat_id, "🤖 ربات استارت شد");
+bot.command("/start", async (ctx) => {
+  await ctx.reply("🤖 ربات استارت شد");
 });
 
-bot.on("update", [Filters.isText], async (ctx, bot) => {
-  await bot.sendMessage(ctx.chat_id, "سلام 😎");
+bot.on("update", [Filters.isText], async (ctx) => {
+  await ctx.reply("سلام 😎");
+});
+
+bot.on("error", async (err) => {
+  await err.bot.sendMessage("CHAT_ID", err.message);
+  console.log(err.message);
 });
 
 bot.run();
+```
+## › نمونه کد ساده سلف (self)
+
+```ts
+import Client, { Filters } from "rubika/client";
+
+
+const client = new Client("rubika");
+
+client.command("/start", async (ctx) => {
+  await ctx.reply("🤖 ربات استارت شد");
+});
+
+client.on("message", [Filters.isText], async (ctx) => {
+  await ctx.reply("سلام 😎");
+});
+
+client.on("activities", async (ctx) => {
+  console.log(ctx);
+});
+
+client.on("chat", async (ctx) => {
+  console.log(ctx);
+});
+
+client.on("notifications", async (ctx) => {
+  console.log(ctx);
+});
+
+client.on("error", async (err) => {
+  await err.client.sendMessage("CHAT_ID", err.message);
+  console.log(err.message);
+});
+
+client.run();
 ```
 
 ## › ویژگی‌های کلیدی
@@ -52,3 +92,6 @@ bot.run();
 ## 🌐 لینک‌های مهم
 
 - [لینک گیتهاب](https://github.com/hadi-rostami/rubika-bot)
+- [لینک npm](https://www.npmjs.com/package/rubika)
+- [تلگرام](https://t.me/rubikajs_channel)
+- [روبیکا](https://rubika.ir/rubika_js)

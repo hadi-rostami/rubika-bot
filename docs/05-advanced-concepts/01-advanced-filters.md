@@ -1,3 +1,15 @@
+---
+slug: /advanced-concepts/advanced-filters
+id: learn-bot-advanced-concepts-advanced-filters
+sidebar_position: 2
+sidebar_label: فیلترهای پیشرفته
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
+
 # فیلترهای پیشرفته
 
 در rubika می‌توانید با استفاده از فیلترهای ترکیبی، شرطی، ذخیره‌سازی موقت، و فیلترهای سفارشی، رفتار ربات را بسیار منعطف و قدرتمند تعریف کنید.

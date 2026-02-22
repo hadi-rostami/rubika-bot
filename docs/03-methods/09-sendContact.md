@@ -1,3 +1,14 @@
+---
+slug: /methods/sendcontact
+id: learn-bot-sendcontact-method
+sidebar_position: 2
+sidebar_label: متد sendContact
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendContact`
 
 ارسال مخاطب با ربات.

@@ -1,3 +1,14 @@
+---
+slug: /methods/banchatmember
+id: learn-bot-banchatmember-method
+sidebar_position: 2
+sidebar_label: متد banChatMember
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `banChatMember`
 
 استفاده از متد `banChatMember` برای مسدود کردن کاربر از گروه یا کانال

@@ -1,3 +1,14 @@
+---
+slug: /basic-concepts/bot-filters
+id: learn-bot-filters
+sidebar_position: 2
+sidebar_label: کلاس Filters
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس Filters – فیلترهای پیش‌ساخته
 
 کلاس `Filters` مجموعه‌ای از فیلترهای ساده و کاربردی برای تشخیص نوع پیام دریافتی در ربات است. این فیلترها به‌صورت متدهای استاتیک پیاده‌سازی شده‌اند تا بتوان از آن‌ها مستقیماً در هندلرها یا شرط‌ها استفاده کرد.

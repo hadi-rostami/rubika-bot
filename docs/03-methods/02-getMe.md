@@ -1,3 +1,14 @@
+---
+slug: /methods/getme
+id: learn-bot-getme-method
+sidebar_position: 2
+sidebar_label: متد getMe
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `getMe`
 
 استفاده از متد `getMe` برای دریافت اطلاعات مرتبط با ربات.

@@ -1,3 +1,14 @@
+---
+slug: /methods/getchat
+id: learn-bot-getchat-method
+sidebar_position: 2
+sidebar_label: متد getChat
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `getChat`
 
 استفاده از متد `getChat` برای دریافت اطلاعات مرتبط با چت فعلی.

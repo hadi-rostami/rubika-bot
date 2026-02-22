@@ -1,3 +1,14 @@
+---
+slug: /events/command
+id: learn-bot-command-handler
+sidebar_position: 2
+sidebar_label: مدیریت ایونت command
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # command
 
 متدی برای ثبت هندلرهای کامند (دستورات متنی) با پشتیبانی از فیلتر.

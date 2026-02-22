@@ -1,9 +1,5 @@
 import Bot from "./bot";
-import { Utils, AntiSpam } from "./utils";
-import Filters from "./filters";
-import type * as Enums from "./types/enums";
-import { Update, Inline } from "./contexts/index";
+import Client from "./client";
+import { Utils, prompt } from "./utils";
 
-export default Bot;
-export { Bot, Filters, Utils, AntiSpam };
-export type { Enums, Update, Inline };
+export { Bot, Client, Utils, prompt };

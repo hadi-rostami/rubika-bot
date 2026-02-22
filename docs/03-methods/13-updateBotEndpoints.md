@@ -1,3 +1,14 @@
+---
+slug: /methods/updatebotendpoints
+id: learn-bot-updatebotendpoints-method
+sidebar_position: 2
+sidebar_label: متد updateBotEndpoints
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `updateBotEndpoints`
 
 تغییر ادرس وبهوک

@@ -1,3 +1,14 @@
+---
+slug: /methods/builder
+id: learn-bot-builder-method
+sidebar_position: 2
+sidebar_label: متد builder
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `builder`
 
 تابع `builder` یک متد داخلی در کلاس `Bot` است که وظیفه‌ی ارسال درخواست‌های سطح پایین به API را بر عهده دارد. این تابع به طور مستقیم توسط کاربران کتابخانه استفاده نمی‌شود، بلکه زیرساخت متدهای دیگر کلاس `Bot` را تشکیل می‌دهد.

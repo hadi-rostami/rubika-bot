@@ -1,3 +1,14 @@
+---
+slug: /methods/sendvoice
+id: learn-bot-sendvoice-method
+sidebar_position: 2
+sidebar_label: متد sendVoice
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendVoice`
 
 ارسال ویس با ربات

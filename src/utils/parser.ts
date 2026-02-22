@@ -1,4 +1,4 @@
-import { MarkdownType, MetaDataPart, MetadataResult } from "../types/utils";
+import { MarkdownType, MetaDataPart, MetadataResult } from "../bot/types/utils";
 
 const MENTION_PREFIX_TYPES: Record<string, string> = {
   u: "User",

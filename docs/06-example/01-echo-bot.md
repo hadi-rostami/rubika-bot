@@ -1,3 +1,15 @@
+---
+slug: /example/echo-bot
+id: learn-bot-example-echo-bot
+sidebar_position: 3
+sidebar_label: مثال echo bot
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
+
 # Echo Bot با rubika
 
 این ربات ساده با استفاده از کتابخانه [rubika](https://hadi-rostami.github.io/rubika-docs/) ساخته شده و هدف آن بازگرداندن (echo) پیام‌های متنی کاربران است.

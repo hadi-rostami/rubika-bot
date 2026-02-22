@@ -1,3 +1,14 @@
+---
+slug: /basic-concepts/bot-utils
+id: learn-bot-utils
+sidebar_position: 2
+sidebar_label: کلاس Utils
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس Utils – ابزارهای فرمت‌دهی متن
 
 کلاس Utils مجموعه‌ای از متدهای استاتیک و کاربردی برای فرمت‌دهی سریع رشته‌های متنی (Markdown) است. این متدها به شما کمک می‌کنند تا بدون درگیر شدن با کاراکترهای خاص، متن‌های خود را برای ارسال در پیام‌رسان‌هایی مانند روبیکا آماده‌سازی کنید.

@@ -1,3 +1,14 @@
+---
+slug: /methods/sendlocation
+id: learn-bot-sendlocation-method
+sidebar_position: 2
+sidebar_label: متد sendLocation
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendLocation`
 
 ارسال لوکیشن با ربات.

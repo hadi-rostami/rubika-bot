@@ -1,3 +1,14 @@
+---
+slug: /contexts/update
+id: learn-bot-contexts-update
+sidebar_position: 2
+sidebar_label: کانتکست Update
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # کلاس Update – کانتکست مدیریت رویدادها
 
 کلاس `Update` نمایان‌گر context مربوط به پیام‌های اینلاین (inline) دریافت‌شده از روبیکاست. این کلاس به‌صورت خودکار توسط rubika هنگام دریافت رویداد `"update"` ساخته شده و به هندلر پاس داده می‌شود.

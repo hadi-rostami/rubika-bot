@@ -1,3 +1,14 @@
+---
+slug: /methods/sendmessage
+id: learn-bot-sendmessage-method
+sidebar_position: 2
+sidebar_label: متد sendMessage
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendMessage`
 
 ارسال پیام با استفاده از ربات به یک کاربر، گروه یا کانال.

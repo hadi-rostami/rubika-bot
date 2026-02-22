@@ -1,5 +1,12 @@
 ---
+slug: /installation
+id: installation
 sidebar_position: 2
+sidebar_label: نصب و راه‌اندازی
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
 ---
 
 # نصب و راه‌اندازی rubika

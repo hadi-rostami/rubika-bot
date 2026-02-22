@@ -1,3 +1,14 @@
+---
+slug: /methods/sendgif
+id: learn-bot-sendgif-method
+sidebar_position: 2
+sidebar_label: متد sendGif
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendGif`
 
 ارسال گیف با ربات

@@ -1,3 +1,14 @@
+---
+slug: /methods/sendfile
+id: learn-bot-sendfile-method
+sidebar_position: 2
+sidebar_label: متد sendFile
+
+last_update:
+  date: '2026-02-18'
+  author: 'hadi-rostami'
+---
+
 # `sendFile`
 
 ارسال فایل با ربات

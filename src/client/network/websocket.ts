@@ -1,6 +1,6 @@
 import Network from ".";
 import Crypto from "../crypto";
-import { ContextMap, Handler } from "../types/client.type";
+import { ContextMapCon, Handler } from "../types/client.type";
 import { ContextConstructors } from "../contexts/contextConstructors";
 import Message from "../contexts/message.type";
 import { checkFilters } from "../../utils";
@@ -143,9 +143,9 @@ async function getMessage(message: string, network: Network) {
   }
 }
 
-async function handleCategory<T extends keyof ContextMap>(
+async function handleCategory<T extends keyof ContextMapCon>(
   type: T,
-  handlers: Handler<ContextMap[T]>[],
+  handlers: Handler<ContextMapCon[T]>[],
   updates: any[],
   network: Network,
   author_title: string,
@@ -161,7 +161,7 @@ async function handleCategory<T extends keyof ContextMap>(
     update.client_guid = network.client.userGuid;
     update.message.author_title = author_title;
 
-    const ctx = new CtxClass(network.client, update) as ContextMap[T];
+    const ctx = new CtxClass(network.client, update) as ContextMapCon[T];
 
     for (const { filters, handler, prefix } of handlers) {
       const passed = await checkFilters(ctx, filters);

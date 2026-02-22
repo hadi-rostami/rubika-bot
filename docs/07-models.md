@@ -1,6 +1,6 @@
 ---
 slug: /models
-sidebar_position: 3
+sidebar_position: 4
 id: learn-bot-models
 sidebar_label: مدل‌ها و انوم‌ها
 

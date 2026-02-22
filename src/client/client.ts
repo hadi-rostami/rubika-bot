@@ -14,7 +14,6 @@ export default class Client extends Methods {
   public sessionDb: SessionManager;
   public network: Network;
   public plugins: ClientTypes.RubPlugin[] = [];
-  public errorMiddlewares: ClientTypes.ErrorMiddleware[] = [];
   public userGuid?: string;
   public handlers: {
     [K in keyof ClientTypes.ContextMap]: ClientTypes.Handler<

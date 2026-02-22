@@ -17,12 +17,6 @@ export type TypeUpdate = "activities" | "chat" | "message" | "notifications";
 export type SessionType = string | Session;
 export type PlatformType = "Android" | "Web";
 
-export type ErrorMiddleware = (
-  error: any,
-  ctx: Message,
-  next: () => Promise<void>,
-) => Promise<void>;
-
 // پلاگین
 type PluginFunction = (client: Client) => Promise<void>;
 
@@ -41,6 +35,13 @@ export interface ContextMap {
     message: string;
     client: Client;
   };
+}
+
+export interface ContextMapCon {
+  chat: Chat;
+  message: Message;
+  activities: Activities;
+  notifications: Notifications;
 }
 
 export type Handler<T> = {

@@ -44,50 +44,37 @@ bot.on("error", async (err) => {
 
 bot.run();
 ```
+
 ## › نمونه کد ساده سلف (self)
 
 ```ts
-import Client, { Filters } from "rubika/client";
+import Client from "rubika/bot";
 
+const shad_client = new Client("shad", "Shad");
+const rubika_client = new Client("rubika", "Rubika");
 
-const client = new Client("rubika");
+// Shad
+shad_client.on("message", async (ctx) => console.log(ctx));
+shad_client.on("error", async (err) => console.log(err));
 
-client.command("/start", async (ctx) => {
-  await ctx.reply("🤖 ربات استارت شد");
-});
+// Rubika
+rubika_client.on("message", async (ctx) => console.log(ctx));
+rubika_client.on("error", async (err) => console.log(err));
 
-client.on("message", [Filters.isText], async (ctx) => {
-  await ctx.reply("سلام 😎");
-});
-
-client.on("activities", async (ctx) => {
-  console.log(ctx);
-});
-
-client.on("chat", async (ctx) => {
-  console.log(ctx);
-});
-
-client.on("notifications", async (ctx) => {
-  console.log(ctx);
-});
-
-client.on("error", async (err) => {
-  await err.client.sendMessage("CHAT_ID", err.message);
-  console.log(err.message);
-});
-
-client.run();
+// start (self)-bots
+shad_client.run();
+rubika_client.run();
 ```
 
 ## › ویژگی‌های کلیدی
 
-| ویژگی          | توضیح                                          |
-| -------------- | ---------------------------------------------- |
-| ⚡ Super-Speed | استفاده از معماری غیرهمزمان برای پاسخ‌دهی سریع |
-| 🛡️ Type-Safe   | کمک به جلوگیری از خطاهای متداول جاوااسکریپت    |
-| 🔧 Filter-Base | سیستم فیلترینگ قدرتمند برای مدیریت پیام‌ها     |
-| 📂 Modular     | ساختار ماژولار و قابل گسترش                    |
+| ویژگی                | توضیح                                          |
+| -------------------- | ---------------------------------------------- |
+| ⚡ Super-Speed       | استفاده از معماری غیرهمزمان برای پاسخ‌دهی سریع |
+| 🛡️ Type-Safe         | کمک به جلوگیری از خطاهای متداول جاوااسکریپت    |
+| 🔧 Filter-Base       | سیستم فیلترینگ قدرتمند برای مدیریت پیام‌ها     |
+| 📂 Modular           | ساختار ماژولار و قابل گسترش                    |
+| 🈸 Multi Application | ساخت ربات های روبیکایی و شاد                   |
 
 ## 🌐 لینک‌های مهم
 

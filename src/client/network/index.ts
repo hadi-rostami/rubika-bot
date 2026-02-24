@@ -20,8 +20,9 @@ export default class Network {
 	public reconnecting: boolean = false;
 
 	constructor(public client: Client) {
-		this.defaultPlatform = resolvePlatform(client.platform);
-		this.headers = buildHeaders(client.platform);
+		const isShad = client.application === "Shad";
+		this.defaultPlatform = resolvePlatform(client.platform , isShad);
+		this.headers = buildHeaders(client.platform , isShad);
 	}
 
 	getDcs = () => getDcs(this);

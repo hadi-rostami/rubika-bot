@@ -31,6 +31,7 @@ export default class Client extends Methods {
 
   constructor(
     private session: ClientTypes.SessionType,
+    public application: "Shad" | "Rubika" = "Rubika",
     public platform: ClientTypes.PlatformType = "Web",
     public timeout: number = 5000,
   ) {

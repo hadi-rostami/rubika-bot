@@ -20,7 +20,7 @@ interface SendPayloadInputs {
  * Retrieves API and WSS server URLs
  */
 export async function getDcs(network: Network): Promise<boolean> {
-  const url = "https://getdcmess.iranlms.ir/";
+  const url = `https://${network.client.application === "Shad" ? "sh" : ""}getdcmess.iranlms.ir/`;
   const RETRY_DELAY = 3000;
 
   while (true) {

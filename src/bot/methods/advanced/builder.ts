@@ -5,23 +5,18 @@ async function builder(
   method: string,
   input: object = {},
 ): Promise<any> {
-  if (!this.token) {
-    throw this.logger.error(
-      "[builder] Bot token is not set. Please provide a valid token.",
-      "error",
-    );
-  }
-
   const response: any = await this.network.request(method, input);
+  if (response === false) return { status_message: "NETWORK_ERROR" };
 
-  if (response?.status !== "OK") {
-    throw this.logger.error(
-      `[builder] error in request ${method}:\n ${JSON.stringify(response, null, 2)}`,
-      "error",
-    );
+  if (response?.status === "OK") {
+    return { ...response.data, status_message: "OK" };
   }
 
-  return response.data;
+  if (method === "getMe" && response.status === "INVALID_ACCESS") {
+    return { status_message: "INVALID_TOKEN" };
+  }
+
+  return { status_message: response.status };
 }
 
 export default builder;

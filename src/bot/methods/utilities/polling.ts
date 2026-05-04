@@ -1,64 +1,89 @@
-import fs from "fs";
-import Bot from "../../bot";
-import { checkFilters } from "../../../utils";
 import { UpdateTypeEnum } from "../../types/enums";
+import { checkFilters } from "../../../utils";
 import Update from "../../contexts/update";
+import Bot from "../../bot";
+import path from "path";
+import fs from "fs";
+import { Filters } from "../../../client";
 
-const checkTypes = [UpdateTypeEnum.UpdatedMessage, UpdateTypeEnum.NewMessage];
+const checkTypes = [
+  UpdateTypeEnum.UpdatedMessage,
+  UpdateTypeEnum.NewMessage,
+  UpdateTypeEnum.RemovedMessage,
+  UpdateTypeEnum.UpdatedPayment,
+  UpdateTypeEnum.StoppedBot,
+  UpdateTypeEnum.StartedBot,
+];
+
+const OFFSET_FILE_PATH = path.join(
+  process.cwd(),
+  process.env.OFFSET_PATH || "offset.json",
+);
+
+const sleep = async (time: number) =>
+  await new Promise((res) => setTimeout(res, time));
 
 export default async function polling(this: Bot) {
   console.log("✔ Start Robot... [ polling mode ]");
 
   let next_offset_id: string | undefined = loadOffset();
 
-  setInterval(async () => {
+  while (true) {
     try {
-      const res = await this.getUpdates(next_offset_id);
-      const nowTime = Math.floor(Date.now() / 1000);
-      for (let m of res.updates) {
-        if (isNaN(m.new_message?.time || m.updated_message?.time)) continue;
-        const messageTime =
-          Number(m.new_message?.time || m.updated_message?.time) | 0;
+      const res = await this.getUpdates(next_offset_id, 100);
 
-        if (nowTime - messageTime < 10) {
-          for (let { prefix, filters, handler } of this.handlers.update) {
-            const ctx = new Update(m, this);
-            const passed = await checkFilters(ctx, filters);
+      if (res.status_message !== "OK") {
+        await sleep(500);
+        continue;
+      }
 
-            if (passed) {
-              if (prefix) {
-                if (!checkTypes.includes(ctx.type)) continue;
+      for (const m of res.updates) {
+        if (!checkTypes.includes(m.type)) continue;
+        const time = m.update_time - Math.floor(Date.now() / 1000);
 
-                const text =
-                  ctx.updated_message?.text || ctx.new_message?.text || "";
+        if (time > 10 || time < -10) continue;
+        for (const { prefix, filters, handler } of this.handlers.update) {
+          const ctx = new Update(m, this);
+          const passed = await checkFilters(ctx, filters);
 
-                if (typeof prefix === "string" && text !== prefix) continue;
-                if (prefix instanceof RegExp && !prefix.test(text)) continue;
-              }
-              try {
-                await handler(ctx);
-              } catch {}
+          if (passed) {
+            if (prefix) {
+              const text = Filters.findKey(m, "text") || null;
+
+              if (!text) continue;
+              if (typeof prefix === "string" && text !== prefix) continue;
+              if (prefix instanceof RegExp && !prefix.test(text)) continue;
+            }
+            try {
+              await handler(ctx);
+            } catch {
+              continue;
             }
           }
         }
       }
-
       if (res.next_offset_id) {
         next_offset_id = res.next_offset_id;
         saveOffset(next_offset_id as string);
       }
     } catch (e) {
-      this.logger.error("Error occurred while polling:" + e, "warn");
+      console.log(e);
     }
-  }, 1000);
+
+    await sleep(500);
+  }
 }
 
 function saveOffset(offset: string) {
-  fs.writeFileSync("offset.json", JSON.stringify({ offset }));
+  const dir = path.dirname(OFFSET_FILE_PATH);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  fs.writeFileSync(OFFSET_FILE_PATH, JSON.stringify({ offset }));
 }
 
 function loadOffset(): string | undefined {
-  if (!fs.existsSync("offset.json")) return undefined;
-  const data = fs.readFileSync("offset.json", "utf8");
+  if (!fs.existsSync(OFFSET_FILE_PATH)) return undefined;
+  const data = fs.readFileSync(OFFSET_FILE_PATH, "utf8");
   return JSON.parse(data).offset;
 }

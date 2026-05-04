@@ -90,16 +90,22 @@ bot.run();
 می‌توانید داده‌هایی را بین فیلترها و هندلر منتقل کنید:
 
 ```js
-import Bot from "rubika";
+import Bot, { Contexts } from "rubika";
 
 const bot = new Bot("YOUR_TOKEN");
+const adminIds = ["admin_id"];
 
-const isAdmin = (ctx) => {
-  ctx.store.isAdmin = adminIds.includes(ctx.new_message?.sender_id);
+type StoreType = {
+  isAdmin: boolean;
+};
+
+const isAdmin = (ctx: Contexts.Update<StoreType>) => {
+  if (ctx?.new_message)
+    ctx.store.isAdmin = adminIds.includes(ctx.new_message?.sender_id);
   return true;
 };
 
-bot.on("update", isAdmin, async (ctx) => {
+bot.on<StoreType, "update">("update", [isAdmin], async (ctx) => {
   if (ctx.store.isAdmin) await ctx.reply("شما ادمین هستید!");
 });
 

@@ -27,8 +27,10 @@ async function builder(
     const status_det = result.status_det;
 
     if (status == "OK" && status_det == "OK") {
-      return result.data;
+      return { ...result.data, status_message: "OK" };
     }
+
+    return { status_message: status_det };
   }
 }
 

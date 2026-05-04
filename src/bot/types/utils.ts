@@ -35,8 +35,13 @@ export interface MetadataResult {
 }
 
 // antiSpam
-export type SpamCallbackType = (ctx: Update) => Promise<void>;
+export type SpamCallbackType = (ctx: Update<unknown>) => Promise<void>;
 export type OptionSpamType = {
   spam_time: number;
   spam_limit: number;
+};
+
+export type BotConfig = {
+  timeout: number;
+  retryCount: number;
 };

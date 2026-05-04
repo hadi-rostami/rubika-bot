@@ -15,7 +15,10 @@ async function uploadFile(
   if (typeof source === "string") {
     if (source.startsWith("http://") || source.startsWith("https://")) {
       // download file
-      console.log(`[ uploadFile ] Downloading from URL: ${source}`);
+      this.logger.error(
+        `[ uploadFile ] Downloading from URL: ${source}`,
+        "warn",
+      );
       const res = await fetch(source);
       if (!res.ok) {
         throw this.logger.error(
@@ -67,7 +70,7 @@ async function uploadFile(
     throw this.logger.error(`HTTP ${res.status}: ${text}`, "warn");
   }
 
-  const response = await res.json();
+  const response: any = await res.json();
 
   if (response.status !== "OK") {
     throw this.logger.error(

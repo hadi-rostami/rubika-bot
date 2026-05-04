@@ -16,14 +16,17 @@ async function start(this: Client): Promise<void> {
   }
 
   try {
-    if (!this.auth) throw Error("[start] Error auth is not set");
+    if (!this.auth)
+      throw this.logger.error("[start] Error auth is not set", "error");
     this.key = Buffer.from(Crypto.passphrase(this.auth), "utf8");
     this.decode_auth = Crypto.decode_auth(this.auth);
     const result = await this.getUserInfo();
     this.userGuid = result.user.user_guid;
     this.initialize = true;
-  } catch (error) {
-    let phone_number: string = await prompt("Phone Number: ");
+  } catch {
+    let phone_number: string = await prompt(
+      "Phone Number ex -> (989123456789):: ",
+    );
     let is_phone_number_true = true;
 
     while (is_phone_number_true) {
@@ -31,7 +34,7 @@ async function start(this: Client): Promise<void> {
       if (answer.toLowerCase() === "y") {
         is_phone_number_true = false;
       } else {
-        phone_number = await prompt("Phone Number ex -> (09123456789) : ");
+        phone_number = await prompt("Phone Number ex -> (989123456789): ");
       }
     }
 

@@ -1,9 +1,9 @@
 import Bot from "..";
 import { Update, Inline } from "../contexts";
 
-export interface ContextMap {
-  update: Update;
-  inline: Inline;
+export interface ContextMap<T> {
+  update: Update<T>;
+  inline: Inline<T>;
   error: {
     message: string;
     bot: Bot;

@@ -14,7 +14,16 @@ import {
   UpdateTypeEnum,
 } from "./enums";
 
-export interface Chat {
+interface STATUS_MESSAGE {
+  status_message:
+    | "OK"
+    | "INVALID_ACCESS"
+    | "TOO_REQUESTS"
+    | "NETWORK_ERROR"
+    | "INVALID_TOKEN";
+}
+
+export interface Chat extends STATUS_MESSAGE {
   chat: {
     chat_id: string;
     chat_type: ChatTypeEnum;
@@ -24,6 +33,9 @@ export interface Chat {
     title: string;
     username: string;
   };
+}
+export interface UpdateBotEndpoints extends STATUS_MESSAGE {
+  status: string;
 }
 
 export interface File {
@@ -49,7 +61,7 @@ export interface MessageTextUpdate {
   text: string;
 }
 
-export interface Bot {
+export interface Bot extends STATUS_MESSAGE {
   bot: {
     bot_id: string;
     bot_title: string;
@@ -59,6 +71,10 @@ export interface Bot {
     start_message: string;
     share_url: string;
   };
+}
+
+export interface REQUEST_SEND_FILE extends STATUS_MESSAGE {
+  upload_url: string;
 }
 
 export interface BotCommand {
@@ -224,6 +240,30 @@ export interface Message {
   live_location?: LiveLocation;
 }
 
+export interface UpdateMessage {
+  chat_id: string;
+  update_time: number;
+  type: UpdateTypeEnum;
+  new_message?: Message;
+  updated_message?: Message;
+  removed_message_id?: string;
+  updated_payment?: PaymentStatus;
+}
+export interface InlineMessage {
+  sender_id: string;
+  text: string;
+  file?: File;
+  location?: Location;
+  aux_data?: AuxData;
+  message_id: string;
+  chat_id: string;
+}
+
+export interface GetUpdates extends STATUS_MESSAGE {
+  updates: UpdateMessage[];
+  next_offset_id: string;
+}
+
 export interface BotInfo {
   bot_id: string;
   bot_title: string;
@@ -233,11 +273,11 @@ export interface BotInfo {
   start_message: string;
 }
 
-export interface SendMessage {
+export interface SendMessage extends STATUS_MESSAGE {
   message_id: string;
 }
 
-export interface UploadFile {
+export interface UploadFile extends STATUS_MESSAGE {
   status: string;
   status_det: string;
   data: { file_id: string };

@@ -1,9 +1,10 @@
 import Network from "./network";
 import Methods from "./methods";
+import { Logger } from "../utils";
+import Update from "./contexts/update";
 import type { BotInfo } from "./types/interfaces";
 import type { ContextMap, Handler, NestedFilter } from "./types/handlers";
-import Update from "./contexts/update";
-import { Logger } from "../utils";
+import { BotConfig } from "./types/utils";
 
 class Bot extends Methods {
   protected initialize: boolean = false;
@@ -12,7 +13,7 @@ class Bot extends Methods {
   public bot?: BotInfo;
 
   public handlers: {
-    [K in keyof ContextMap]: Handler<ContextMap[K]>[];
+    [K in keyof ContextMap<unknown>]: Handler<ContextMap<unknown>[K]>[];
   } = { inline: [], update: [], error: [] };
 
   public logger = new Logger<Bot>(this.handlers.error, this);
@@ -33,11 +34,16 @@ class Bot extends Methods {
    */
   constructor(
     public token: string,
-    timeout: number = 10000,
+    config: BotConfig = { retryCount: 3, timeout: 10000 },
   ) {
     super();
     this.BASE_URL = `https://botapi.rubika.ir/v3/${token}`;
-    this.network = new Network(this.BASE_URL, timeout);
+    this.network = new Network(
+      this.BASE_URL,
+      this.logger,
+      config.timeout,
+      config.retryCount,
+    );
 
     this.start();
   }
@@ -66,9 +72,9 @@ class Bot extends Methods {
    * });
    * ```
    */
-  on<T extends keyof typeof this.handlers>(
-    type: T,
-    handler: (ctx: ContextMap[T]) => Promise<void>,
+  on<T, K extends keyof ContextMap<T>>(
+    type: K,
+    handler: (ctx: ContextMap<T>[K]) => Promise<void>,
   ): void;
 
   /**
@@ -96,18 +102,18 @@ class Bot extends Methods {
    * });
    * ```
    */
-  on<T extends keyof typeof this.handlers>(
-    type: T,
-    filters: NestedFilter<ContextMap[T]>,
-    handler: (ctx: ContextMap[T]) => Promise<void>,
+  on<T, K extends keyof ContextMap<T>>(
+    type: K,
+    filters: NestedFilter<ContextMap<T>[K]>,
+    handler: (ctx: ContextMap<T>[K]) => Promise<void>,
   ): void;
 
-  on<T extends keyof typeof this.handlers>(
-    type: T,
-    filtersOrHandler:
-      | NestedFilter<ContextMap[T]>
-      | ((ctx: ContextMap[T]) => Promise<void>),
-    maybeHandler?: (ctx: ContextMap[T]) => Promise<void>,
+  on<T, K extends keyof ContextMap<T>>(
+    type: K,
+    filtersOrHandler?:
+      | NestedFilter<ContextMap<T>[K]>
+      | ((ctx: ContextMap<T>[K]) => Promise<void>),
+    maybeHandler?: (ctx: ContextMap<T>[K]) => Promise<void>,
   ): void {
     if (typeof filtersOrHandler === "function") {
       this.handlers[type].push({
@@ -147,9 +153,9 @@ class Bot extends Methods {
    * });
    * ```
    */
-  command(
+  command<T>(
     prefix: string | RegExp,
-    handler: (ctx: Update) => Promise<void>,
+    handler: (ctx: Update<T>) => Promise<void>,
   ): void;
 
   /**
@@ -178,18 +184,18 @@ class Bot extends Methods {
    * });
    * ```
    */
-  command(
+  command<T>(
     prefix: string | RegExp,
-    filters: NestedFilter<ContextMap["update"]>,
-    handler: (ctx: Update) => Promise<void>,
+    filters: NestedFilter<ContextMap<T>["update"]>,
+    handler: (ctx: Update<T>) => Promise<void>,
   ): void;
 
-  command(
+  command<T>(
     prefix: string | RegExp,
     filtersOrHandler:
-      | NestedFilter<ContextMap["update"]>
-      | ((ctx: Update) => Promise<void>),
-    maybeHandler?: (ctx: Update) => Promise<void>,
+      | NestedFilter<ContextMap<T>["update"]>
+      | ((ctx: Update<T>) => Promise<void>),
+    maybeHandler?: (ctx: Update<T>) => Promise<void>,
   ) {
     if (typeof filtersOrHandler === "function") {
       this.handlers.update.push({
@@ -204,7 +210,7 @@ class Bot extends Methods {
         prefix,
       });
     } else {
-      throw this.logger.error("Invalid arguments for command()", "warn");
+      this.logger.error("Invalid arguments for command()", "warn");
     }
   }
 }

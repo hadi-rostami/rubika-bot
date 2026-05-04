@@ -2,14 +2,14 @@ import { inspect } from "util";
 import { Client } from "../../..";
 import { DecoratorsTypes } from "../types/index.type";
 
-class Notifications implements DecoratorsTypes.ShowNotifications {
+class Notifications<T> implements DecoratorsTypes.ShowNotifications {
   notification_id: string;
   type: string;
   title: string;
   text: string;
   image_file_id?: number;
   message_data: DecoratorsTypes.MessageData;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
 
   declare client: Client;
 

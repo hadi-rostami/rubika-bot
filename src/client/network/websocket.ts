@@ -27,7 +27,7 @@ export async function setupWebSocket(network: Network) {
 
   network.ws.addEventListener("error", async () => {
     if (!network.reconnecting) {
-      console.error("WebSocket error, reconnecting...");
+      network.client.logger.error("WebSocket error, reconnecting...", "error");
       network.reconnecting = true;
       await resetConnection(network);
     }
@@ -35,7 +35,7 @@ export async function setupWebSocket(network: Network) {
 
   network.ws.addEventListener("close", async () => {
     if (!network.reconnecting) {
-      console.warn("WebSocket closed, reconnecting...");
+      network.client.logger.error("WebSocket closed, reconnecting...", "warn");
       network.reconnecting = true;
       await resetConnection(network);
     }
@@ -64,14 +64,20 @@ export async function openSocket(network: Network) {
             network.ws.send(JSON.stringify({}));
           }
         } catch (err) {
-          console.error("Error sending heartbeat", err);
+          network.client.logger.error("Error sending heartbeat" + err, "error");
         }
       }, 30000);
     } else {
-      console.warn("WebSocket is not open; cannot send handshake");
+      network.client.logger.error(
+        "WebSocket is not open; cannot send handshake",
+        "warn",
+      );
     }
   } catch (err) {
-    console.error("Error during openSocket execution", err);
+    network.client.logger.error(
+      "Error during openSocket execution" + err,
+      "error",
+    );
   }
 }
 
@@ -83,7 +89,7 @@ async function resetConnection(network: Network) {
     try {
       await network.getUpdates();
     } catch (e) {
-      console.error("Failed to reconnect:", e);
+      network.client.logger.error("Failed to reconnect:" + e, "error");
     } finally {
       network.reconnecting = false;
     }
@@ -95,11 +101,15 @@ function resetInactivityTimer(network: Network) {
 
   network.inactivityTimeout = setTimeout(
     () => {
-      console.warn(
+      network.client.logger.error(
         "No updates received for 10 minutes. Reconnecting WebSocket...",
+        "warn",
       );
       void resetConnection(network).catch((err) => {
-        console.error("Error during inactivity reset:", err);
+        network.client.logger.error(
+          "Error during inactivity reset:" + err,
+          "error",
+        );
       });
     },
     10 * 60 * 1000,
@@ -139,20 +149,27 @@ async function getMessage(message: string, network: Network) {
       await Promise.all(tasks);
     }
   } catch (err) {
-    console.error("[getMessage] Failed to decrypt or process message:", err);
+    network.client.logger.error(
+      "[getMessage] Failed to decrypt or process message:" + err,
+      "error",
+    );
   }
 }
 
-async function handleCategory<T extends keyof ContextMapCon>(
+async function handleCategory<T, K extends keyof ContextMapCon<T>>(
   type: T,
-  handlers: Handler<ContextMapCon[T]>[],
+  handlers: Handler<ContextMapCon<T>[K]>[],
   updates: any[],
   network: Network,
   author_title: string,
 ) {
-  const CtxClass = ContextConstructors[type];
+  // @ts-ignore
+  const CtxClass = ContextConstructors[type]<T>;
   if (!CtxClass) {
-    console.warn(`[handleCategory] No constructor found for type: ${type}`);
+    network.client.logger.error(
+      `[handleCategory] No constructor found for type: ${type}`,
+      "warn",
+    );
     return;
   }
 
@@ -161,14 +178,14 @@ async function handleCategory<T extends keyof ContextMapCon>(
     update.client_guid = network.client.userGuid;
     update.message.author_title = author_title;
 
-    const ctx = new CtxClass(network.client, update) as ContextMapCon[T];
+    const ctx = new CtxClass(network.client, update) as ContextMapCon<T>[K];
 
     for (const { filters, handler, prefix } of handlers) {
       const passed = await checkFilters(ctx, filters);
 
       if (passed) {
         if (type === "message" && prefix) {
-          const text = (ctx as Message).message.text;
+          const text = (ctx as Message<T>).message.text;
           if (!text) continue;
 
           if (typeof prefix === "string" && text !== prefix) continue;

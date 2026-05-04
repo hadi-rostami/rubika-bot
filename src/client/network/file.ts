@@ -8,7 +8,10 @@ export async function uploadFile(
   chunkSize: number = 1048576,
 ): Promise<any> {
   if (!fs.existsSync(filePath))
-    throw new Error("File not found in the given path");
+    throw network.client.logger.error(
+      "File not found in the given path",
+      "error",
+    );
 
   const stat = await fs.promises.stat(filePath);
   const fileSize = stat.size;
@@ -21,7 +24,7 @@ export async function uploadFile(
   let dc_id: string = result.dc_id;
   let upload_url: string = result.upload_url;
   let access_hash_send: string = result.access_hash_send;
-  let totalParts: number = Math.ceil(fileSize / chunkSize);
+  const totalParts: number = Math.ceil(fileSize / chunkSize);
 
   const stream = fs.createReadStream(filePath, { highWaterMark: chunkSize });
 
@@ -76,12 +79,12 @@ export async function uploadFile(
         };
       }
     } catch (error) {
-      console.error("Upload error:", error);
+      network.client.logger.error("Upload error:" + error, "error");
       await new Promise((resolve) => setTimeout(resolve, 5000));
     }
   }
 
-  throw new Error("Upload failed completely.");
+  throw network.client.logger.error("Upload failed completely.", "error");
 }
 
 export async function download(
@@ -99,7 +102,7 @@ export async function download(
     "user-agent": network.userAgent,
   };
 
-  const base_url = `https://messenger${dc_id}.iranlms.ir`;
+  const base_url = `https://${network.client.application === "Rubika" ? "messenger" : "shstorage" + dc_id}.iranlms.ir`;
 
   const fetchChunk = async (
     start_index: number,
@@ -117,12 +120,15 @@ export async function download(
         headers,
       });
 
-      if (res.status !== 200) return Buffer.alloc(0);
+      if (res.status !== 200) return await fetchChunk(start_index, last_index);
 
       const arrayBuffer = await res.arrayBuffer();
       return Buffer.from(arrayBuffer);
     } catch (err) {
-      console.error(`[fetchChunk] Failed at ${start_index}-${last_index}`, err);
+      network.client.logger.error(
+        `[fetchChunk] Failed at ${start_index}-${last_index}` + err,
+        "error",
+      );
       return Buffer.alloc(0);
     }
   };

@@ -13,6 +13,7 @@ async function sendMessage(
   text: string | null = null,
   reply_to_message_id: string | null = null,
   file_inline: Buffer | string | null = null,
+  aux_data?: { button_id: string },
   type: string = "File",
   is_spoil: boolean = false,
   thumb: boolean | string = true,
@@ -31,13 +32,15 @@ async function sendMessage(
   let fileName: string | null = null;
   let audio_data: any;
 
-  let input: Record<string, any> = {
+  let input: Record<string, unknown> = {
     object_guid,
     rnd: Math.floor(Math.random() * 1e6 + 1),
     reply_to_message_id,
   };
 
   if (text) input = { ...input, ...Markdown.toMetadata(text) };
+
+  if (aux_data) input["aux_data"] = aux_data;
 
   if (file_inline) {
     if (typeof file_inline === "string") {
@@ -48,7 +51,7 @@ async function sendMessage(
       }
       file_inline = await fs.promises.readFile(fileName);
     } else if (!Buffer.isBuffer(file_inline)) {
-      throw this.logger.error(
+      return this.logger.error(
         "File argument must be a file path or bytes",
         "warn",
       );
@@ -70,8 +73,9 @@ async function sendMessage(
       thumb = false;
       if (audio_info) {
         if (!optionalMusicMetadata) {
-          throw new Error(
+          return this.logger.error(
             "music-metadata module is not installed. Some features may be disabled.",
+            "error",
           );
         }
 
@@ -121,13 +125,11 @@ async function sendMessage(
   const result = await this.builder("sendMessage", input);
 
   if (auto_delete) {
-    const res = setTimeout(async () => {
+    setTimeout(async () => {
       await this.deleteMessages(
         result.message_update.object_guid,
         result.message_update.message_id,
       );
-
-      clearTimeout(res);
     }, auto_delete * 1000);
   }
 

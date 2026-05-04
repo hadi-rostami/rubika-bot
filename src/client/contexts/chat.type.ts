@@ -2,14 +2,14 @@ import { inspect } from "util";
 import { Client } from "../../..";
 import { DecoratorsTypes } from "../types/index.type";
 
-class Chat implements DecoratorsTypes.ChatUpdates {
+class Chat<T> implements DecoratorsTypes.ChatUpdates {
   object_guid: string;
   action: string;
   chat: DecoratorsTypes.Chat;
   updated_parameters: string[];
   timestamp: string;
   type: string;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
 
   declare client: Client;
 

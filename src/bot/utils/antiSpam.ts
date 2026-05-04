@@ -14,7 +14,7 @@ export default class AntiSpam {
     this.spam_limit = options.spam_time || 4;
   }
 
-  checkSpam = async (ctx: Update) => {
+  checkSpam = async (ctx: Update<unknown>) => {
     if (!ctx.new_message) return;
 
     const now = Date.now();

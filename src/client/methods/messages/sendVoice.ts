@@ -6,18 +6,19 @@ async function sendVoice(
   voice: string | Buffer<ArrayBufferLike>,
   caption?: string,
   reply_to_message_id?: string,
-  auto_delete?: number
+  auto_delete?: number,
 ) {
   return await this.sendMessage(
     object_guid,
     caption,
     reply_to_message_id,
     voice,
+    undefined,
     "Voice",
     undefined,
     undefined,
     undefined,
-    auto_delete
+    auto_delete,
   );
 }
 

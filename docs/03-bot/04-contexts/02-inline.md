@@ -21,9 +21,9 @@ last_update:
 | ------------ | ---------------------------------------- | ---------------------------------------------------------- |
 | `sender_id`  | `string`                                 | آیدی کاربری که پیام را ارسال کرده                          |
 | `text`       | `string`                                 | متن پیام                                                   |
-| `file`       | [File?](/docs/robot/models#file)         | فایل ضمیمه شده (در صورت وجود)                              |
-| `location`   | [Location?](/docs/robot/models#location) | موقعیت جغرافیایی ارسال‌شده (در صورت وجود)                  |
-| `aux_data`   | [AuxData?](/docs/robot/models#auxdata)   | داده‌های اضافی (مثل اطلاعات پرداخت، دکمه فشرده‌شده و...)   |
+| `file`       | [File?](/docs/models#file)         | فایل ضمیمه شده (در صورت وجود)                              |
+| `location`   | [Location?](/docs/models#location) | موقعیت جغرافیایی ارسال‌شده (در صورت وجود)                  |
+| `aux_data`   | [AuxData?](/docs/models#auxdata)   | داده‌های اضافی (مثل اطلاعات پرداخت، دکمه فشرده‌شده و...)   |
 | `message_id` | `string`                                 | شناسه یکتا برای پیام                                       |
 | `chat_id`    | `string`                                 | شناسه چتی که پیام در آن ارسال شده                          |
 | `store`      | `Record<string, any>`                    | فضای ذخیره‌سازی موقتی برای اطلاعات سفارشی در طول هندل      |

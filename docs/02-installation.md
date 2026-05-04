@@ -5,15 +5,47 @@ sidebar_position: 2
 sidebar_label: نصب و راه‌اندازی
 
 last_update:
-  date: '2026-02-18'
-  author: 'hadi-rostami'
+  date: "2026-02-18"
+  author: "hadi-rostami"
 ---
 
 # نصب و راه‌اندازی rubika
 
 برای شروع استفاده از `rubika` ابتدا باید Bun.js روی سیستم شما نصب باشد.
 
-## مراحل نصب
+## نصب bunjs روی سیستم
+
+1. نصب روی ویندوز
+
+```bash
+irm bun.sh/install.ps1 | iex
+```
+
+2. نصب روی لینوکس/macOS
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+3. استفاده از npm
+
+```bash
+npm install -g bun
+```
+
+4. استفاده از python
+
+```bash
+pip install bun
+```
+
+- برای برسی نصب bunjs دستور زیر را در ترمینال بزنید
+
+```bash
+bun --version
+```
+
+## مراحل نصب rubika
 
 1. ایجاد یک پوشه‌ی جدید برای پروژه‌ی ربات:
 
@@ -44,7 +76,7 @@ import Bot from "rubika";
 const bot = new Bot("YOUR_TOKEN");
 
 bot.on("update", async (message) => {
-  await message.reply('hello from rubika!');
+  await message.reply("hello from rubika!");
 });
 
 bot.run();

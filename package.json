@@ -1,6 +1,6 @@
 {
   "name": "rubika",
-  "version": "1.2.0",
+  "version": "1.2.4",
   "author": "Hadi Rostami",
   "main": "src/index.ts",
   "description": "A modern library for Rubika built with Bun.",
@@ -14,13 +14,21 @@
     "bun",
     "rubika"
   ],
+  "scripts": {
+    "lint": "eslint ."
+  },
   "license": "MIT",
   "type": "module",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/bun": "^1.3.9",
     "@types/linkify-it": "^5.0.0",
     "@types/node-rsa": "^1.1.4",
     "@types/user-agents": "^1.0.4",
+    "eslint": "^10.1.0",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "typescript-eslint": "^8.57.2"
   },
   "dependencies": {
     "linkify-it": "^5.0.0",

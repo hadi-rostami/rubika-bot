@@ -7,18 +7,19 @@ async function sendPhoto(
   text?: string,
   reply_id?: string,
   is_spoil?: boolean,
-  auto_delete?: number
+  auto_delete?: number,
 ) {
   return this.sendMessage(
     object_guid,
     text,
     reply_id,
     photo,
+    undefined,
     "Image",
     is_spoil,
     true,
     false,
-    auto_delete
+    auto_delete,
   );
 }
 

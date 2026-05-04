@@ -9,14 +9,14 @@ async function userIsAdmin(
 	let nextStartID = null;
 
 	while (hasContinue) {
-		let result: any = object_guid.startsWith('g0')
+		const result = object_guid.startsWith('g0')
 			? await this.getGroupAdminMembers(object_guid, nextStartID)
 			: await this.getChannelAdminMembers(object_guid, nextStartID);
 
 		hasContinue = result.has_continue;
 		nextStartID = result.next_start_id;
 
-		for (let user of result.in_chat_members)
+		for (const user of result.in_chat_members)
 			if (user_guid === user.member_guid) return true;
 	}
 

@@ -18,11 +18,11 @@ const getOriginalType = (message: any) => {
   }
 };
 
-class Message implements DecoratorsTypes.MessageUpdate {
+class Message<T> implements DecoratorsTypes.MessageUpdate {
   message_id: string;
   action: string;
   message: DecoratorsTypes.Message;
-  updated_parameters: any[];
+  updated_parameters: string[];
   timestamp: string;
   prev_message_id: string;
   object_guid: string;
@@ -30,7 +30,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
   state: string;
   client_guid: string;
   is_scheduled: boolean;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
 
   declare client: Client;
   declare originalType: string;
@@ -59,6 +59,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
     object_guid?: string,
     message_id?: string,
     auto_delete?: number,
+    aux_data?: { button_id: string },
     file_inline?: string | Buffer<ArrayBufferLike>,
     type?: string,
     is_spoil?: boolean,
@@ -70,6 +71,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       text,
       message_id || this.message_id,
       file_inline,
+      aux_data,
       type,
       is_spoil,
       thumb,
@@ -107,6 +109,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       object_guid,
       reply_to_message_id,
       auto_delete,
+      undefined,
       image,
       "Image",
       is_spoil,
@@ -128,6 +131,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       object_guid,
       reply_to_message_id,
       auto_delete,
+      undefined,
       video,
       "Video",
       is_spoil,
@@ -149,6 +153,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       object_guid,
       reply_to_message_id,
       auto_delete,
+      undefined,
       gif,
       "Gif",
       is_spoil,
@@ -170,6 +175,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       object_guid,
       reply_to_message_id,
       auto_delete,
+      undefined,
       music,
       "Music",
       is_spoil,
@@ -191,6 +197,7 @@ class Message implements DecoratorsTypes.MessageUpdate {
       object_guid,
       reply_to_message_id,
       auto_delete,
+      undefined,
       voice,
       "Voice",
       is_spoil,

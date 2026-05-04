@@ -106,7 +106,7 @@ Utils.Underline("Title"); // خروجی: --Title--
 #### مثال:
 
 ```ts
-Utils.Quote("Reply"); // خروجی: >Reply>
+Utils.Quote("Reply"); // خروجی: ^^Reply^^
 ```
 
 ---

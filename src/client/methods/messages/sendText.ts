@@ -5,18 +5,20 @@ async function sendText(
   object_guid: string,
   text: string,
   reply_id?: string,
-  auto_delete?: number
+  aux_data?: { button_id: string },
+  auto_delete?: number,
 ) {
   return await this.sendMessage(
     object_guid,
     text,
     reply_id,
     null,
+    aux_data,
     undefined,
     false,
     false,
     false,
-    auto_delete
+    auto_delete,
   );
 }
 

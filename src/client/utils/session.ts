@@ -10,7 +10,7 @@ class SessionManager {
 
     this.filename = isStringInput
       ? `${input}.json`
-      : `${Date.now()}.rubjs.json`;
+      : `${Date.now()}.rubika.json`;
 
     if (!isStringInput) {
       this.sessionData = input;

@@ -1,12 +1,36 @@
-export default class Network {
-  private MAX_ATTEMPTS = 3;
+import { Logger } from "../utils";
+import Bot from "./bot";
 
-  constructor(public base_url: string, public timeout: number = 10000) {}
+export default class Network {
+  constructor(
+    public base_url: string,
+    public logger: Logger<Bot>,
+    public retryCount: number = 3,
+    public timeout: number = 10000,
+  ) {}
+
+  stringifyBigInts = (obj: object): object => {
+    if (Array.isArray(obj)) {
+      return obj.map(this.stringifyBigInts);
+    }
+
+    if (obj !== null && typeof obj === "object") {
+      const result: Record<string, unknown> = {};
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          result[key] = this.stringifyBigInts(obj[key as keyof typeof obj]);
+        }
+      }
+      return result;
+    }
+
+    return obj;
+  };
 
   async request(method: string, data: object) {
-    const url = `${this.base_url}/${method}`;
+    const url = this.base_url + "/" + method;
 
-    for (let attempt = 1; attempt <= this.MAX_ATTEMPTS; attempt++) {
+    for (let attempt = 1; attempt <= this.retryCount; attempt++) {
       try {
         const res = await fetch(url, {
           method: "POST",
@@ -15,29 +39,33 @@ export default class Network {
           },
           body: JSON.stringify(data),
         });
+
         if (res.status === 200) {
           const responseData = await res.json();
 
-          return JSON.parse(
-            JSON.stringify(responseData, (_, v) =>
-              typeof v === "bigint" ? v.toString() : v
-            )
-          );
+          return responseData;
         } else {
-          console.warn(
-            `[request] Attempt ${attempt}: Unexpected status ${res.status}`
+          this.logger.error(
+            `[request] attempt ${attempt}: ${res.statusText} ${res.status}`,
+            "error",
           );
         }
-      } catch (error: unknown) {
-        console.error(`[request] Attempt ${attempt} failed:`, error);
+      } catch {
+        this.logger.error(
+          `[request] attempt ${attempt} message: you dont have access to the internet.`,
+          "error",
+        );
       }
 
       await this.delay(1000);
     }
 
-    throw new Error(
-      `[request] Failed after ${this.MAX_ATTEMPTS} attempts: ${method}`
+    this.logger.error(
+      `[request] failed after ${this.retryCount} attempts { method: ${method} }`,
+      "error",
     );
+
+    return false;
   }
 
   delay(ms: number) {

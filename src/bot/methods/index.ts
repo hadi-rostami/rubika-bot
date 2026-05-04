@@ -39,7 +39,7 @@ export default class Methods {
   async requestSendFile(
     this: Bot,
     ...args: Parameters<typeof Files.requestSendFile>
-  ): Promise<{ upload_url: string }> {
+  ): Promise<Types.REQUEST_SEND_FILE> {
     return Files.requestSendFile.apply(this, args);
   }
 
@@ -209,35 +209,35 @@ export default class Methods {
   async start(
     this: Bot,
     ...args: Parameters<typeof Utilities.start>
-  ): Promise<any> {
+  ): Promise<unknown> {
     return Utilities.start.apply(this, args);
   }
 
   async run(
     this: Bot,
     ...args: Parameters<typeof Utilities.run>
-  ): Promise<any> {
+  ): Promise<unknown> {
     return Utilities.run.apply(this, args);
   }
 
   async getUpdates(
     this: Bot,
     ...args: Parameters<typeof Utilities.getUpdates>
-  ): Promise<any> {
+  ): Promise<Types.GetUpdates> {
     return Utilities.getUpdates.apply(this, args);
   }
 
-  async __setupWebhook(
+  async setupWebhook(
     this: Bot,
     ...args: Parameters<typeof Utilities.setupWebhook>
-  ): Promise<any> {
+  ): Promise<unknown> {
     return Utilities.setupWebhook.apply(this, args);
   }
 
-  async __polling(
+  async polling(
     this: Bot,
     ...args: Parameters<typeof Utilities.polling>
-  ): Promise<any> {
+  ): Promise<unknown> {
     return Utilities.polling.apply(this, args);
   }
 
@@ -245,14 +245,14 @@ export default class Methods {
   async setCommands(
     this: Bot,
     ...args: Parameters<typeof Settings.setCommands>
-  ): Promise<any> {
+  ): Promise<unknown> {
     return Settings.setCommands.apply(this, args);
   }
 
   async updateBotEndpoints(
     this: Bot,
     ...args: Parameters<typeof Settings.updateBotEndpoints>
-  ): Promise<any> {
+  ): Promise<Types.UpdateBotEndpoints> {
     return Settings.updateBotEndpoints.apply(this, args);
   }
 }

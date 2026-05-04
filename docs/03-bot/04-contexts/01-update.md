@@ -17,12 +17,12 @@ last_update:
 
 | ویژگی                 | نوع                                                 | توضیحات                                                        |
 | --------------------- | --------------------------------------------------- | -------------------------------------------------------------- |
-| `type`                | [UpdateTypeEnum](/docs/robot/models#updatetypeenum) | نوع رویداد دریافتی (مثلاً `NewMessage`, `DeletedMessage`)      |
+| `type`                | [UpdateTypeEnum](/docs/models#updatetypeenum) | نوع رویداد دریافتی (مثلاً `NewMessage`, `DeletedMessage`)      |
 | `chat_id`             | `string`                                            | شناسه یکتای چت، گروه یا کانال                                  |
-| `new_message?`        | [Message](/docs/robot/models#message)               | آبجکت پیام جدید (در صورت وجود)                                 |
-| `updated_message?`    | [Message](/docs/robot/models#message)               | آبجکت اپدیت پیام (در صورت وجود)                                |
+| `new_message?`        | [Message](/docs/models#message)               | آبجکت پیام جدید (در صورت وجود)                                 |
+| `updated_message?`    | [Message](/docs/models#message)               | آبجکت اپدیت پیام (در صورت وجود)                                |
 | `removed_message_id?` | `string`                                            | شناسه پیام حذف شده                                             |
-| `updated_payment?`    | [PaymentStatus](/docs/robot/models#paymentstatus)   | وضعیت پرداخت (برای رویدادهای مالی)                             |
+| `updated_payment?`    | [PaymentStatus](/docs/models#paymentstatus)   | وضعیت پرداخت (برای رویدادهای مالی)                             |
 | `store`               | `Record<string, any>`                               | حافظه موقت برای ذخیره داده‌های دلخواه در طول چرخه حیات درخواست |
 | `bot`                 | `Bot`                                               | دسترسی مستقیم به نمونه ربات برای فراخوانی متدهای سطح پایین     |
 

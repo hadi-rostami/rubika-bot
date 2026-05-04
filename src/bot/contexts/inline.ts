@@ -4,13 +4,14 @@ import {
   AuxData,
   File,
   InlineKeypad,
+  InlineMessage,
   Keypad,
   Location,
 } from "../types/interfaces";
 import { ChatKeypadTypeEnum } from "../types/enums";
 import { FileSource } from "../types/methods";
 
-class Inline {
+class Inline<T> {
   sender_id: string;
   text: string;
   file?: File;
@@ -18,12 +19,12 @@ class Inline {
   aux_data?: AuxData;
   message_id: string;
   chat_id: string;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
 
   declare bot: Bot;
 
   constructor(
-    private ctx: any,
+    private ctx: InlineMessage,
     bot: Bot,
   ) {
     this.sender_id = ctx.sender_id;
@@ -41,7 +42,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendMessage(
@@ -62,7 +63,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendImage(
@@ -84,7 +85,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendVideo(
@@ -106,7 +107,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendGif(
@@ -127,7 +128,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendSticker(
@@ -148,7 +149,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendMusic(
@@ -170,7 +171,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendVoice(
@@ -192,7 +193,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendFile(
@@ -214,7 +215,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendLocation(
@@ -237,7 +238,7 @@ class Inline {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     return await this.bot.sendContact(
@@ -257,7 +258,7 @@ class Inline {
   replyPoll = async (
     question: string,
     options: string[],
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
   ) => {
     return await this.bot.sendPoll(
       this.chat_id,

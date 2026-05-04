@@ -11,7 +11,7 @@ export default class Filters {
 
   static USERNAME_PATTERN = /@([a-zA-Z0-9_]{3,32})/;
 
-  static findKey(message: any, key: string): any {
+  static findKey(message: Record<string, any>, key: string){
     if (!message || typeof message !== "object") {
       return undefined;
     }
@@ -42,11 +42,11 @@ export default class Filters {
     return undefined;
   }
 
-  static isText(message: Update): boolean {
+  static isText(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "text");
   }
 
-  static isPersian(message: Update): boolean {
+  static isPersian(message: Update<unknown>): boolean {
     const text = Filters.findKey(message, "text");
     if (!text) return false;
 
@@ -66,115 +66,117 @@ export default class Filters {
     return false;
   }
 
-  static isLocation(message: Update): boolean {
+  static isLocation(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "location");
   }
 
-  static isTag(message: Update): boolean {
+  static isTag(message: Update<unknown>): boolean {
     const text = Filters.findKey(message, "text");
     return text ? text.includes("#") : false;
   }
 
-  static isSpam(message: Update): boolean {
+  static isSpam(message: Update<unknown>): boolean {
     const text = Filters.findKey(message, "text");
     return text ? text.length > 1000 : false;
   }
 
-  static isSticker(message: Update): boolean {
+  static isSticker(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "sticker");
   }
 
-  static isLink(message: Update): boolean {
+  static isLink(message: Update<unknown>): boolean {
     const text = Filters.findKey(message, "text");
     return text ? Filters.linkify.test(text) : false;
   }
 
-  static isUsername(message: Update): boolean {
+  static isUsername(message: Update<unknown>): boolean {
     const text = Filters.findKey(message, "text");
     return text ? Filters.USERNAME_PATTERN.test(text) : false;
   }
 
-  static isForward(message: Update): boolean {
+  static isForward(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "forwarded_from");
   }
 
-  static isReply(message: Update): boolean {
+  static isReply(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "reply_to_message_id");
   }
 
-  static isContact(message: Update): boolean {
+  static isContact(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "contact_message");
   }
 
-  static isPoll(message: Update): boolean {
+  static isPoll(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "poll");
   }
 
-  static isLiveLocation(message: Update): boolean {
+  static isLiveLocation(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "live_location");
   }
 
-  static isFile(message: Update): boolean {
+  static isFile(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "file");
   }
 
-  static isMention(message: Update): boolean {
+  static isMention(message: Update<unknown>): boolean {
     return !!Filters.findKey(
       Filters.findKey(message, "meta_data_parts") || {},
       "link",
     );
   }
 
-  static isMarkdown(message: Update): boolean {
+  static isMarkdown(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "metadata");
   }
 
-  static isDelete(message: Update): boolean {
+  static isDelete(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "removed_message_id");
   }
 
-  static isPayment(message: Update): boolean {
+  static isPayment(message: Update<unknown>): boolean {
     return !!Filters.findKey(message, "updated_payment");
   }
 
-  static isPrivate(message: Update | Inline): boolean {
+  static isPrivate(message: Update<unknown> | Inline<unknown>): boolean {
     return message.chat_id.startsWith("b0");
   }
 
-  static isGroup(message: Update | Inline): boolean {
+  static isGroup(message: Update<unknown> | Inline<unknown>): boolean {
     return message.chat_id.startsWith("g0");
   }
 
-  static isChannel(message: Update | Inline): boolean {
+  static isChannel(message: Update<unknown> | Inline<unknown>): boolean {
     return message.chat_id.startsWith("c0");
   }
 
-  static isNewMessage(message: Update): boolean {
+  static isNewMessage(message: Update<unknown>): boolean {
     return message.type === "NewMessage";
   }
 
-  static isUpdatedMessage(message: Update): boolean {
+  static isUpdatedMessage(message: Update<unknown>): boolean {
     return message.type === "UpdatedMessage";
   }
 
-  static isRemovedMessage(message: Update): boolean {
+  static isRemovedMessage(message: Update<unknown>): boolean {
     return message.type === "RemovedMessage";
   }
 
-  static isStartedBot(message: Update): boolean {
+  static isStartedBot(message: Update<unknown>): boolean {
     return message.type === "StartedBot";
   }
 
-  static isStoppedBot(message: Update): boolean {
+  static isStoppedBot(message: Update<unknown>): boolean {
     return message.type === "StoppedBot";
   }
 
-  static isUpdatedPayment(message: Update): boolean {
+  static isUpdatedPayment(message: Update<unknown>): boolean {
     return message.type === "UpdatedPayment";
   }
 
-  static kypadID(button_id: string): (message: Update | Inline) => boolean {
-    return (message: Update | Inline) => {
+  static kypadID(
+    button_id: string,
+  ): (message: Update<unknown> | Inline<unknown>) => boolean {
+    return (message: Update<unknown> | Inline<unknown>) => {
       const res = Filters.findKey(message, "button_id");
       return res === button_id;
     };

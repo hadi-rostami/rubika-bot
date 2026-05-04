@@ -1,3 +1,4 @@
+import { Logger } from "../../../utils";
 import Client from "../../client";
 
 type SystemVersions = { [key: string]: string };
@@ -25,6 +26,7 @@ interface BrowserInfo {
 }
 
 async function getBrowser(
+  logger: Logger<Client>,
   userAgent: string,
   langCode: string,
   appVersion: string,
@@ -32,13 +34,12 @@ async function getBrowser(
   const deviceModelMatch = userAgent
     .toLowerCase()
     .match(/(opera|chrome|safari|firefox|msie|trident)\/(\d+)/);
-  let deviceModel = "Unknown";
 
   if (!deviceModelMatch) {
-    throw new Error(`Cannot parse user-agent (${userAgent})`);
-  } else {
-    deviceModel = `${deviceModelMatch[1]} ${deviceModelMatch[2]}`;
+    throw logger.error(`Cannot parse user-agent (${userAgent})`, "error");
   }
+  
+  const deviceModel = `${deviceModelMatch[1]} ${deviceModelMatch[2]}`;
 
   let systemVersion = "Unknown";
   for (const [key, value] of Object.entries(systemVersions)) {
@@ -65,10 +66,11 @@ async function registerDevice(this: Client): Promise<void> {
   const result = await this.builder(
     "registerDevice",
     await getBrowser(
+      this.logger,
       this.network.userAgent,
       this.network.defaultPlatform.lang_code,
-      this.network.defaultPlatform.app_version
-    )
+      this.network.defaultPlatform.app_version,
+    ),
   );
 
   return result;

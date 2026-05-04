@@ -21,7 +21,7 @@ last_update:
 
 | فیلد | نوع | توضیح        |
 | ---- | --- | ------------ |
-| bot  | [Bot](/docs/robot/models#bot) | اطلاعات ربات |
+| bot  | [Bot](/docs/models#bot) | اطلاعات ربات |
 
 ---
 

@@ -1,8 +1,8 @@
-import { MessageUpdate, FileInline } from "./types/decorators.type";
+import { FileInline } from "./types/decorators.type";
 import { Filters as BotFilters } from "../bot";
-class Filters {
-  
+import { Contexts } from ".";
 
+class Filters {
   static findKey(message: any, key: string): any {
     if (!message || typeof message !== "object") {
       return undefined;
@@ -34,113 +34,113 @@ class Filters {
     return undefined;
   }
 
-  static guidType(message: MessageUpdate, startWith: string): boolean {
+  static guidType(message: Contexts.Message<any>, startWith: string): boolean {
     const result = Filters.findKey(message, "object_guid");
     return result?.startsWith(startWith) ?? false;
   }
 
-  static isMention(message: MessageUpdate): boolean {
+  static isMention(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(
       message.message?.metadata?.meta_data_parts,
       "link",
     );
   }
 
-  static isMarkdown(message: MessageUpdate): boolean {
+  static isMarkdown(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message.message, "metadata");
   }
 
-  static isReply(message: MessageUpdate): boolean {
+  static isReply(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "reply_to_message_id");
   }
 
-  static isEdited(message: MessageUpdate): boolean {
+  static isEdited(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "is_edited");
   }
 
-  static isLink(message: MessageUpdate): boolean {
+  static isLink(message: Contexts.Message<any>): boolean {
     const text = Filters.findKey(message, "text");
     return text ? BotFilters.linkify.test(text) : false;
   }
 
-  static isText(message: MessageUpdate): boolean {
+  static isText(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "text");
   }
 
-  static isGroup(message: MessageUpdate): boolean {
+  static isGroup(message: Contexts.Message<any>): boolean {
     return Filters.guidType(message, "g0");
   }
 
-  static isChannel(message: MessageUpdate): boolean {
+  static isChannel(message: Contexts.Message<any>): boolean {
     return Filters.guidType(message, "c0");
   }
 
-  static isPrivate(message: MessageUpdate): boolean {
+  static isPrivate(message: Contexts.Message<any>): boolean {
     return Filters.guidType(message, "u0");
   }
 
-  static isForward(message: MessageUpdate): boolean {
+  static isForward(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "forwarded_from");
   }
 
-  static fileInline(message: MessageUpdate): FileInline | undefined {
+  static fileInline(message: Contexts.Message<any>): FileInline | undefined {
     return message.message?.file_inline;
   }
 
-  static isFileInline(message: MessageUpdate): boolean {
+  static isFileInline(message: Contexts.Message<any>): boolean {
     return ["FileInline", "FileInlineCaption"].includes(message.message?.type);
   }
 
-  static isFile(message: MessageUpdate): boolean {
+  static isFile(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "File";
   }
 
-  static isPhoto(message: MessageUpdate): boolean {
+  static isPhoto(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Image";
   }
 
-  static isSticker(message: MessageUpdate): boolean {
+  static isSticker(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Sticker";
   }
 
-  static isVideo(message: MessageUpdate): boolean {
+  static isVideo(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Video";
   }
 
-  static isVoice(message: MessageUpdate): boolean {
+  static isVoice(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Voice";
   }
 
-  static isGif(message: MessageUpdate): boolean {
+  static isGif(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Gif";
   }
 
-  static isMusic(message: MessageUpdate): boolean {
+  static isMusic(message: Contexts.Message<any>): boolean {
     return Filters.fileInline(message)?.type === "Music";
   }
 
-  static isLocation(message: MessageUpdate): boolean {
+  static isLocation(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message.message, "location");
   }
 
-  static isContact(message: MessageUpdate): boolean {
+  static isContact(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message.message, "contact_message");
   }
 
-  static isPoll(message: MessageUpdate): boolean {
+  static isPoll(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "poll");
   }
 
-  static isLive(message: MessageUpdate): boolean {
+  static isLive(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "live_data");
   }
 
-  static isEvent(message: MessageUpdate): boolean {
+  static isEvent(message: Contexts.Message<any>): boolean {
     return !!Filters.findKey(message, "event_data");
   }
 
   static isLength(length: number, object_guid?: string) {
-    return (message: MessageUpdate) => {
+    return (message: Contexts.Message<any>) => {
       if (object_guid) {
         if (object_guid !== message.object_guid) return false;
       }
@@ -156,7 +156,7 @@ class Filters {
     object_guid?: string,
     length?: number,
   ) {
-    return (message: MessageUpdate) => {
+    return (message: Contexts.Message<any>) => {
       if (object_guid) {
         if (object_guid !== message.object_guid) return false;
       }
@@ -170,7 +170,7 @@ class Filters {
   }
 
   static equalCommand(text: string, object_guid?: string) {
-    return (message: MessageUpdate) => {
+    return (message: Contexts.Message<any>) => {
       if (object_guid) {
         if (object_guid !== message.object_guid) return false;
       }

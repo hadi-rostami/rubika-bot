@@ -13,7 +13,7 @@ async function updateProfile(
 	last_name: string | null = null,
 	bio: string | null = null,
 ) {
-	let input: InputType = {
+	const input: InputType = {
 		updated_parameters: [],
 	};
 

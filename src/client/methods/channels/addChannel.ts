@@ -12,7 +12,7 @@ async function addChannel(
   description?: string,
   member_guids?: string[]
 ) {
-  let input: InputType = { title };
+  const input: InputType = { title };
 
   if (description) input.description = description;
 

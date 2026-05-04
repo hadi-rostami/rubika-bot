@@ -4,7 +4,7 @@ import Client from "../../client";
 function onEditMessages(
   this: Client,
   object_guid: string,
-  callback: (message: Message) => any,
+  callback: (message: Message<unknown>) => unknown,
 ) {
   let state = Math.round(Date.now() / 1000) - 150;
   const messagesIDs = new Set<string>();

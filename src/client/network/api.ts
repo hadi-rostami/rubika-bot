@@ -86,7 +86,7 @@ export async function sendRequest(network: Network, url: string, data: any) {
 
     await network.delay(1000);
   }
-  throw network.client.logger.error(
+  return network.client.logger.error(
     `[request] Failed after ${MAX_ATTEMPTS} attempts: ${url}`,
     "warn",
   );

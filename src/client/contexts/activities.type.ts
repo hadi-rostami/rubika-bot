@@ -2,12 +2,12 @@ import { inspect } from "util";
 import { Client } from "../../..";
 import { DecoratorsTypes } from "../types/index.type";
 
-class Activities implements DecoratorsTypes.ShowActivities {
+class Activities<T> implements DecoratorsTypes.ShowActivities {
   type: string;
   object_guid: string;
   object_type: string;
   user_activity_guid: string;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
 
   declare client: Client;
 

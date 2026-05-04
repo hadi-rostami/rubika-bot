@@ -1,9 +1,15 @@
 import Network from "./network";
 import Methods from "./methods";
+import { Logger } from "../utils";
 import { SessionManager } from "./utils";
 import Message from "./contexts/message.type";
-import * as ClientTypes from "./types/client.type";
-import { Logger } from "../utils";
+import {
+  ContextMap,
+  RubPlugin,
+  Handler,
+  SessionType,
+  PlatformType,
+} from "./types/client.type";
 
 export default class Client extends Methods {
   public initialize = false;
@@ -13,12 +19,10 @@ export default class Client extends Methods {
   public auth?: string;
   public sessionDb: SessionManager;
   public network: Network;
-  public plugins: ClientTypes.RubPlugin[] = [];
+  public plugins: RubPlugin[] = [];
   public userGuid?: string;
   public handlers: {
-    [K in keyof ClientTypes.ContextMap]: ClientTypes.Handler<
-      ClientTypes.ContextMap[K]
-    >[];
+    [K in keyof ContextMap<unknown>]: Handler<ContextMap<unknown>[K]>[];
   } = {
     error: [],
     chat: [],
@@ -30,9 +34,9 @@ export default class Client extends Methods {
   public logger = new Logger<Client>(this.handlers.error, this);
 
   constructor(
-    private session: ClientTypes.SessionType,
+    private session: SessionType,
     public application: "Shad" | "Rubika" = "Rubika",
-    public platform: ClientTypes.PlatformType = "Web",
+    public platform: PlatformType = "Web",
     public timeout: number = 5000,
   ) {
     super();
@@ -42,25 +46,23 @@ export default class Client extends Methods {
     this.start();
   }
 
-  on<T extends keyof typeof this.handlers>(
-    type: T,
-    handler: (ctx: ClientTypes.ContextMap[T]) => Promise<void>,
+  on<T, K extends keyof typeof this.handlers>(
+    type: K,
+    handler: (ctx: ContextMap<T>[K]) => Promise<void>,
   ): void;
 
-  on<T extends keyof typeof this.handlers>(
-    type: T,
-    filters: Array<
-      (ctx: ClientTypes.ContextMap[T]) => boolean | Promise<boolean>
-    >,
-    handler: (ctx: ClientTypes.ContextMap[T]) => Promise<void>,
+  on<T, K extends keyof typeof this.handlers>(
+    type: K,
+    filters: Array<(ctx: ContextMap<T>[K]) => boolean | Promise<boolean>>,
+    handler: (ctx: ContextMap<T>[K]) => Promise<void>,
   ): void;
 
-  on<T extends keyof typeof this.handlers>(
-    type: T,
+  on<T, K extends keyof typeof this.handlers>(
+    type: K,
     filtersOrHandler:
-      | Array<(ctx: ClientTypes.ContextMap[T]) => boolean | Promise<boolean>>
-      | ((ctx: ClientTypes.ContextMap[T]) => Promise<void>),
-    maybeHandler?: (ctx: ClientTypes.ContextMap[T]) => Promise<void>,
+      | Array<(ctx: ContextMap<T>[K]) => boolean | Promise<boolean>>
+      | ((ctx: ContextMap<T>[K]) => Promise<void>),
+    maybeHandler?: (ctx: ContextMap<T>[K]) => Promise<void>,
   ) {
     if (typeof filtersOrHandler === "function") {
       this.handlers[type].push({
@@ -73,27 +75,27 @@ export default class Client extends Methods {
         handler: maybeHandler,
       });
     } else {
-      throw new Error("Invalid arguments for on()");
+      new Error("Invalid arguments for on()");
     }
   }
 
-  command(
+  command<T>(
     prefix: string | RegExp,
-    handler: (ctx: Message) => Promise<void>,
+    handler: (ctx: Message<T>) => Promise<void>,
   ): void;
 
-  command(
+  command<T>(
     prefix: string | RegExp,
-    filters: Array<(ctx: Message) => boolean | Promise<boolean>>,
-    handler: (ctx: Message) => Promise<void>,
+    filters: Array<(ctx: Message<T>) => boolean | Promise<boolean>>,
+    handler: (ctx: Message<T>) => Promise<void>,
   ): void;
 
-  command(
+  command<T>(
     prefix: string | RegExp,
     filtersOrHandler:
-      | Array<(ctx: Message) => boolean | Promise<boolean>>
-      | ((ctx: Message) => Promise<void>),
-    maybeHandler?: (ctx: Message) => Promise<void>,
+      | Array<(ctx: Message<T>) => boolean | Promise<boolean>>
+      | ((ctx: Message<T>) => Promise<void>),
+    maybeHandler?: (ctx: Message<T>) => Promise<void>,
   ) {
     if (typeof filtersOrHandler === "function") {
       this.handlers["message"].push({
@@ -108,7 +110,7 @@ export default class Client extends Methods {
         prefix,
       });
     } else {
-      throw new Error("Invalid arguments for command()");
+      new Error("Invalid arguments for command()");
     }
   }
 }

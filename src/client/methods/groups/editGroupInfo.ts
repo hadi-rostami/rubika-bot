@@ -2,6 +2,18 @@ import Client from "../../client";
 
 type ChatHistoryOption = "Hidden" | "Visible";
 
+type InputType = {
+  group_guid: string;
+  title?: string;
+  description?: string;
+  slow_mode?: string;
+  event_messages?: boolean;
+  is_restricted_content?: boolean;
+  chat_reaction_setting?: { [key: string]: string | number } | null | undefined;
+  chat_history_for_new_members?: ChatHistoryOption;
+  updated_parameters: string[];
+};
+
 async function editGroupInfo(
   this: Client,
   group_guid: string,
@@ -14,7 +26,7 @@ async function editGroupInfo(
   chat_history_for_new_members?: ChatHistoryOption,
 ) {
   const updated_parameters: string[] = [];
-  const input_data: Record<string, any> = { group_guid };
+  const input_data: InputType = { group_guid, updated_parameters: [] };
 
   if (title !== undefined) {
     input_data.title = title;

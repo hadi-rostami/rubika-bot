@@ -26,22 +26,22 @@ export interface RubPlugin {
   run: PluginFunction;
 }
 
-export interface ContextMap {
-  chat: Chat;
-  message: Message;
-  activities: Activities;
-  notifications: Notifications;
+export interface ContextMap<T> {
+  chat: Chat<T>;
+  message: Message<T>;
+  activities: Activities<T>;
+  notifications: Notifications<T>;
   error: {
     message: string;
     client: Client;
   };
 }
 
-export interface ContextMapCon {
-  chat: Chat;
-  message: Message;
-  activities: Activities;
-  notifications: Notifications;
+export interface ContextMapCon<T> {
+  chat: Chat<T>;
+  message: Message<T>;
+  activities: Activities<T>;
+  notifications: Notifications<T>;
 }
 
 export type Handler<T> = {

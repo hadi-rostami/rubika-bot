@@ -17,8 +17,8 @@ async function run(
   while (!this.initialize) {
     await this.network.delay(2000);
   }
-  if (url) await this.__setupWebhook(url, host, port, updates);
-  else await this.__polling();
+  if (url) await this.setupWebhook(url, host, port, updates);
+  else await this.polling();
 }
 
 export default run;

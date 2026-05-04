@@ -12,9 +12,9 @@ async function sendSticker(
   disable_notification = false,
   reply_to_message_id?: string,
   chat_keypad_type?: ChatKeypadTypeEnum,
-  auto_delete: number | boolean = false,
+  auto_delete: number | false = false,
 ) {
-  let data: SendType = {
+  const data: SendType = {
     chat_id,
     sticker_id,
     disable_notification,
@@ -34,8 +34,12 @@ async function sendSticker(
   }
 
   const res = await this.builder("sendSticker", data);
-  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
-  
+
+  if (auto_delete !== false)
+    setTimeout(async () => {
+      await this.deleteMessage(chat_id, res.message_id);
+    }, auto_delete);
+
   return res;
 }
 

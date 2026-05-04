@@ -18,7 +18,7 @@ last_update:
 | نام    | نوع                                                                  | توضیح      |
 | ------ | -------------------------------------------------------------------- | ---------- |
 | `url`  | `string`                                                             | آدرس وبهوک |
-| `type` | [UpdateEndpointTypeEnum](/docs/robot/models/#updateendpointtypeenum) | نوع آدرس   |
+| `type` | [UpdateEndpointTypeEnum](/docs/models/#updateendpointtypeenum) | نوع آدرس   |
 
 ## خروجی
 

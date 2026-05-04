@@ -10,7 +10,7 @@ interface InputType {
   channel_type?: string;
   sign_messages?: boolean;
   is_restricted_content?: boolean;
-  chat_reaction_setting?: {};
+  chat_reaction_setting?: object;
   chat_history_for_new_members?: ChatHistory;
 }
 
@@ -22,10 +22,10 @@ async function editChannelInfo(
   channel_type?: string,
   sign_messages?: boolean,
   is_restricted_content?: boolean,
-  chat_reaction_setting?: {},
+  chat_reaction_setting?: object,
   chat_history_for_new_members?: ChatHistory,
 ) {
-  let input: InputType = { channel_guid, updated_parameters: [] };
+  const input: InputType = { channel_guid, updated_parameters: [] };
 
   if (title) {
     input.title = title;

@@ -183,7 +183,7 @@ last_update:
 | فیلد       | نوع                                             | توضیح        |
 | ---------- | ----------------------------------------------- | ------------ |
 | chat_id    | `string`                                        | شناسه چت     |
-| chat_type  | [ChatTypeEnum](/docs/robot/models#chattypeenum) | نوع چت       |
+| chat_type  | [ChatTypeEnum](/docs/models#chattypeenum) | نوع چت       |
 | user_id    | `string`                                        | شناسه کاربر  |
 | first_name | `string`                                        | نام کوچک     |
 | last_name  | `string`                                        | نام خانوادگی |
@@ -202,7 +202,7 @@ last_update:
 
 | فیلد           | نوع                                                       | توضیح            |
 | -------------- | --------------------------------------------------------- | ---------------- |
-| type_from      | [ForwardedFromEnum](/docs/robot/models#forwardedfromenum) | نوع فرستنده اصلی |
+| type_from      | [ForwardedFromEnum](/docs/models#forwardedfromenum) | نوع فرستنده اصلی |
 | message_id     | `string`                                                  | شناسه پیام اصلی  |
 | from_chat_id   | `string`                                                  | شناسه چت فرستنده |
 | from_sender_id | `string`                                                  | شناسه فرستنده    |
@@ -212,7 +212,7 @@ last_update:
 | فیلد       | نوع                                                       | توضیح        |
 | ---------- | --------------------------------------------------------- | ------------ |
 | payment_id | `string`                                                  | شناسه پرداخت |
-| status     | [PaymentStatusEnum](/docs/robot/models#paymentstatusenum) | وضعیت پرداخت |
+| status     | [PaymentStatusEnum](/docs/models#paymentstatusenum) | وضعیت پرداخت |
 
 ### MessageTextUpdate
 
@@ -227,7 +227,7 @@ last_update:
 | ------------- | ------------------------------- | ----------------- |
 | bot_id        | `string`                        | شناسه ربات        |
 | bot_title     | `string`                        | عنوان ربات        |
-| avatar        | [File](/docs/robot/models#file) | آواتار ربات       |
+| avatar        | [File](/docs/models#file) | آواتار ربات       |
 | description   | `string`                        | توضیحات ربات      |
 | username      | `string`                        | نام کاربری ربات   |
 | start_message | `string`                        | پیام شروع ربات    |
@@ -245,7 +245,7 @@ last_update:
 | فیلد            | نوع                             | توضیح        |
 | --------------- | ------------------------------- | ------------ |
 | sticker_id      | `string`                        | شناسه استیکر |
-| file            | [File](/docs/robot/models#file) | فایل استیکر  |
+| file            | [File](/docs/models#file) | فایل استیکر  |
 | emoji_character | `string`                        | ایموجی مرتبط |
 
 ### ContactMessage
@@ -260,7 +260,7 @@ last_update:
 
 | فیلد                 | نوع                                                 | توضیح                  |
 | -------------------- | --------------------------------------------------- | ---------------------- |
-| state                | [PollStatusEnum](/docs/robot/models#pollstatusenum) | وضعیت نظرسنجی          |
+| state                | [PollStatusEnum](/docs/models#pollstatusenum) | وضعیت نظرسنجی          |
 | selection_index      | `number`                                            | ایندکس انتخاب شده      |
 | percent_vote_options | `number[]`                                          | درصد آرا برای گزینه‌ها |
 | total_vote           | `number`                                            | مجموع آرا              |
@@ -272,7 +272,7 @@ last_update:
 | ----------- | ------------------------------------------- | ----------------- |
 | question    | `string`                                    | سوال نظرسنجی      |
 | options     | `string[]`                                  | گزینه‌های نظرسنجی |
-| poll_status | [PollStatus](/docs/robot/models#pollstatus) | وضعیت نظرسنجی     |
+| poll_status | [PollStatus](/docs/models#pollstatus) | وضعیت نظرسنجی     |
 
 ### Location
 
@@ -287,9 +287,9 @@ last_update:
 | ---------------- | ------------------------------------------------------------------- | ---------------------- |
 | start_time       | `string`                                                            | زمان شروع              |
 | live_period      | `number`                                                            | مدت زمان زنده بودن     |
-| current_location | [Location](/docs/robot/models#location)                             | موقعیت فعلی            |
+| current_location | [Location](/docs/models#location)                             | موقعیت فعلی            |
 | user_id          | `string`                                                            | شناسه کاربر            |
-| status           | [LiveLocationStatusEnum](/docs/robot/models#livelocationstatusenum) | وضعیت مکان زنده        |
+| status           | [LiveLocationStatusEnum](/docs/models#livelocationstatusenum) | وضعیت مکان زنده        |
 | last_update_time | `string`                                                            | زمان آخرین به‌روزرسانی |
 
 ### ButtonSelectionItem
@@ -298,7 +298,7 @@ last_update:
 | --------- | --------------------------------------------------------------------- | ---------- |
 | text      | `string`                                                              | متن دکمه   |
 | image_url | `string`                                                              | لینک تصویر |
-| type      | [ButtonSelectionTypeEnum](/docs/robot/models#buttonselectiontypeenum) | نوع دکمه   |
+| type      | [ButtonSelectionTypeEnum](/docs/models#buttonselectiontypeenum) | نوع دکمه   |
 
 ### ButtonSelection
 
@@ -307,7 +307,7 @@ last_update:
 | selection_id       | `string`                                                        | شناسه انتخاب    |
 | search_type        | `string`                                                        | نوع جستجو       |
 | get_type           | `string`                                                        | نوع دریافت      |
-| items              | [[]ButtonSelectionItem](/docs/robot/models#buttonselectionitem) | آیتم‌های انتخاب |
+| items              | [[]ButtonSelectionItem](/docs/models#buttonselectionitem) | آیتم‌های انتخاب |
 | is_multi_selection | `boolean`                                                       | انتخاب چندگانه  |
 | columns_count      | `string`                                                        | تعداد ستون‌ها   |
 | title              | `string`                                                        | عنوان           |
@@ -317,7 +317,7 @@ last_update:
 | فیلد           | نوع                                                                 | توضیح         |
 | -------------- | ------------------------------------------------------------------- | ------------- |
 | default_value? | `string` _(اختیاری)_                                                | مقدار پیش‌فرض |
-| type           | [ButtonCalendarTypeEnum](/docs/robot/models#buttoncalendartypeenum) | نوع تقویم     |
+| type           | [ButtonCalendarTypeEnum](/docs/models#buttoncalendartypeenum) | نوع تقویم     |
 | min_year       | `string`                                                            | حداقل سال     |
 | max_year       | `string`                                                            | حداکثر سال    |
 | title          | `string`                                                            | عنوان         |
@@ -343,8 +343,8 @@ last_update:
 
 | فیلد           | نوع                                                                           | توضیح         |
 | -------------- | ----------------------------------------------------------------------------- | ------------- |
-| type_line      | [ButtonTextboxTypeLineEnum](/docs/robot/models#buttontextboxtypelineenum)     | نوع خط        |
-| type_keypad    | [ButtonTextboxTypeKeypadEnum](/docs/robot/models#buttontextboxtypekeypadenum) | نوع کیبورد    |
+| type_line      | [ButtonTextboxTypeLineEnum](/docs/models#buttontextboxtypelineenum)     | نوع خط        |
+| type_keypad    | [ButtonTextboxTypeKeypadEnum](/docs/models#buttontextboxtypekeypadenum) | نوع کیبورد    |
 | place_holder?  | `string` _(اختیاری)_                                                          | متن راهنما    |
 | title?         | `string` _(اختیاری)_                                                          | عنوان         |
 | default_value? | `string` _(اختیاری)_                                                          | مقدار پیش‌فرض |
@@ -353,9 +353,9 @@ last_update:
 
 | فیلد                     | نوع                                                                 | توضیح                 |
 | ------------------------ | ------------------------------------------------------------------- | --------------------- |
-| default_pointer_location | [Location](/docs/robot/models#location)                             | مکان پیش‌فرض اشاره‌گر |
-| default_map_location     | [Location](/docs/robot/models#location)                             | مکان پیش‌فرض نقشه     |
-| type                     | [ButtonLocationTypeEnum](/docs/robot/models#buttonlocationtypeenum) | نوع مکان              |
+| default_pointer_location | [Location](/docs/models#location)                             | مکان پیش‌فرض اشاره‌گر |
+| default_map_location     | [Location](/docs/models#location)                             | مکان پیش‌فرض نقشه     |
+| type                     | [ButtonLocationTypeEnum](/docs/models#buttonlocationtypeenum) | نوع مکان              |
 | title?                   | `string` _(اختیاری)_                                                | عنوان                 |
 | location_image_url       | `string`                                                            | URL تصویر مکان        |
 
@@ -371,26 +371,26 @@ last_update:
 | فیلد                  | نوع                                                                     | توضیح                 |
 | --------------------- | ----------------------------------------------------------------------- | --------------------- |
 | id                    | `string`                                                                | شناسه دکمه            |
-| type                  | [ButtonTypeEnum](/docs/robot/models#buttontypeenum)                     | نوع دکمه              |
+| type                  | [ButtonTypeEnum](/docs/models#buttontypeenum)                     | نوع دکمه              |
 | button_text           | `string`                                                                | متن دکمه              |
-| button_selection?     | [ButtonSelection](/docs/robot/models#buttonselection) _(اختیاری)_       | تنظیمات انتخاب دکمه   |
-| button_calendar?      | [ButtonCalendar](/docs/robot/models#buttoncalendar) _(اختیاری)_         | تنظیمات تقویم دکمه    |
-| button_number_picker? | [ButtonNumberPicker](/docs/robot/models#buttonnumberpicker) _(اختیاری)_ | تنظیمات عددی دکمه     |
-| button_string_picker? | [ButtonStringPicker](/docs/robot/models#buttonstringpicker) _(اختیاری)_ | تنظیمات رشته‌ای دکمه  |
-| button_location?      | [ButtonLocation](/docs/robot/models#buttonlocation) _(اختیاری)_         | تنظیمات مکان دکمه     |
-| button_textbox?       | [ButtonTextbox](/docs/robot/models#buttontextbox) _(اختیاری)_           | تنظیمات جعبه متن دکمه |
+| button_selection?     | [ButtonSelection](/docs/models#buttonselection) _(اختیاری)_       | تنظیمات انتخاب دکمه   |
+| button_calendar?      | [ButtonCalendar](/docs/models#buttoncalendar) _(اختیاری)_         | تنظیمات تقویم دکمه    |
+| button_number_picker? | [ButtonNumberPicker](/docs/models#buttonnumberpicker) _(اختیاری)_ | تنظیمات عددی دکمه     |
+| button_string_picker? | [ButtonStringPicker](/docs/models#buttonstringpicker) _(اختیاری)_ | تنظیمات رشته‌ای دکمه  |
+| button_location?      | [ButtonLocation](/docs/models#buttonlocation) _(اختیاری)_         | تنظیمات مکان دکمه     |
+| button_textbox?       | [ButtonTextbox](/docs/models#buttontextbox) _(اختیاری)_           | تنظیمات جعبه متن دکمه |
 
 ### KeypadRow
 
 | فیلد    | نوع                                   | توضیح                |
 | ------- | ------------------------------------- | -------------------- |
-| buttons | [[]Button](/docs/robot/models#button) | دکمه‌های ردیف کیبورد |
+| buttons | [[]Button](/docs/models#button) | دکمه‌های ردیف کیبورد |
 
 ### Keypad
 
 | فیلد              | نوع                                         | توضیح               |
 | ----------------- | ------------------------------------------- | ------------------- |
-| rows              | [[]KeypadRow](/docs/robot/models#keypadrow) | ردیف‌های کیبورد     |
+| rows              | [[]KeypadRow](/docs/models#keypadrow) | ردیف‌های کیبورد     |
 | resize_keyboard?  | `boolean` _(اختیاری)_                       | تغییر اندازه کیبورد |
 | on_time_keyboard? | `boolean` _(اختیاری)_                       | کیبورد یک‌بار مصرف  |
 
@@ -398,14 +398,14 @@ last_update:
 
 | فیلد | نوع                                         | توضیح                   |
 | ---- | ------------------------------------------- | ----------------------- |
-| rows | [[]KeypadRow](/docs/robot/models#keypadrow) | ردیف‌های کیبورد اینلاین |
+| rows | [[]KeypadRow](/docs/models#keypadrow) | ردیف‌های کیبورد اینلاین |
 
 ### MessageKeypadUpdate
 
 | فیلد          | نوع                                 | توضیح               |
 | ------------- | ----------------------------------- | ------------------- |
 | message_id    | `string`                            | شناسه پیام          |
-| inline_keypad | [Keypad](/docs/robot/models#keypad) | کیبورد اینلاین پیام |
+| inline_keypad | [Keypad](/docs/models#keypad) | کیبورد اینلاین پیام |
 
 ### Message
 
@@ -415,29 +415,29 @@ last_update:
 | text?                | `string` _(اختیاری)_                                            | متن پیام                    |
 | time                 | `number`                                                        | زمان ارسال پیام (timestamp) |
 | is_edited            | `boolean`                                                       | آیا پیام ویرایش شده است؟    |
-| sender_type          | [MessageSenderEnum](/docs/robot/models#messagesenderenum)       | نوع ارسال‌کننده             |
+| sender_type          | [MessageSenderEnum](/docs/models#messagesenderenum)       | نوع ارسال‌کننده             |
 | sender_id            | `string`                                                        | شناسه ارسال‌کننده           |
-| aux_data?            | [AuxData](/docs/robot/models#auxdata) _(اختیاری)_               | داده‌های کمکی               |
-| file?                | [File](/docs/robot/models#file) _(اختیاری)_                     | فایل پیوست                  |
+| aux_data?            | [AuxData](/docs/models#auxdata) _(اختیاری)_               | داده‌های کمکی               |
+| file?                | [File](/docs/models#file) _(اختیاری)_                     | فایل پیوست                  |
 | reply_to_message_id? | `string` _(اختیاری)_                                            | پاسخ به پیام دیگر           |
-| forwarded_from?      | [ForwardedFrom](/docs/robot/models#forwardedfrom) _(اختیاری)_   | اطلاعات پیام فوروارد شده    |
+| forwarded_from?      | [ForwardedFrom](/docs/models#forwardedfrom) _(اختیاری)_   | اطلاعات پیام فوروارد شده    |
 | forwarded_no_link?   | `string` _(اختیاری)_                                            | فوروارد بدون لینک           |
-| location?            | [Location](/docs/robot/models#location) _(اختیاری)_             | موقعیت جغرافیایی            |
-| sticker?             | [Sticker](/docs/robot/models#sticker) _(اختیاری)_               | استیکر                      |
-| contact_message?     | [ContactMessage](/docs/robot/models#contactmessage) _(اختیاری)_ | پیام مخاطب                  |
-| poll?                | [Poll](/docs/robot/models#poll) _(اختیاری)_                     | نظرسنجی                     |
-| live_location?       | [LiveLocation](/docs/robot/models#livelocation) _(اختیاری)_     | موقعیت زنده                 |
+| location?            | [Location](/docs/models#location) _(اختیاری)_             | موقعیت جغرافیایی            |
+| sticker?             | [Sticker](/docs/models#sticker) _(اختیاری)_               | استیکر                      |
+| contact_message?     | [ContactMessage](/docs/models#contactmessage) _(اختیاری)_ | پیام مخاطب                  |
+| poll?                | [Poll](/docs/models#poll) _(اختیاری)_                     | نظرسنجی                     |
+| live_location?       | [LiveLocation](/docs/models#livelocation) _(اختیاری)_     | موقعیت زنده                 |
 
 ### Update
 
 | فیلد                | نوع                                                           | توضیح                  |
 | ------------------- | ------------------------------------------------------------- | ---------------------- |
-| type                | [UpdateTypeEnum](/docs/robot/models#updatetypeenum)           | نوع به‌روزرسانی        |
+| type                | [UpdateTypeEnum](/docs/models#updatetypeenum)           | نوع به‌روزرسانی        |
 | chat_id             | `string`                                                      | شناسه چت               |
 | removed_message_id? | `string` _(اختیاری)_                                          | شناسه پیام حذف شده     |
-| new_message?        | [Message](/docs/robot/models#message) _(اختیاری)_             | پیام جدید              |
-| updated_message?    | [Message](/docs/robot/models#message) _(اختیاری)_             | پیام به‌روزرسانی شده   |
-| updated_payment?    | [PaymentStatus](/docs/robot/models#paymentstatus) _(اختیاری)_ | پرداخت به‌روزرسانی شده |
+| new_message?        | [Message](/docs/models#message) _(اختیاری)_             | پیام جدید              |
+| updated_message?    | [Message](/docs/models#message) _(اختیاری)_             | پیام به‌روزرسانی شده   |
+| updated_payment?    | [PaymentStatus](/docs/models#paymentstatus) _(اختیاری)_ | پرداخت به‌روزرسانی شده |
 
 ### InlineMessage
 
@@ -445,9 +445,9 @@ last_update:
 | ---------- | --------------------------------------------------- | ---------------- |
 | sender_id  | `string`                                            | شناسه فرستنده    |
 | text       | `string`                                            | متن پیام         |
-| file?      | [File](/docs/robot/models#file) _(اختیاری)_         | فایل پیوست       |
-| location?  | [Location](/docs/robot/models#location) _(اختیاری)_ | موقعیت جغرافیایی |
-| aux_data?  | [AuxData](/docs/robot/models#auxdata) _(اختیاری)_   | داده‌های کمکی    |
+| file?      | [File](/docs/models#file) _(اختیاری)_         | فایل پیوست       |
+| location?  | [Location](/docs/models#location) _(اختیاری)_ | موقعیت جغرافیایی |
+| aux_data?  | [AuxData](/docs/models#auxdata) _(اختیاری)_   | داده‌های کمکی    |
 | message_id | `string`                                            | شناسه پیام       |
 | chat_id    | `string`                                            |
 

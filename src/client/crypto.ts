@@ -93,12 +93,12 @@ class Crypto {
     const keyPair = new NodeRSA({
       b: 1024,
     });
-    let publicKey = Crypto.decode_auth(
+    const publicKey = Crypto.decode_auth(
       Buffer.from(keyPair.exportKey('pkcs1-public-pem'), 'binary').toString(
         'base64',
       ),
     );
-    let privateKey = keyPair.exportKey('pkcs1-private-pem');
+    const privateKey = keyPair.exportKey('pkcs1-private-pem');
     return [publicKey, privateKey];
   }
 

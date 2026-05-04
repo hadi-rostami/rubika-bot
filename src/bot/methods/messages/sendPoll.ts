@@ -5,12 +5,15 @@ async function sendPoll(
   chat_id: string,
   question: string,
   options: string[],
-  auto_delete: number | boolean = false,
+  auto_delete: number | false = false,
 ) {
   const res = await this.builder("sendPoll", { chat_id, question, options });
 
-  if (auto_delete !== false) await this.deleteMessage(chat_id, res.message_id);
-
+  if (auto_delete !== false)
+    setTimeout(async () => {
+      await this.deleteMessage(chat_id, res.message_id);
+    }, auto_delete);
+    
   return res;
 }
 

@@ -24,7 +24,7 @@ last_update:
 | فیلد       | نوع                                               | توضیح        |
 | ---------- | ------------------------------------------------- | ------------ |
 | `chat_id`    | `string`                                          | شناسه چت     |
-| `chat_type`  | [`ChatTypeEnum`](/docs/robot/models#chattypeenum) | نوع چت       |
+| `chat_type`  | [`ChatTypeEnum`](/docs/models#chattypeenum) | نوع چت       |
 | `user_id`    | `string`                                          | شناسه کاربر  |
 | `first_name` | `string`                                          | نام کوچک     |
 | `last_name`  | `string`                                          | نام خانوادگی |

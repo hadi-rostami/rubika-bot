@@ -19,7 +19,7 @@ async function editJoinLink(
   expire_time?: number,
   usage_limit?: number
 ) {
-  let input: InputType = { object_guid, join_link, update_parameters: [] };
+  const input: InputType = { object_guid, join_link, update_parameters: [] };
 
   if (typeof title === "string") {
     input.update_parameters.push("title");

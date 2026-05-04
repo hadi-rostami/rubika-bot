@@ -19,7 +19,7 @@ last_update:
 | --------------- | ----------------------------------------------- | ----------------------------------------------------------- |
 | `chat_id`       | `string`                                        | آیدی چتی که پیام باید در آن ویرایش شود.                      |
 | `message_id`    | `string`                                        | شناسه پیام ارسال شده                                        |
-| `inline_keypad` | [InlineKeypad](/docs/robot/models#inlinekeypad) | ساختار جدید `keypad` که باید به پیام اضافه یا جایگزین شوند. |
+| `inline_keypad` | [InlineKeypad](/docs/models#inlinekeypad) | ساختار جدید `keypad` که باید به پیام اضافه یا جایگزین شوند. |
 
 ## خروجی
 

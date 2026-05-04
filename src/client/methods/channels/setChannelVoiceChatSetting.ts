@@ -13,7 +13,7 @@ async function setChannelVoiceChatSetting(
   voice_chat_id: string,
   title?: string
 ) {
-  let input: InputType = {
+  const input: InputType = {
     channel_guid,
     voice_chat_id,
     updated_parameters: [],

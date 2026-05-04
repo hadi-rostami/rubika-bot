@@ -8,18 +8,19 @@ async function sendVideo(
   reply_to_message_id?: string,
   is_spoil?: boolean,
   thumb?: string | boolean,
-  auto_delete?: number
+  auto_delete?: number,
 ) {
   return await this.sendMessage(
     object_guid,
     caption,
     reply_to_message_id,
     video,
+    undefined,
     "Video",
     is_spoil,
     thumb,
     undefined,
-    auto_delete
+    auto_delete,
   );
 }
 

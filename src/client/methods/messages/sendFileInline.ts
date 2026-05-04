@@ -25,7 +25,7 @@ async function sendFileInline(
   reply_to_message_id?: string,
   auto_delete?: number,
 ) {
-  let input: Record<string, any> = {
+  let input: Record<string, unknown> = {
     object_guid,
     rnd: Math.floor(Math.random() * 1e6 + 1),
     reply_to_message_id,

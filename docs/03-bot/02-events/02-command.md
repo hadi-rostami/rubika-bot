@@ -61,3 +61,22 @@ bot.command(/\/echo (.+)/, [Filters.isText], async (ctx) => {
 
 bot.run();
 ```
+
+### استفاده پیشرفته
+
+```js
+import Bot from "rubika";
+
+const bot = new Bot("YOUR_TOKEN");
+
+type StoreType = {
+  user: string;
+  group: string;
+};
+
+bot.command<StoreType>("/message", async (ctx) => {
+  console.log(ctx.store.user);
+});
+
+bot.run();
+```

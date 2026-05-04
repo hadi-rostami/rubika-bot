@@ -13,7 +13,7 @@ async function sendFile(
   disable_notification = false,
   reply_to_message_id?: string,
   chat_keypad_type?: ChatKeypadTypeEnum,
-  auto_delete: number | boolean = false,
+  auto_delete: number | false = false,
 ) {
   return await this._sendFile(
     chat_id,

@@ -7,20 +7,22 @@ import {
   Keypad,
   Message,
   PaymentStatus,
+  UpdateMessage,
 } from "../types/interfaces";
 
-class Update {
+class Update<T> {
   type: UpdateTypeEnum;
   chat_id: string;
+  update_time: number;
   removed_message_id?: string;
   new_message?: Message;
   updated_message?: Message;
   updated_payment?: PaymentStatus;
-  store: Record<string, any> = {};
+  store: Partial<T> = {};
   declare bot: Bot;
 
   constructor(
-    private ctx: any,
+    private ctx: UpdateMessage,
     bot: Bot,
   ) {
     this.type = ctx.type;
@@ -29,6 +31,7 @@ class Update {
     this.new_message = ctx.new_message;
     this.updated_message = ctx.updated_message;
     this.updated_payment = ctx.updated_payment;
+    this.update_time = ctx.update_time;
     this.bot = bot;
   }
 
@@ -37,7 +40,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -60,7 +63,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -84,7 +87,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -108,7 +111,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -131,7 +134,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -154,7 +157,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -178,7 +181,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -202,7 +205,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -226,7 +229,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -251,7 +254,7 @@ class Update {
     chat_keypad?: Keypad,
     inline_keypad?: InlineKeypad,
     disable_notification?: boolean,
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
     chat_keypad_type?: ChatKeypadTypeEnum | undefined,
   ) => {
     const replyId = this.ensureReply();
@@ -273,7 +276,7 @@ class Update {
   replyPoll = async (
     question: string,
     options: string[],
-    auto_delete: number | boolean = false,
+    auto_delete: number | false = false,
   ) => {
     return await this.bot.sendPoll(
       this.chat_id,
@@ -304,8 +307,6 @@ class Update {
 
     if (!user && !userId)
       throw this.bot.logger.error("No data to ban user", "warn");
-
-    //@ts-ignore
     return await this.bot.banChatMember(this.chat_id, userId || user);
   };
 
@@ -313,8 +314,6 @@ class Update {
     const user = this.ensureReply(true);
     if (!user && !userId)
       throw this.bot.logger.error("No data to unban user", "warn");
-
-    //@ts-ignore
     return await this.bot.banChatMember(this.chat_id, userId || user);
   };
 
@@ -322,12 +321,12 @@ class Update {
     const message_id = this.ensureReply();
     if (!text && !inline_keypad && !message_id)
       throw this.bot.logger.error("No data to edit message", "warn");
-    //@ts-ignore
-    if (text) await this.bot.editMessageText(this.chat_id, text, message_id);
+
     if (inline_keypad) {
-      //@ts-ignore
       await this.bot.editMessageKeypad(this.chat_id, message_id, inline_keypad);
     }
+
+    if (text) await this.bot.editMessageText(this.chat_id, text, message_id);
   };
 
   private ensureReply(isId = false) {

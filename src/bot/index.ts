@@ -3,8 +3,10 @@ import { AntiSpam } from "./utils";
 import Filters from "./filters";
 import Utils from "../utils/formater";
 import type * as Enums from "./types/enums";
-import { Update, Inline } from "./contexts/index";
+export * as Contexts from "./contexts";
+export * from "../utils";
+
 
 export default Bot;
 export { Bot, Filters, Utils, AntiSpam };
-export type { Enums, Update, Inline };
+export type { Enums };

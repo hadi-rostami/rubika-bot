@@ -18,8 +18,8 @@ last_update:
 | نام                | نوع                                                                          | توضیح                                                              |
 | ------------------ | ---------------------------------------------------------------------------- | ------------------------------------------------------------------ |
 | `chat_id`          | `string`                                                                     | آیدی چتی که پیام باید در آن ویرایش شود.                             |
-| `chat_keypad`      | [Keypad](/docs/robot/models#keypad)                                          | ساختار جدید کلیدها (کیبورد) که باید به پیام اضافه یا جایگزین شوند. |
-| `chat_keypad_type` | [ChatKeypadTypeEnum](/docs/robot/models#chatkeypadtypeenum) _(پیش‌فرض: New)_ | نوع نحوه اعمال کیبورد (New، None, Remove ).                        |
+| `chat_keypad`      | [Keypad](/docs/models#keypad)                                          | ساختار جدید کلیدها (کیبورد) که باید به پیام اضافه یا جایگزین شوند. |
+| `chat_keypad_type` | [ChatKeypadTypeEnum](/docs/models#chatkeypadtypeenum) _(پیش‌فرض: New)_ | نوع نحوه اعمال کیبورد (New، None, Remove ).                        |
 
 ## خروجی
 

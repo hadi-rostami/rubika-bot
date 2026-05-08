@@ -36,7 +36,7 @@ async function getBrowser(
     .match(/(opera|chrome|safari|firefox|msie|trident)\/(\d+)/);
 
   if (!deviceModelMatch) {
-    throw logger.error(`Cannot parse user-agent (${userAgent})`, "error");
+    throw new Error(`Cannot parse user-agent (${userAgent})`);
   }
   
   const deviceModel = `${deviceModelMatch[1]} ${deviceModelMatch[2]}`;

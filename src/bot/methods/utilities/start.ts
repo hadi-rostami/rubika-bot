@@ -11,15 +11,13 @@ async function start(this: Bot, token?: string) {
     }
   }
 
-  try {
-    const res = await this.getMe();
-    this.bot = res.bot;
-    
-  } catch (err) {
-    await this.logger.error(`[start] error in token maby:${await err}`, "warn");
-    return 
+  const res = await this.getMe();
+
+  if (res.status_message === "INVALID_TOKEN") {
+    throw new Error("[start] parse invalid token");
   }
 
+  this.bot = res.bot;
   this.initialize = true;
 }
 

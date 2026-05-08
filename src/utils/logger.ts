@@ -20,8 +20,6 @@ class Logger<T> {
         await handler(error as any);
       }
     }
-
-    return error;
   }
 }
 

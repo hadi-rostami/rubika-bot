@@ -68,8 +68,8 @@ bot.run();
 
 توانید فیلتر دلخواه خود را بسازید. فیلترها تابع‌هایی هستند که یک context را گرفته و true یا false برمی‌گردانند.
 
-```js
-import Bot from "rubika";
+```ts
+import Bot, { Filters } from "rubika/bot";
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -78,7 +78,7 @@ const isAdmin = (ctx) => {
   return adminIds.includes(ctx.new_message?.sender_id);
 };
 
-bot.on("update", isAdmin, async (ctx) => {
+bot.on("update", [Filters.isNewMessage, isAdmin], async (ctx) => {
   await ctx.reply("شما ادمین هستید!");
 });
 
@@ -89,8 +89,8 @@ bot.run();
 
 می‌توانید داده‌هایی را بین فیلترها و هندلر منتقل کنید:
 
-```js
-import Bot, { Contexts } from "rubika";
+```ts
+import Bot, { Contexts, Filters } from "rubika/bot";
 
 const bot = new Bot("YOUR_TOKEN");
 const adminIds = ["admin_id"];
@@ -105,7 +105,7 @@ const isAdmin = (ctx: Contexts.Update<StoreType>) => {
   return true;
 };
 
-bot.on<StoreType, "update">("update", [isAdmin], async (ctx) => {
+bot.on<StoreType, "update">("update", [Filters.isNewMessage, isAdmin], async (ctx) => {
   if (ctx.store.isAdmin) await ctx.reply("شما ادمین هستید!");
 });
 

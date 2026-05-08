@@ -21,11 +21,13 @@ async function start(this: Client): Promise<void> {
     this.key = Buffer.from(Crypto.passphrase(this.auth), "utf8");
     this.decode_auth = Crypto.decode_auth(this.auth);
     const result = await this.getUserInfo();
+    console.log(result);
+    
     this.userGuid = result.user.user_guid;
     this.initialize = true;
   } catch {
     let phone_number: string = await prompt(
-      "Phone Number ex -> (989123456789):: ",
+      "Phone Number ex -> (989123456789): ",
     );
     let is_phone_number_true = true;
 
@@ -57,7 +59,7 @@ async function start(this: Client): Promise<void> {
     this.privateKey = privateKey;
 
     while (true) {
-      let phone_code = await prompt("Code: ");
+      let phone_code = await prompt(`Code [ ${result.send_type} ]: `);
 
       let response = await this.signIn(
         phone_code,
@@ -80,7 +82,10 @@ async function start(this: Client): Promise<void> {
           private_key: this.privateKey,
         });
 
-        await this.registerDevice();
+        const res = await this.registerDevice();
+
+        console.log(res);
+
         break;
       }
     }

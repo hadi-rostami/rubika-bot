@@ -29,7 +29,7 @@ last_update:
 ## نحوه استفاده
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

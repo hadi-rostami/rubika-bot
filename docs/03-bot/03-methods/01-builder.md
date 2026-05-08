@@ -38,7 +38,7 @@ last_update:
 - این تابع معمولاً توسط سایر متدهای کلاس `Bot` مانند زیر فراخوانی می‌شود:
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

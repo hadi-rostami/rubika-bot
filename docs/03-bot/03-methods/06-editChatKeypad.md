@@ -32,7 +32,7 @@ last_update:
 ### برای ادیت chat_keypad
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -71,7 +71,7 @@ bot.run();
 ### برای حذف chat_keypad
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

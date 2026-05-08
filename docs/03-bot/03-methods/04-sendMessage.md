@@ -36,7 +36,7 @@ last_update:
 ### 1. ارسال پیام ساده متنی
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -52,7 +52,7 @@ bot.run();
 ### 2. ارسال پیام با کیبورد Reply (chat_keypad)
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -77,7 +77,7 @@ bot.run();
 ### 3. ارسال پیام با کیبورد اینلاین (inline_keypad)
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -100,7 +100,7 @@ bot.run();
 ### 4. ارسال پیام بدون نوتیفیکیشن
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -120,7 +120,7 @@ bot.run();
 ### 5. ارسال پیام در پاسخ به یک پیام دیگر
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

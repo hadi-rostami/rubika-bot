@@ -36,7 +36,7 @@ last_update:
 ### استفاده ساده
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 
@@ -65,7 +65,7 @@ bot.run();
 ### استفاده پیشرفته
 
 ```js
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

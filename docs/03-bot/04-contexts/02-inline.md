@@ -177,7 +177,7 @@ await ctx.editMessage("✅ متن ویرایش شد!", myInlineKeypad);
 ## استفاده
 
 ```ts
-import Bot from "rubika";
+import Bot from "rubika/bot"
 
 const bot = new Bot("YOUR_TOKEN");
 

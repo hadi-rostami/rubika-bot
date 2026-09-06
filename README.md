@@ -72,7 +72,8 @@ npm install rubika
 ```ts
 import Bot, { Filters } from "rubika/bot";
 
-const bot = new Bot("TOKEN_BOT");
+// debug logger
+const bot = new Bot("TOKEN_BOT", { logLevel: "debug" });
 
 bot.command("/start", async (ctx) => {
   await ctx.reply("🤖 ربات استارت شد");
@@ -80,11 +81,6 @@ bot.command("/start", async (ctx) => {
 
 bot.on("update", [Filters.isText], async (ctx) => {
   await ctx.reply("سلام 😎");
-});
-
-bot.on("error", async (err) => {
-  await err.bot.sendMessage("CHAT_ID", err.message);
-  console.log(err.message);
 });
 
 // use poling
@@ -101,7 +97,8 @@ bot.run(WEBHOOK_URL, HOST, PORT);
 ```ts
 import { Bot, Utils, ButtonTypeEnum } from "rubika/bot";
 
-const bot = new Bot("TOKEN_BOT");
+// debug logger
+const bot = new Bot("TOKEN_BOT", { logLevel: "debug" });
 
 bot.on("update", async (ctx) => {
   // اطلاعات پیام
@@ -162,16 +159,11 @@ bot.on("update", async (ctx) => {
 ```ts
 import Client from "rubika/client";
 
-const shad_client = new Client("shad", "Shad");
-const rubika_client = new Client("rubika", "Rubika");
+const client = new Client("session-shad" , {application : "Shad" , logLevel : "debug"}) // debuger on
+const client = new Client("session-rubika" , {application : "Rubika" , logLevel : "debug"}) // debuger on
 
-// Shad
-shad_client.on("message", async (ctx) => console.log(ctx));
-shad_client.on("error", async (err) => console.log(err));
-
-// Rubika
-rubika_client.on("message", async (ctx) => console.log(ctx));
-rubika_client.on("error", async (err) => console.log(err));
+shad_client.on("message", async (ctx) => console.log(ctx)); // Shad
+rubika_client.on("message", async (ctx) => console.log(ctx)); // Rubika
 
 // start (self)-bots
 shad_client.run();

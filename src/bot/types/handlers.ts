@@ -1,13 +1,8 @@
-import Bot from "..";
 import { Update, Inline } from "../contexts";
 
 export interface ContextMap<T> {
   update: Update<T>;
   inline: Inline<T>;
-  error: {
-    message: string;
-    bot: Bot;
-  };
 }
 
 export type FilterFn<T> = (ctx: T) => boolean | Promise<boolean>;

@@ -14,11 +14,24 @@ async function run(
     UpdateEndpointTypeEnum.ReceiveQuery,
   ],
 ) {
-  while (!this.initialize) {
-    await this.network.delay(2000);
+  try {
+    while (!this.initialize) {
+      this.logger.debug("Waiting for bot initialization...");
+      await this.network.delay(2000);
+    }
+
+    this.logger.info("Bot initialized. Starting runner...");
+
+    if (url) {
+      this.logger.info(`Starting in Webhook mode: ${url}`);
+      await this.setupWebhook(url, host, port, updates);
+    } else {
+      this.logger.info("Starting in Polling mode");
+      await this.polling();
+    }
+  } catch (error) {
+    this.logger.error("Fatal error in Run module:"+ error);
   }
-  if (url) await this.setupWebhook(url, host, port, updates);
-  else await this.polling();
 }
 
 export default run;

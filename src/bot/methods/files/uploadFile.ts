@@ -11,85 +11,137 @@ async function uploadFile(
 ) {
   let fileData: ArrayBuffer;
   let detectedFilename: string;
+  let fileSize = 0;
 
-  if (typeof source === "string") {
-    if (source.startsWith("http://") || source.startsWith("https://")) {
-      // download file
-      this.logger.error(
-        `[ uploadFile ] Downloading from URL: ${source}`,
-        "warn",
-      );
-      const res = await fetch(source);
-      if (!res.ok) {
-        throw this.logger.error(
-          `Failed to download file: ${res.status} ${res.statusText}`,
-          "error",
+  try {
+    this.logger.info(`[uploadFile] Starting upload process to ${url}`);
+
+    if (typeof source === "string") {
+      if (source.startsWith("http://") || source.startsWith("https://")) {
+        this.logger.debug(`[uploadFile] Downloading file from URL: ${source}`);
+        const res = await fetch(source);
+
+        if (!res.ok) {
+          const msg = `Failed to download file: ${res.status} ${res.statusText}`;
+          this.logger.error(msg);
+          throw new Error(msg);
+        }
+
+        fileData = await res.arrayBuffer();
+        fileSize = fileData.byteLength;
+        detectedFilename =
+          filename || getFilenameFromUrl(source) || "downloaded_file";
+        this.logger.info(
+          `[uploadFile] Downloaded successfully: ${detectedFilename} (${formatBytes(fileSize)})`,
+        );
+      } else {
+        const file = Bun.file(source);
+        const exists = await file.exists();
+
+        if (!exists) {
+          const msg = `File not found at path: ${source}`;
+          this.logger.error(msg);
+          throw new Error(msg);
+        }
+
+        fileSize = file.size;
+        if (fileSize === 0) {
+          const msg = `File is empty: ${source}`;
+          this.logger.warn(msg);
+        }
+
+        fileData = await file.arrayBuffer();
+        detectedFilename = filename || basename(source);
+        this.logger.debug(
+          `[uploadFile] Read local file: ${detectedFilename} (${formatBytes(fileSize)})`,
         );
       }
-
-      fileData = await res.arrayBuffer();
-      detectedFilename =
-        filename || getFilenameFromUrl(source) || "downloaded_file";
     } else {
-      // file path
-      if (!Bun.file(source).size) {
-        throw this.logger.error(`File not found: ${source}`, "warn");
+      if (source instanceof Buffer) {
+        fileData = source.buffer.slice(
+          source.byteOffset,
+          source.byteOffset + source.byteLength,
+        ) as ArrayBuffer;
+      } else if (source instanceof Uint8Array) {
+        fileData = source.buffer.slice(
+          source.byteOffset,
+          source.byteOffset + source.byteLength,
+        ) as ArrayBuffer;
+      } else if (source instanceof ArrayBuffer) {
+        fileData = source;
+      } else {
+        const msg = `Invalid binary data type provided: ${typeof source}`;
+        this.logger.error(msg);
+        throw new TypeError(msg);
       }
-      fileData = await Bun.file(source).arrayBuffer();
-      detectedFilename = filename || basename(source);
+
+      fileSize = fileData.byteLength;
+      detectedFilename = filename || `binary_file_${Date.now()}`;
+      this.logger.debug(
+        `[uploadFile] Processing binary data: ${detectedFilename} (${formatBytes(fileSize)})`,
+      );
     }
-  } else {
-    // binery data
-    if (source instanceof Buffer) {
-      fileData = source.buffer.slice(
-        source.byteOffset,
-        source.byteOffset + source.byteLength,
-      ) as ArrayBuffer;
-    } else if (source instanceof Uint8Array) {
-      fileData = source.buffer.slice(
-        source.byteOffset,
-        source.byteOffset + source.byteLength,
-      ) as ArrayBuffer;
-    } else {
-      fileData = source;
+
+    this.logger.info(`[uploadFile] Uploading ${detectedFilename}...`);
+
+    const formData = new FormData();
+    formData.append("file", new Blob([fileData]), detectedFilename);
+
+    const res = await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "No response body");
+      const msg = `HTTP Error ${res.status}: ${text}`;
+      this.logger.error(
+        `[uploadFile] Upload failed with HTTP status ${res.status}`,
+      );
+      throw new Error(msg);
     }
-    detectedFilename = filename || "binary_file";
-  }
 
-  // FormData
-  const formData = new FormData();
-  formData.append("file", new Blob([fileData]), detectedFilename);
+    const response: any = await res.json().catch((e) => {
+      this.logger.error("[uploadFile] Failed to parse JSON response", e);
+      return null;
+    });
 
-  const res = await fetch(url, {
-    method: "POST",
-    body: formData,
-  });
+    if (!response || response.status !== "OK") {
+      const msg = `Upload API Error: ${JSON.stringify(response)}`;
+      this.logger.error(`[uploadFile] ${msg}`);
+      throw new Error(msg);
+    }
 
-  if (!res.ok) {
-    const text = await res.text();
-    throw this.logger.error(`HTTP ${res.status}: ${text}`, "warn");
-  }
-
-  const response: any = await res.json();
-
-  if (response.status !== "OK") {
-    throw this.logger.error(
-      `Upload failed: ${JSON.stringify(response)}`,
-      "warn",
+    this.logger.info(
+      `[uploadFile] Upload completed successfully: ${detectedFilename}`,
     );
+    return { ...response, status_message: "OK" };
+  } catch (error: unknown) {
+    if (error!.message) {
+    } else {
+      this.logger.error(`[uploadFile] Unexpected error occurred: `+ error);
+    }
+    throw error;
   }
-
-  return response;
 }
 
 function getFilenameFromUrl(url: string): string | null {
   try {
     const path = new URL(url).pathname;
     const filename = basename(path);
-    return filename !== "." ? filename : null;
+    return filename && filename !== "." ? filename : null;
   } catch {
     return null;
   }
+}
+
+function formatBytes(bytes: number, decimals = 2): string {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
 }
 
 export default uploadFile;

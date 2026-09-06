@@ -13,45 +13,76 @@ async function setupWebhook(
   port: number = 3000,
   updates: UpdateEndpointTypeEnum[] = [],
 ) {
-  Bun.serve({
-    port,
-    hostname: host,
-    development: false,
-    fetch: async (req) => {
-      const url = new URL(req.url);
-      const path = url.pathname;
+  try {
+    this.logger.info(`Starting webhook server on ${host}:${port}...`);
 
-      if (path === "/") {
-        await handleUpdates.call(this, req);
-      }
-      for (const update of updates) {
-        if (path === `/${lowerFirstChar(update)}`) {
-          await handleUpdates.call(this, req);
+    Bun.serve({
+      port,
+      hostname: host,
+      development: false,
+      fetch: async (req) => {
+        const urlObj = new URL(req.url);
+        const path = urlObj.pathname;
+
+        try {
+          if (
+            path === "/" ||
+            updates.some((u) => path === `/${lowerFirstChar(u)}`)
+          ) {
+            await handleUpdates.call(this, req);
+            return new Response(JSON.stringify({ status: "OK" }), {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+          return new Response(JSON.stringify({ status: "Not Found" }), {
+            status: 404,
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (error) {
+          this.logger.error(`Error processing update from ${path}: ${error}`);
+
+          return new Response(
+            JSON.stringify({ status: "Internal Server Error" }),
+            {
+              status: 500,
+              headers: { "Content-Type": "application/json" },
+            },
+          );
         }
+      },
+    });
+
+    this.logger.debug(`Webhook server is listening on http://${host}:${port}`);
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    this.logger.debug(`Setting up ${updates.length} endpoint(s)...`);
+
+    for (const update of updates) {
+      try {
+        const res = await this.updateBotEndpoints(url, update);
+
+        if (res.status_message !== "OK" && res.status !== "Done") {
+          this.logger.warn(
+            `Failed to set endpoint for ${update}. Status: ${res.status} | Message: ${res.status_message}`,
+          );
+        } else {
+          this.logger.debug(`Endpoint set successfully for: ${update}`);
+        }
+      } catch (err) {
+        this.logger.error(
+          `Exception while setting endpoint for ${update}: ${err}`,
+        );
       }
-
-      return new Response(JSON.stringify({ status: "OK" }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    },
-  });
-
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  // set-endpoints
-  for (const update of updates) {
-    const res = await this.updateBotEndpoints(url, update);
-
-    if (res.status_message !== "OK" && res.status !== "Done") {
-      this.logger.error(
-        `[setupWebhook] status updateBotEndpoints is ${res.status} for update: ${update}`,
-        "warn",
-      );
     }
-  }
 
-  console.log("✔ Start Robot... [ hook mode ]");
+    this.logger.info("✔ Robot started successfully in [hook mode]");
+    console.log(`Bot started successfully in [hook mode]`);
+  } catch (error) {
+    this.logger.error("Fatal error during webhook setup: " + error);
+    throw error;
+  }
 }
 
 export default setupWebhook;

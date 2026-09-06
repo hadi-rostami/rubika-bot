@@ -21,7 +21,6 @@ async function start(this: Client): Promise<void> {
     this.key = Buffer.from(Crypto.passphrase(this.auth), "utf8");
     this.decode_auth = Crypto.decode_auth(this.auth);
     const result = await this.getUserInfo();
-    console.log(result);
     
     this.userGuid = result.user.user_guid;
     this.initialize = true;

@@ -1,5 +1,5 @@
 <div align="center">
-<h1>🚀 Rubika Framework</h1>
+<h1>🚀 Rubika Library</h1>
 
 کتابخونه قدرتمند، مدرن و پرسرعت تایپ‌اسکریپت برای ربات/سلف‌های روبیکا و شاد
 

@@ -25,17 +25,22 @@ export async function setupWebSocket(network: Network) {
     async (event: any) => await getMessage(event.data, network),
   );
 
-  network.ws.addEventListener("error", async () => {
+  network.ws.addEventListener("error", async (err) => {
     if (!network.reconnecting) {
-      network.client.logger.error("WebSocket error, reconnecting...", "error");
+      network.client.logger.error(`WebSocket error occurred: ${err}`);
+      network.client.logger.warn("Attempting to reconnect...");
       network.reconnecting = true;
       await resetConnection(network);
     }
   });
 
-  network.ws.addEventListener("close", async () => {
+  network.ws.addEventListener("close", async (event) => {
     if (!network.reconnecting) {
-      network.client.logger.error("WebSocket closed, reconnecting...", "warn");
+      const reason =
+        event.code === 1000 ? "Normal closure" : `Code ${event.code}`;
+      network.client.logger.warn(
+        `WebSocket closed (${reason}). Reconnecting...`,
+      );
       network.reconnecting = true;
       await resetConnection(network);
     }
@@ -44,7 +49,7 @@ export async function setupWebSocket(network: Network) {
 
 export async function openSocket(network: Network) {
   try {
-    console.log("Starting bot...");
+    network.client.logger.info("Opening WebSocket connection...");
 
     if (network.ws && network.ws.readyState === WebSocket.OPEN) {
       const payload = JSON.stringify({
@@ -55,6 +60,7 @@ export async function openSocket(network: Network) {
       });
 
       network.ws.send(payload);
+      network.client.logger.debug("Handshake payload sent.");
 
       if (network.heartbeatInterval) clearInterval(network.heartbeatInterval);
 
@@ -64,32 +70,39 @@ export async function openSocket(network: Network) {
             network.ws.send(JSON.stringify({}));
           }
         } catch (err) {
-          network.client.logger.error("Error sending heartbeat" + err, "error");
+          network.client.logger.error(
+            `Error sending heartbeat: ${err}`,
+            "error",
+          );
         }
       }, 30000);
+
+      network.client.logger.info("Bot started successfully via WebSocket.");
+      console.log("Client Bot started successfully.");
     } else {
-      network.client.logger.error(
-        "WebSocket is not open; cannot send handshake",
-        "warn",
+      network.client.logger.warn(
+        "WebSocket is not open; cannot send handshake.",
       );
     }
   } catch (err) {
     network.client.logger.error(
-      "Error during openSocket execution" + err,
+      `Error during openSocket execution: ${err}`,
       "error",
     );
   }
 }
 
 async function resetConnection(network: Network) {
+  network.client.logger.info("Resetting WebSocket connection...");
   network.ws?.close();
   network.ws = undefined;
 
   setTimeout(async () => {
     try {
       await network.getUpdates();
+      network.client.logger.debug("Reconnection successful.");
     } catch (e) {
-      network.client.logger.error("Failed to reconnect:" + e, "error");
+      network.client.logger.error(`Failed to reconnect: ${e}`, "error");
     } finally {
       network.reconnecting = false;
     }
@@ -101,13 +114,12 @@ function resetInactivityTimer(network: Network) {
 
   network.inactivityTimeout = setTimeout(
     () => {
-      network.client.logger.error(
+      network.client.logger.warn(
         "No updates received for 10 minutes. Reconnecting WebSocket...",
-        "warn",
       );
       void resetConnection(network).catch((err) => {
         network.client.logger.error(
-          "Error during inactivity reset:" + err,
+          `Error during inactivity reset: ${err}`,
           "error",
         );
       });
@@ -150,7 +162,7 @@ async function getMessage(message: string, network: Network) {
     }
   } catch (err) {
     network.client.logger.error(
-      "[getMessage] Failed to decrypt or process message:" + err,
+      `[getMessage] Failed to decrypt or process message: ${err}`,
       "error",
     );
   }
@@ -163,17 +175,16 @@ async function handleCategory<T, K extends keyof ContextMapCon<T>>(
   network: Network,
   author_title: string,
 ) {
-  // @ts-ignore
+  // @ts-ignore errors
   const CtxClass = ContextConstructors[type]<T>;
   if (!CtxClass) {
-    network.client.logger.error(
+    network.client.logger.warn(
       `[handleCategory] No constructor found for type: ${type}`,
-      "warn",
     );
     return;
   }
 
-  for (let update of updates) {
+  for (const update of updates) {
     if (!update.message) update.message = {};
     update.client_guid = network.client.userGuid;
     update.message.author_title = author_title;
@@ -181,18 +192,26 @@ async function handleCategory<T, K extends keyof ContextMapCon<T>>(
     const ctx = new CtxClass(network.client, update) as ContextMapCon<T>[K];
 
     for (const { filters, handler, prefix } of handlers) {
-      const passed = await checkFilters(ctx, filters);
+      try {
+        const passed = await checkFilters(ctx, filters);
 
-      if (passed) {
-        if (type === "message" && prefix) {
-          const text = (ctx as Message<T>).message.text;
-          if (!text) continue;
+        if (passed) {
+          if (type === "message" && prefix) {
+            const text = (ctx as Message<T>).message.text;
+            if (!text) continue;
 
-          if (typeof prefix === "string" && text !== prefix) continue;
-          if (prefix instanceof RegExp && !prefix.test(text)) continue;
+            if (typeof prefix === "string" && text !== prefix) continue;
+            if (prefix instanceof RegExp && !prefix.test(text)) continue;
+          }
+
+          // اجرای ایمن هندلر کاربر
+          await handler(ctx);
         }
-
-        await handler(ctx);
+      } catch (err) {
+        network.client.logger.error(
+          `Error in handler for type '${String(type)}' from '${author_title}': ${err}`,
+          "error",
+        );
       }
     }
   }

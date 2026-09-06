@@ -1,3 +1,4 @@
+import { LogLevel } from "../../utils/errors";
 import Update from "../contexts/update";
 
 export type MarkdownType =
@@ -42,6 +43,7 @@ export type OptionSpamType = {
 };
 
 export type BotConfig = {
-  timeout: number;
-  retryCount: number;
+  logLevel?: LogLevel;
+  timeout?: number;
+  retryCount?: number;
 };

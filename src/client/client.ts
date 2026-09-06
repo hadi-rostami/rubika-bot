@@ -1,6 +1,6 @@
 import Network from "./network";
 import Methods from "./methods";
-import { Logger } from "../utils";
+import { EnhancedLogger } from "../utils/errors";
 import { SessionManager } from "./utils";
 import Message from "./contexts/message.type";
 import {
@@ -8,11 +8,13 @@ import {
   RubPlugin,
   Handler,
   SessionType,
-  PlatformType,
+  ClientConfig,
+  clientConfigSimple,
 } from "./types/client.type";
 
 export default class Client extends Methods {
   public initialize = false;
+  public logger: EnhancedLogger<Client>;
   public key?: Buffer<ArrayBuffer>;
   public privateKey?: string;
   public decode_auth?: string;
@@ -21,28 +23,29 @@ export default class Client extends Methods {
   public network: Network;
   public plugins: RubPlugin[] = [];
   public userGuid?: string;
+  public config: ClientConfig;
   public handlers: {
     [K in keyof ContextMap<unknown>]: Handler<ContextMap<unknown>[K]>[];
   } = {
-    error: [],
     chat: [],
     message: [],
     activities: [],
     notifications: [],
   };
 
-  public logger = new Logger<Client>(this.handlers.error, this);
-
   constructor(
     private session: SessionType,
-    public application: "Shad" | "Rubika" = "Rubika",
-    public platform: PlatformType = "Web",
-    public timeout: number = 5000,
+    config?: ClientConfig,
   ) {
     super();
-    this.sessionDb = new SessionManager(this.session);
-    this.network = new Network(this);
 
+    this.config = { ...clientConfigSimple, ...config };
+    this.sessionDb = new SessionManager(this.session);
+    this.logger = new EnhancedLogger<Client>(this, {
+      minLevel: this.config.logLevel,
+    });
+
+    this.network = new Network(this);
     this.start();
   }
 

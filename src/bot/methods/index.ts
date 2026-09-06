@@ -33,13 +33,13 @@ export default class Methods {
   async getFile(
     this: Bot,
     ...args: Parameters<typeof Files.getFile>
-  ): Promise<any> {
+  ): Promise<Types.GetFile> {
     return Files.getFile.apply(this, args);
   }
   async requestSendFile(
     this: Bot,
     ...args: Parameters<typeof Files.requestSendFile>
-  ): Promise<Types.REQUEST_SEND_FILE> {
+  ): Promise<Types.RequestSendFile> {
     return Files.requestSendFile.apply(this, args);
   }
 
@@ -180,14 +180,14 @@ export default class Methods {
   async banChatMember(
     this: Bot,
     ...args: Parameters<typeof Chat.banChatMember>
-  ): Promise<any> {
+  ): Promise<Types.BanChatMember> {
     return Chat.banChatMember.apply(this, args);
   }
 
   async unbanChatMember(
     this: Bot,
     ...args: Parameters<typeof Chat.unbanChatMember>
-  ): Promise<any> {
+  ): Promise<Types.UnBanChatMember> {
     return Chat.unbanChatMember.apply(this, args);
   }
 
@@ -245,7 +245,7 @@ export default class Methods {
   async setCommands(
     this: Bot,
     ...args: Parameters<typeof Settings.setCommands>
-  ): Promise<unknown> {
+  ): Promise<Types.SetCommands> {
     return Settings.setCommands.apply(this, args);
   }
 

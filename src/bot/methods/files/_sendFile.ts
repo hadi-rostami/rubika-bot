@@ -17,10 +17,14 @@ async function _sendFile(
   chat_keypad_type?: ChatKeypadTypeEnum,
   auto_delete: number | false = false,
 ) {
-  const { upload_url } = await this.requestSendFile(type);
+  const { upload_url, status_message } = await this.requestSendFile(type);
+  if (status_message !== "OK") return;
   const {
+    status_message: stm,
     data: { file_id },
   } = await this.uploadFile(upload_url, file);
+
+  if (stm !== "OK") return;
 
   let data: SendType = {
     chat_id,

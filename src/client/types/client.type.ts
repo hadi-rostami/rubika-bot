@@ -3,6 +3,7 @@ import Chat from "../contexts/chat.type";
 import Activities from "../contexts/activities.type";
 import Message from "../contexts/message.type";
 import Notifications from "../contexts/notifications.type";
+import { LogLevel } from "../../utils/errors";
 
 export interface Session {
   phone: string;
@@ -11,6 +12,20 @@ export interface Session {
   agent: string;
   private_key: string;
 }
+
+export interface ClientConfig {
+  application?: "Shad" | "Rubika";
+  platform?: "Web" | "Android";
+  timeout?: number;
+  logLevel?: LogLevel;
+}
+
+export const clientConfigSimple: ClientConfig = {
+  application: "Rubika",
+  platform: "Web",
+  timeout: 5000,
+  logLevel: "error",
+};
 
 export type TypeUpdate = "activities" | "chat" | "message" | "notifications";
 
@@ -31,10 +46,6 @@ export interface ContextMap<T> {
   message: Message<T>;
   activities: Activities<T>;
   notifications: Notifications<T>;
-  error: {
-    message: string;
-    client: Client;
-  };
 }
 
 export interface ContextMapCon<T> {

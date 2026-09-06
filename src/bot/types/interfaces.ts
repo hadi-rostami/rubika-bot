@@ -23,21 +23,6 @@ interface STATUS_MESSAGE {
     | "INVALID_TOKEN";
 }
 
-export interface Chat extends STATUS_MESSAGE {
-  chat: {
-    chat_id: string;
-    chat_type: ChatTypeEnum;
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    title: string;
-    username: string;
-  };
-}
-export interface UpdateBotEndpoints extends STATUS_MESSAGE {
-  status: string;
-}
-
 export interface File {
   file_id: string;
   file_name: string;
@@ -59,22 +44,6 @@ export interface PaymentStatus {
 export interface MessageTextUpdate {
   message_id: string;
   text: string;
-}
-
-export interface Bot extends STATUS_MESSAGE {
-  bot: {
-    bot_id: string;
-    bot_title: string;
-    avatar: File;
-    description: string;
-    username: string;
-    start_message: string;
-    share_url: string;
-  };
-}
-
-export interface REQUEST_SEND_FILE extends STATUS_MESSAGE {
-  upload_url: string;
 }
 
 export interface BotCommand {
@@ -211,14 +180,7 @@ export interface MessageKeypadUpdate {
   inline_keypad: Keypad;
 }
 
-export interface MetaData {
-  meta_data_parts: {
-    from_index: number;
-    length: number;
-    type: string;
-    link?: { url: string };
-  }[];
-}
+
 
 export interface Message {
   message_id: string;
@@ -239,7 +201,14 @@ export interface Message {
   metadata?: MetaData;
   live_location?: LiveLocation;
 }
-
+export interface MetaData {
+  meta_data_parts: {
+    from_index: number;
+    length: number;
+    type: string;
+    link?: { url: string };
+  }[];
+}
 export interface UpdateMessage {
   chat_id: string;
   update_time: number;
@@ -258,6 +227,45 @@ export interface InlineMessage {
   message_id: string;
   chat_id: string;
 }
+
+export interface Chat extends STATUS_MESSAGE {
+  chat: {
+    chat_id: string;
+    chat_type: ChatTypeEnum;
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    title: string;
+    username: string;
+  };
+}
+export interface UpdateBotEndpoints extends STATUS_MESSAGE {
+  status: string;
+}
+export interface Bot extends STATUS_MESSAGE {
+  bot: {
+    bot_id: string;
+    bot_title: string;
+    avatar: File;
+    description: string;
+    username: string;
+    start_message: string;
+    share_url: string;
+  };
+}
+
+export interface RequestSendFile extends STATUS_MESSAGE {
+  upload_url: string;
+}
+export interface GetFile extends STATUS_MESSAGE {
+  download_url: string;
+}
+
+export interface BanChatMember extends STATUS_MESSAGE {}
+
+export interface UnBanChatMember extends STATUS_MESSAGE {}
+
+export interface SetCommands extends STATUS_MESSAGE {}
 
 export interface GetUpdates extends STATUS_MESSAGE {
   updates: UpdateMessage[];

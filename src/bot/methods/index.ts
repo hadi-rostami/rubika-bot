@@ -197,6 +197,13 @@ export default class Methods {
   // ): Promise<Types.SendMessage> {
   //   return Chat.getChatAdministrators.apply(this, args);
   // }
+  
+  async getChatMember(
+    this: Bot,
+    ...args: Parameters<typeof Chat.getChatMember>
+  ): Promise<Types.SendMessage> {
+    return Chat.getChatMember.apply(this, args);
+  }
 
   // async getChatMemberCount(
   //   this: Bot,

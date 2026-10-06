@@ -81,9 +81,7 @@ async function start(this: Client): Promise<void> {
           private_key: this.privateKey,
         });
 
-        const res = await this.registerDevice();
-
-        console.log(res);
+        await this.registerDevice();
 
         break;
       }

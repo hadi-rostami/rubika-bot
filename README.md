@@ -1,282 +1,729 @@
 <div align="center">
-<h1>🚀 Rubika Library</h1>
 
-کتابخونه قدرتمند، مدرن و پرسرعت تایپ‌اسکریپت برای ربات/سلف‌های روبیکا و شاد
+# Rubika
 
-[![npm version](https://img.shields.io/npm/v/rubika.svg?style=flat-square)](https://www.npmjs.com/package/rubika)
-[![license](https://img.shields.io/npm/l/rubika.svg?style=flat-square)](https://github.com/hadi-rostami/rubika-bot/blob/master/LICENSE)
-[![downloads](https://img.shields.io/npm/dm/rubika.svg?style=flat-square)](https://www.npmjs.com/package/rubika)
-[![GitHub stars](https://img.shields.io/github/stars/hadi-rostami/rubika-bot?style=flat-square)](https://github.com/hadi-rostami/rubika-bot/stargazers)
+### A modern TypeScript library for building Rubika bots & clients.
+
+**Fast · Type-Safe · Filter-Based · Bun-first**
+
+<br />
+
+<a href="https://www.npmjs.com/package/rubika">
+  <img src="https://img.shields.io/npm/v/rubika?style=for-the-badge&logo=npm&logoColor=white" alt="npm version" />
+</a>
+<a href="https://www.npmjs.com/package/rubika">
+  <img src="https://img.shields.io/npm/dm/rubika?style=for-the-badge&logo=npm&logoColor=white" alt="npm downloads" />
+</a>
+<a href="https://github.com/hadi-rostami/rubika-bot">
+  <img src="https://img.shields.io/github/stars/hadi-rostami/rubika-bot?style=for-the-badge&logo=github" alt="GitHub stars" />
+</a>
+<a href="https://github.com/hadi-rostami/rubika-bot/blob/main/LICENSE">
+  <img src="https://img.shields.io/github/license/hadi-rostami/rubika-bot?style=for-the-badge" alt="License" />
+</a>
+
+<br /><br />
+
+[Documentation](https://docs.hr-dev.ir) ·
+[NPM](https://www.npmjs.com/package/rubika) ·
+[GitHub](https://github.com/hadi-rostami/rubika-bot)
 
 </div>
 
-## 📖 معرفی rubika
+---
 
-`Rubika` یک کتابخونه متن‌باز (Open-Source)، سبک و کاملاً غیرهمزمان (Asynchronous) مبتنی بر Bun است که برای ساخت ربات‌ها و سلف‌بات‌های پیام‌رسان‌های روبیکا و شاد توسعه یافته است. این کتابخونه با معماری Filter-Base و Type-Safe، هسته‌ای قدرتمند برای مدیریت پیام‌ها، فرمان‌ها و رویدادها فراهم می‌کند و به توسعه‌دهندگان امکان می‌دهد اپلیکیشن‌های مقیاس‌پذیر (Scalable) و با قابلیت نگهداری بالا (Maintainable) بسازند.
+## Why Rubika?
+
+**Rubika** is a TypeScript-first library for building bots and client applications for **Rubika** and **Shad**.
+
+It provides a clean event-driven API around:
+
+* Bot updates
+* Commands
+* Composable filters
+* Typed contexts
+* Messages & media
+* Keypads
+* Webhooks & polling
+* Client sessions
+* Chat & user management
+* Text formatting
+* Temporary handler state
+
+Instead of dealing with raw API requests, you work with a small set of predictable primitives:
+
+```text
+        Update
+           │
+           ▼
+      ┌──────────┐
+      │  Event   │
+      └────┬─────┘
+           │
+           ▼
+      ┌──────────┐
+      │ Filters  │
+      └────┬─────┘
+           │
+           ▼
+      ┌──────────┐
+      │  Context │
+      └────┬─────┘
+           │
+           ▼
+   Reply · Media · API
+```
 
 ---
 
-## ✨ ویژگی‌های کلیدی
+## ✨ Features
 
-| دسته‌بندی     | ویژگی               | شرح                                                                                     |
-| :------------ | :------------------ | :-------------------------------------------------------------------------------------- |
-| **عملکرد**    | Super-Speed         | معماری غیرهمزمان (Async/Await) مبتنی بر Bun برای پاسخ‌دهی سریع و مصرف حافظه کم          |
-| **امنیت**     | Type-Safe           | پشتیبانی کامل از TypeScript و JSDoc برای جلوگیری از خطاهای رایج و بهبود تجربه توسعه     |
-| **فیلترینگ**  | Filter-Base         | سیستم فیلترینگ چندلایه و قابل ترکیب (Composable) برای مدیریت دقیق و انعطاف‌پذیر پیام‌ها |
-| **معماری**    | Modular             | ساختار ماژولار، سیستم پلاگین (Plugin System) و قابلیت گسترش بی‌نهایت                    |
-| **چندسکویی**  | Multi-Application   | پشتیبانی هم‌زمان از پیام‌رسان‌های روبیکا و شاد با یک کدبیس واحد                         |
-| **فرمان‌ها**  | Command System      | سیستم مسیریابی فرمان (Command Routing) قدرتمند با پشتیبانی از الگوهای داینامیک          |
-| **ابزارها**   | Built-in Utils      | ابزارهای داخلی غنی مانند Bold(), Italic(), Code() و غیره برای فرمت‌بندی متن             |
-| **دیپلویمنت** | Flexible Deployment | قابلیت اجرا در کنار وب‌سرور، Serverless و Docker                                        |
+<table>
+<tr>
+<td width="50%">
 
-## 🏗️ معماری فیلتر پیام‌ها
+### 🤖 Bot API
 
-Rubika از معماری Filter-Pipeline بهره می‌برد که در آن هر پیام ورودی از زنجیره‌ای از فیلترها عبور می‌کند. این رویکرد امکان پردازش مرحله‌ای و مقیاس‌پذیر پیام‌ها را فراهم می‌آورد:
+Build Rubika bots with:
 
-```ts
-bot.on(
-  "message",
-  [
-    Filters.isText, // فیلتر ۱: فقط پیام‌های متنی
-    Filters.isGroup, // فیلتر ۲: فقط گروه‌ها
-  ],
-  async (ctx) => {
-    await ctx.reply("پیام شما در گروه دریافت شد.");
-  },
-);
-```
+* Event handlers
+* Commands
+* Regex commands
+* Filters
+* Typed contexts
+* Polling
+* Webhooks
 
-- نکته: برای دیدن مثال های بیشتر از فیلتر پیام ها در rubika میتوانید داکیومنت [فیلترهای پیشرفته](https://docs.hr-dev.ir/docs/bot/advanced-concepts/advanced-filters) را مطالعه نمایید.
+</td>
+<td width="50%">
 
-## 📦 نصب و راه‌اندازی سریع
+### 👤 Client API
+
+Build Rubika & Shad client applications with:
+
+* Persistent sessions
+* Events
+* Commands
+* Filters
+* Messaging
+* Chat management
+* Moderation
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### ⚡ Performance
+
+Designed around asynchronous execution with a lightweight architecture and Bun as the primary runtime.
+
+</td>
+<td>
+
+### 🛡️ Type Safety
+
+Built with TypeScript and typed APIs for handlers, contexts, filters and models.
+
+</td>
+</tr>
+
+<tr>
+<td>
+
+### 🧩 Composable Filters
+
+Combine multiple filters to precisely control which updates reach your handlers.
+
+</td>
+<td>
+
+### 🌐 Flexible Deployment
+
+Use polling during development or deploy your bot behind a webhook in production.
+
+</td>
+</tr>
+</table>
+
+---
+
+# 🚀 Quick Start
+
+## 1. Install
 
 ```bash
-# use bunjs
 bun add rubika
+```
 
-# or with npm
+or:
+
+```bash
 npm install rubika
 ```
 
-## پیش‌نیازها
+```bash
+yarn add rubika
+```
 
-- رانتایم Bun نسخه ۱.۰ یا بالاتر (یا Node.js نسخه ۱۸+)
-- توکن/اکانت ربات از روبیکا یا اکانت شاد
+---
 
-## راهنمای ربات (Bot)
-
-ربات‌ها با استفاده از کلاس Bot ایجاد می‌شوند و از طریق وب‌هوک یا Polling با سرور ارتباط برقرار می‌کنند.
-
-### مثال پایه
+## 2. Create your bot
 
 ```ts
 import Bot, { Filters } from "rubika/bot";
 
-// debug logger
-const bot = new Bot("TOKEN_BOT", { logLevel: "debug" });
+const bot = new Bot("YOUR_BOT_TOKEN");
 
 bot.command("/start", async (ctx) => {
-  await ctx.reply("🤖 ربات استارت شد");
+  await ctx.reply("سلام! 👋");
 });
 
-bot.on("update", [Filters.isText], async (ctx) => {
-  await ctx.reply("سلام 😎");
-});
+bot.on(
+  "update",
+  [Filters.isText],
+  async (ctx) => {
+    await ctx.reply("پیام شما دریافت شد.");
+  },
+);
 
-// use poling
 bot.run();
-
-// or use webhook
-bot.run(WEBHOOK_URL, HOST, PORT);
 ```
 
-## کار با Context
+That's it.
 
-هر هندلر یک شیء Context دریافت می‌کند که شامل تمام اطلاعات پیام، فرستنده و متدهای پاسخ است:
+Your bot is now listening for Rubika updates.
+
+---
+
+# 🎯 Commands
+
+Commands are first-class citizens.
 
 ```ts
-import { Bot, Utils, ButtonTypeEnum } from "rubika/bot";
-
-// debug logger
-const bot = new Bot("TOKEN_BOT", { logLevel: "debug" });
-
-bot.on("update", async (ctx) => {
-  // اطلاعات پیام
-  console.log(ctx.chat_id, ctx.type, ctx);
-
-  // اطلاعات فرستنده (در صورت پیام جدید)
-  if (ctx.new_message)
-    console.log(ctx.new_message.sender_id, ctx.new_message.sender_type);
-
-  // اطلاعات فرستنده (در صورت پیام ویراش)
-  if (ctx.updated_message)
-    console.log(ctx.updated_message.sender_id, ctx.updated_message.sender_type);
-
-  // نوع چت
-  // use "u0" --> User, "g0" --> Group, "c0" --> Channel
-  if (ctx.chat_id.startsWith("g0")) {
-    /* Your Codes */
-  }
-
-  // پاسخ‌دهی
-
-  const keypad = {
-    rows: [
-      {
-        buttons: [
-          {
-            button_text: "ljkl",
-            id: "simple",
-            type: ButtonTypeEnum.Simple,
-          },
-        ],
-      },
-    ],
-  };
-
-  await ctx.reply("پاسخ ساده");
-  await ctx.reply("پاسخ با CHAT_KEYPAD", {
-    ...keypad,
-    on_time_keyboard: false,
-    resize_keyboard: true,
-  });
-  await ctx.reply("پاسخ با INLINE_KEYPAD", undefined, keypad);
-  await ctx.replyImage("path/to/file", "پاسخ با تصویر");
-
-  // حذف پیام
-  await ctx.delete(); // `messae_id` اختیاری
-
-  // فرمت‌بندی
-  await ctx.reply(Utils.Bold("متن بولد"));
-  await ctx.reply(Utils.Italic("متن ایتالیک"));
+bot.command("/start", async (ctx) => {
+  await ctx.reply("Welcome!");
 });
 ```
 
-- نکته: برای دریافت اطلاعات بیشتر درباره ایونت ها و ریزالت و نوع Context های دریافتی میتوانید این دو صفحه از داکیومنت ( [bot.on](https://docs.hr-dev.ir/docs/bot/events/on) , [bot.command](https://docs.hr-dev.ir/docs/bot/events/command) ) را مشاهده نمایید .
+Need parameters?
 
-## راهنمای سلف (Self)
+Use regular expressions:
+
+```ts
+bot.command(
+  /^\/sum_(\d+)_(\d+)$/,
+  [Filters.isNewMessage],
+  async (ctx) => {
+    const text = Filters.findKey(ctx, "text");
+
+    const [a, b] = text
+      .split("_")
+      .slice(1);
+
+    await ctx.reply(
+      `${a} + ${b} = ${Number(a) + Number(b)}`,
+    );
+  },
+);
+```
+
+This keeps command parsing inside the command system instead of spreading string parsing across your handlers.
+
+---
+
+# 🧩 Filters
+
+Filters are one of the core concepts of Rubika.
+
+A handler can accept one filter or a complete filter pipeline:
+
+```ts
+bot.on(
+  "update",
+  [
+    Filters.isText,
+    Filters.isGroup,
+  ],
+  async (ctx) => {
+    await ctx.reply(
+      "A text message inside a group.",
+    );
+  },
+);
+```
+
+You can compose filters to create precise handlers:
+
+```text
+Incoming Update
+       │
+       ▼
+   isNewMessage
+       │
+       ▼
+      isText
+       │
+       ▼
+     isGroup
+       │
+       ▼
+     Handler
+```
+
+Common built-in filters include:
+
+```text
+isText
+isPersian
+isLocation
+isTag
+isSpam
+isSticker
+isLink
+isUsername
+isForward
+isReply
+isContact
+isPoll
+isLiveLocation
+isFile
+isMention
+isMarkdown
+isPayment
+
+isPrivate
+isGroup
+isChannel
+
+isNewMessage
+isUpdatedMessage
+isRemovedMessage
+isStartedBot
+isStoppedBot
+isUpdatedPayment
+```
+
+---
+
+# 🔥 Custom Filters
+
+Filters are simple functions.
+
+That means creating your own filter is straightforward:
+
+```ts
+const isAdmin = (ctx) => {
+  const admins = [
+    "USER_ID_1",
+    "USER_ID_2",
+  ];
+
+  return admins.includes(
+    ctx.new_message?.sender_id,
+  );
+};
+```
+
+Use it together with built-in filters:
+
+```ts
+bot.on(
+  "update",
+  [
+    Filters.isNewMessage,
+    Filters.isText,
+    isAdmin,
+  ],
+  async (ctx) => {
+    await ctx.reply(
+      "Admin access granted.",
+    );
+  },
+);
+```
+
+No special filter class is required.
+
+---
+
+# 🧠 Context
+
+Every handler receives a context containing the current update and useful methods for interacting with Rubika.
+
+```ts
+bot.on("update", async (ctx) => {
+  console.log(ctx.type);
+  console.log(ctx.chat_id);
+  console.log(ctx.new_message);
+});
+```
+
+A context can provide:
+
+```ts
+ctx.type
+ctx.chat_id
+ctx.new_message
+ctx.updated_message
+ctx.removed_message_id
+ctx.updated_payment
+ctx.store
+ctx.bot
+```
+
+And message operations:
+
+```ts
+await ctx.reply("Hello");
+
+await ctx.replyImage(
+  "image.jpg",
+  "Image caption",
+);
+
+await ctx.delete();
+```
+
+The idea is simple:
+
+> **Receive an update → work with the context → respond.**
+
+---
+
+# 💬 Messages & Media
+
+Send regular messages:
+
+```ts
+await ctx.reply("Hello from Rubika!");
+```
+
+Send media:
+
+```ts
+await ctx.replyImage("image.jpg");
+
+await ctx.replyVideo("video.mp4");
+
+await ctx.replyGif("animation.gif");
+```
+
+You can also work with other Rubika message types such as files, music, voice, locations, contacts and polls.
+
+---
+
+# ⌨️ Keypads
+
+Build interactive keypads directly from your handlers.
+
+```ts
+import Bot, {
+  ButtonTypeEnum,
+} from "rubika/bot";
+
+const bot = new Bot(
+  "YOUR_BOT_TOKEN",
+);
+
+const keypad = {
+  rows: [
+    {
+      buttons: [
+        {
+          button_text: "Profile",
+          id: "profile",
+          type: ButtonTypeEnum.Simple,
+        },
+      ],
+    },
+  ],
+};
+
+bot.on("update", async (ctx) => {
+  await ctx.reply(
+    "Choose an option:",
+    keypad,
+  );
+});
+
+bot.on(
+  "update",
+  [Filters.kypadID("profile")],
+  async (ctx) => {
+    await ctx.reply(
+      "Profile selected.",
+    );
+  },
+);
+```
+
+This makes interactive menus easy to build without manually processing raw callback data.
+
+---
+
+# 💾 Shared State
+
+Filters can pass data to later filters and handlers using `ctx.store`.
+
+```ts
+type Store = {
+  isAdmin: boolean;
+};
+```
+
+Populate it inside a filter:
+
+```ts
+const checkAdmin = (ctx) => {
+  const admins = [
+    "USER_ID",
+  ];
+
+  ctx.store.isAdmin =
+    admins.includes(
+      ctx.new_message?.sender_id ?? "",
+    );
+
+  return true;
+};
+```
+
+Then consume it inside the handler:
+
+```ts
+bot.on(
+  "update",
+  [
+    Filters.isNewMessage,
+    checkAdmin,
+  ],
+  async (ctx) => {
+    if (ctx.store.isAdmin) {
+      await ctx.reply(
+        "دسترسی تأیید شد.",
+      );
+    }
+  },
+);
+```
+
+This is useful when filters need to prepare data before the final handler executes.
+
+---
+
+# 🌐 Polling or Webhook
+
+Run locally with polling:
+
+```ts
+bot.run();
+```
+
+Deploy behind a webhook:
+
+```ts
+bot.run(
+  WEBHOOK_URL,
+  HOST,
+  PORT,
+);
+```
+
+The same bot handlers can be used in both environments.
+
+---
+
+# ⚙️ Bot Configuration
+
+Configure the bot when creating it:
+
+```ts
+const bot = new Bot(
+  "YOUR_BOT_TOKEN",
+  {
+    logLevel: "debug",
+    retryCount: 3,
+    timeout: 10000,
+  },
+);
+```
+
+| Option       | Description               |
+| ------------ | ------------------------- |
+| `logLevel`   | Controls logger verbosity |
+| `retryCount` | Number of request retries |
+| `timeout`    | Network request timeout   |
+
+---
+
+# 👤 Rubika & Shad Client
+
+Rubika also provides a client API for session-based applications.
 
 ```ts
 import Client from "rubika/client";
 
-const client = new Client("session-shad" , {application : "Shad" , logLevel : "debug"}) // debuger on
-const client = new Client("session-rubika" , {application : "Rubika" , logLevel : "debug"}) // debuger on
+const client = new Client(
+  "my-rubika-session",
+  {
+    application: "Rubika",
+    platform: "Web",
+  },
+);
 
-shad_client.on("message", async (ctx) => console.log(ctx)); // Shad
-rubika_client.on("message", async (ctx) => console.log(ctx)); // Rubika
+client.on(
+  "message",
+  async (ctx) => {
+    console.log(
+      ctx.message_id,
+    );
+  },
+);
 
-// start (self)-bots
-shad_client.run();
-rubika_client.run();
+client.run();
 ```
 
-## سیستم فرمان‌ها (Command System)
-
-سیستم فرمان‌دهی Rubika از الگوهای استاتیک و داینامیک پشتیبانی می‌کند:
+The same API can be used with Shad:
 
 ```ts
-import { Bot, Filters } from "rubika/bot";
-
-const bot = new Bot("TOKEN_BOT");
-
-// normal command
-bot.command("/start", async (ctx) => {
-  await ctx.reply("به ربات خوش آمدید!");
-});
-
-// command with regex
-bot.command(
-  /^\/sum_(?<a>\d+)_(?<b>\d+)$/,
-  [Filters.isNewMessage],
-  async (ctx) => {
-    // use find key
-    const text = Filters.findKey(ctx, "text");
-
-    const [a, b] = text.split("_").slice(1);
-    await ctx.reply(`${a} + ${b} = ${Number(a) + Number(b)}`);
+const client = new Client(
+  "my-shad-session",
+  {
+    application: "Shad",
+    platform: "Web",
   },
 );
 ```
 
-## فیلترهای سفارشی
+Client applications can listen to events such as:
 
-می توانید فیلتر دلخواه خود را بسازید. فیلترها تابع‌هایی هستند که یک context را گرفته و true یا false برمی‌گردانند.
-```ts
-import Bot, { Filters } from "rubika/bot";
-
-const bot = new Bot("YOUR_TOKEN");
-
-const isAdmin = (ctx) => {
-  const adminIds = ["123", "456"];
-  return adminIds.includes(ctx.new_message?.sender_id);
-};
-
-bot.on("update", [Filters.isNewMessage, isAdmin], async (ctx) => {
-  await ctx.reply("شما ادمین هستید!");
-});
-
-bot.run();
+```text
+message
+chat
+activities
+notifications
 ```
 
-### استفاده از ctx.store در فیلترها
+---
 
-می‌توانید داده‌هایی را بین فیلترها و هندلر منتقل کنید:
+# 🏗️ Architecture
+
+Rubika is organized around a few core concepts:
+
+```text
+                    Rubika
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+            Bot                Client
+             │                   │
+      ┌──────┼──────┐      ┌─────┼─────┐
+      │      │      │      │     │     │
+   Events Commands Filters Events Commands
+      │      │      │      │     │     │
+      └──────┴──┬───┘      └─────┴──┬───┘
+                │                   │
+             Context             Session
+                │                   │
+                └─────────┬─────────┘
+                          │
+                       Methods
+```
+
+The architecture keeps event handling, filtering, context and API operations separated while still providing a compact developer experience.
+
+---
+
+# 🧪 TypeScript-first
+
+Rubika is written for TypeScript developers.
 
 ```ts
-import Bot, { Contexts, Filters } from "rubika/bot";
-
-const bot = new Bot("YOUR_TOKEN");
-const adminIds = ["admin_id"];
-
-type StoreType = {
-  isAdmin: boolean;
-};
-
-const isAdmin = (ctx: Contexts.Update<StoreType>) => {
-  if (ctx?.new_message)
-    ctx.store.isAdmin = adminIds.includes(ctx.new_message?.sender_id);
-  return true;
-};
-
-bot.on<StoreType, "update">("update", [Filters.isNewMessage, isAdmin], async (ctx) => {
-  if (ctx.store.isAdmin) await ctx.reply("شما ادمین هستید!");
-});
-
-bot.run();
+import Bot, {
+  Filters,
+  Contexts,
+  Utils,
+} from "rubika/bot";
 ```
-## 🌐 مقایسه با سایر کتابخانه‌های روبیکا (بر اساس مستندات موجود)
 
-> **نکته:** این جدول صرفاً برای آشنایی با تفاوت‌های کلی طراحی شده و ممکن است برخی کتابخانه‌ها در نسخه‌های جدیدتر ویژگی‌هایی را اضافه کرده باشند. به همه پروژه‌های متن‌باز احترام می‌گذاریم.
+You get type information directly inside your editor for:
 
-| ویژگی | Rubika | RubJS | rubika-bot-x | jsrubi | Rubibot |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **پلتفرم هدف** | روبیکا + شاد | روبیکا | روبیکا | روبیکا | روبیکا |
-| **معماری اصلی** | Filter-Pipeline | Filter-Base | Command-Handler | Callback-Based | Event-Driven |
-| **پشتیبانی از TypeScript** | ✅ کامل (بومی + JSDoc) | ✅ کامل | ❌ ندارد | ❌ ندارد | ❌ ندارد |
-| **کار با چند پیام‌رسان** | ✅ (روبیکا و شاد) | ❌ فقط روبیکا | ❌ | ❌ | ❌ |
-| **سیستم فرمان (Command Router)** | ✅ پیشرفته (Regex, Params) | ✅ پیشرفته | ✅ ساده | ❌ دستی | ❌ |
-| **فیلترهای پیام** | ✅ چندلایه و ترکیبی | ✅ دارد | ❌ ندارد | ⚠️ محدود | ❌ ندارد |
-| **Context پیشرفته** | ✅ (reply, edit, delete, utils) | ✅ دارد | ✅ پایه | ❌ | ❌ |
-| **فرمت‌کننده داخلی متن** | ✅ (bold, italic, code و ...) | ✅ دارد | ❌ ندارد | ❌ | ❌ |
-| **مدیریت خطا (Error Handling)** | ✅ سراسری (Catch) | ⚠️ وجود دارد | ⚠️ محدود | ❌ ندارد | ❌ |
-| **پشتیبانی از Webhook** | ✅ دارد | ✅ دارد | ❌ ندارد | ❌ ندارد | ❌ |
-| **سیستم پلاگین** | ❌ (در برنامه) | ✅ دارد | ❌ ندارد | ❌ ندارد | ❌ |
-| **آخرین بروزرسانی** | فعال (2026) | فعال (2025) | غیرفعال (2024) | غیرفعال (2024) | متوقف (2023) |
-| **مستندات فارسی** | ✅ کامل + مثال | ✅ پایه | ⚠️ انگلیسی | ⚠️ ناقص | ❌ ندارد |
+* Bot APIs
+* Client APIs
+* Contexts
+* Filters
+* Models
+* Methods
+* Utilities
 
-# 📚 مستندات و منابع
+No manually maintained API definitions are required.
 
-| منبع | لینک |
-| :--- | :--- |
-| 📦 npm | [npmjs.com/package/rubika](https://npmjs.com/package/rubika) |
-| 💻 گیت‌هاب | [github.com/hadi-rostami/rubika-bot](https://github.com/hadi-rostami/rubika-bot) |
-| 📢 کانال تلگرام | [t.me/rubikats_channel](https://t.me/rubikats_channel) |
-| 💬 کانال روبیکا | [rubika.ir/rubika_ts](https://rubika.ir/rubika_ts) |
-| 📖 مستندات کامل | [docs.hr-dev.ir](https://docs.hr-dev.ir) |
-| 🐛 گزارش باگ | [GitHub Issues](https://github.com/hadi-rostami/rubika-bot/issues) |
+---
 
+# 📚 Documentation
 
-## 📄 مجوز
-این پروژه تحت مجوز **MIT** منتشر شده است.
+Explore the complete documentation:
 
-- برای جزئیات به فایل [LICENSE](LICENSE) مراجعه کنید.
+### [📖 Documentation](https://docs.hr-dev.ir)
+
+Learn more about:
+
+```text
+Bot
+Client
+Events
+Commands
+Filters
+Contexts
+Methods
+Models
+Types
+Utilities
+```
+
+### Resources
+
+| Resource         | Link                                                                  |
+| ---------------- | --------------------------------------------------------------------- |
+| 📦 npm           | [rubika](https://www.npmjs.com/package/rubika)                        |
+| 💻 GitHub        | [hadi-rostami/rubika-bot](https://github.com/hadi-rostami/rubika-bot) |
+| 📖 Documentation | [docs.hr-dev.ir](https://docs.hr-dev.ir)                              |
+| 🐛 Issues        | [GitHub Issues](https://github.com/hadi-rostami/rubika-bot/issues)    |
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome.
+
+If you found a bug or have an idea:
+
+1. Open an issue.
+2. Describe the expected behavior.
+3. Include a minimal reproduction when possible.
+4. Mention your Rubika package version and runtime version.
+
+Pull requests are welcome as well.
+
+---
+
+# 📄 License
+
+Rubika is released under the **MIT License**.
+
+See [`LICENSE`](LICENSE) for details.
+
+---
+
+<div align="center">
+
+### Build something great with Rubika.
+
+<br />
+
+<a href="https://github.com/hadi-rostami/rubika-bot">
+  <img src="https://img.shields.io/badge/⭐_Star_the_project-181717?style=for-the-badge&logo=github&logoColor=white" alt="Star the project" />
+</a>
+
+</div>

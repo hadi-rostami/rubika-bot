@@ -46,6 +46,7 @@ export interface ContextMap<T> {
   message: Message<T>;
   activities: Activities<T>;
   notifications: Notifications<T>;
+  voicechat : unknown;
 }
 
 export interface ContextMapCon<T> {

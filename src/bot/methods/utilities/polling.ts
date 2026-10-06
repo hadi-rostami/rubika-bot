@@ -1,91 +1,3 @@
-// import { UpdateTypeEnum } from "../../types/enums";
-// import { checkFilters } from "../../../utils";
-// import Update from "../../contexts/update";
-// import Bot from "../../bot";
-// import path from "path";
-// import fs from "fs";
-// import { Filters } from "../../../client";
-
-// const checkTypes = [
-//   UpdateTypeEnum.UpdatedMessage,
-//   UpdateTypeEnum.NewMessage,
-//   UpdateTypeEnum.RemovedMessage,
-//   UpdateTypeEnum.UpdatedPayment,
-//   UpdateTypeEnum.StoppedBot,
-//   UpdateTypeEnum.StartedBot,
-// ];
-
-// const OFFSET_FILE_PATH = path.join(
-//   process.cwd(),
-//   process.env.OFFSET_PATH || "offset.json",
-// );
-
-// const sleep = async (time: number) =>
-//   await new Promise((res) => setTimeout(res, time));
-
-// export default async function polling(this: Bot) {
-//   console.log("✔ Start Robot... [ polling mode ]");
-
-//   let next_offset_id: string | undefined = loadOffset();
-
-//   while (true) {
-//     try {
-//       const res = await this.getUpdates(next_offset_id, 100);
-
-//       if (res.status_message !== "OK") {
-//         await sleep(500);
-//         continue;
-//       }
-
-//       for (const m of res.updates) {
-//         if (!checkTypes.includes(m.type)) continue;
-//         const time = m.update_time - Math.floor(Date.now() / 1000);
-
-//         if (time > 10 || time < -10) continue;
-//         for (const { prefix, filters, handler } of this.handlers.update) {
-//           const ctx = new Update(m, this);
-//           const passed = await checkFilters(ctx, filters);
-
-//           if (passed) {
-//             if (prefix) {
-//               const text = Filters.findKey(m, "text") || null;
-
-//               if (!text) continue;
-//               if (typeof prefix === "string" && text !== prefix) continue;
-//               if (prefix instanceof RegExp && !prefix.test(text)) continue;
-//             }
-//             try {
-//               await handler(ctx);
-//             } catch {
-//               continue;
-//             }
-//           }
-//         }
-//       }
-//       if (res.next_offset_id) {
-//         next_offset_id = res.next_offset_id;
-//         saveOffset(next_offset_id as string);
-//       }
-//     } catch {}
-
-//     await sleep(500);
-//   }
-// }
-
-// function saveOffset(offset: string) {
-//   const dir = path.dirname(OFFSET_FILE_PATH);
-//   if (!fs.existsSync(dir)) {
-//     fs.mkdirSync(dir, { recursive: true });
-//   }
-//   fs.writeFileSync(OFFSET_FILE_PATH, JSON.stringify({ offset }));
-// }
-
-// function loadOffset(): string | undefined {
-//   if (!fs.existsSync(OFFSET_FILE_PATH)) return undefined;
-//   const data = fs.readFileSync(OFFSET_FILE_PATH, "utf8");
-//   return JSON.parse(data).offset;
-// }
-
 import { UpdateTypeEnum } from "../../types/enums";
 import { checkFilters } from "../../../utils";
 import Update from "../../contexts/update";
@@ -94,6 +6,7 @@ import path from "path";
 import fs from "fs";
 import { Filters } from "../../../client";
 import EnhancedLogger from "../../../utils/errors";
+import Event from "../../contexts/event";
 
 const checkTypes = [
   UpdateTypeEnum.UpdatedMessage,
@@ -102,6 +15,7 @@ const checkTypes = [
   UpdateTypeEnum.UpdatedPayment,
   UpdateTypeEnum.StoppedBot,
   UpdateTypeEnum.StartedBot,
+  UpdateTypeEnum.EventData,
 ];
 
 const OFFSET_FILE_PATH = path.join(
@@ -161,37 +75,45 @@ export default async function polling(this: Bot) {
             continue;
           }
 
-          for (const { prefix, filters, handler } of this.handlers.update) {
-            const ctx = new Update(m, this);
+          const isEventData = m.type === UpdateTypeEnum.EventData;
 
+          const handlers = isEventData
+            ? this.handlers.events
+            : this.handlers.update;
+
+          const ctx = isEventData ? new Event(m, this) : new Update(m, this);
+
+          for (const { prefix, filters, handler } of handlers) {
             try {
               const passed = await checkFilters(ctx, filters);
 
-              if (passed) {
-                if (prefix) {
-                  const text = Filters.findKey(m, "text") || null;
-                  if (!text) continue;
+              if (!passed) continue;
 
-                  if (typeof prefix === "string" && text !== prefix) continue;
-                  if (prefix instanceof RegExp && !prefix.test(text)) continue;
-                }
+              if (prefix) {
+                const text = Filters.findKey(m, "text") || null;
 
-                try {
-                  await handler(ctx);
-                  this.logger.debug(
-                    `Handler executed successfully for update type: ${m.type}`,
-                  );
-                } catch (error) {
-                  this.logger.error(
-                    `Error in message handler for update ID ${m}:` + error,
-                  );
+                if (!text) continue;
 
-                  continue;
+                if (typeof prefix === "string") {
+                  if (text !== prefix) continue;
+                } else if (prefix instanceof RegExp) {
+                  if (!prefix.test(text)) continue;
                 }
               }
+
+              try {
+                await handler(ctx as never);
+
+                this.logger.debug(
+                  `Handler executed successfully for update type: ${m.type}`,
+                );
+              } catch (error) {
+                this.logger.error(
+                  `Error in message handler for update ID ${m}: ${error}`,
+                );
+              }
             } catch (filterError) {
-              this.logger.error("Error during filter checking:" + filterError);
-              continue;
+              this.logger.error(`Error during filter checking: ${filterError}`);
             }
           }
         }
@@ -208,7 +130,7 @@ export default async function polling(this: Bot) {
         this.logger.error(
           "Network error while fetching updates:" + networkError,
         );
-        await sleep(2000); 
+        await sleep(2000);
       }
     }
   } catch (fatalError) {
@@ -224,7 +146,6 @@ function saveOffset(offset: string) {
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-  // نوشتن امن‌تر با گزینه flush
   fs.writeFileSync(OFFSET_FILE_PATH, JSON.stringify({ offset }, null, 2), {
     flag: "w",
   });
@@ -244,7 +165,7 @@ function loadOffset(logger: EnhancedLogger<Bot>): string | undefined {
     try {
       fs.renameSync(OFFSET_FILE_PATH, OFFSET_FILE_PATH + ".bak");
     } catch {
-      //
+      logger?.warn("Failed to rename offset file. Deleting it." + err);
     }
     return undefined;
   }

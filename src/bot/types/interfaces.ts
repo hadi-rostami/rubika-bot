@@ -6,6 +6,9 @@ import {
   ButtonTextboxTypeLineEnum,
   ButtonTypeEnum,
   ChatTypeEnum,
+  EnumChatAccess,
+  EventJoinTypeEnum,
+  EventTypeEnum,
   ForwardedFromEnum,
   LiveLocationStatusEnum,
   MessageSenderEnum,
@@ -180,8 +183,6 @@ export interface MessageKeypadUpdate {
   inline_keypad: Keypad;
 }
 
-
-
 export interface Message {
   message_id: string;
   text?: string;
@@ -209,6 +210,20 @@ export interface MetaData {
     link?: { url: string };
   }[];
 }
+
+export interface EventData {
+  type: EventTypeEnum;
+  access_list: EnumChatAccess;
+  join_type?: EventJoinTypeEnum;
+}
+
+export interface EventMessage {
+  type: UpdateTypeEnum;
+  chat_id: string;
+  update_time: number;
+  event_data: EventData;
+}
+
 export interface UpdateMessage {
   chat_id: string;
   update_time: number;
@@ -217,7 +232,9 @@ export interface UpdateMessage {
   updated_message?: Message;
   removed_message_id?: string;
   updated_payment?: PaymentStatus;
+  event_data: EventData;
 }
+
 export interface InlineMessage {
   sender_id: string;
   text: string;

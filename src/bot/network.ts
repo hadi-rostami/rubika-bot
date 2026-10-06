@@ -78,7 +78,6 @@ export default class Network {
       }
 
       const responseData = await res.json();
-      this.logger.debug(`Response received from ${method}\n` + JSON.stringify(responseData, null, 2));
 
       return responseData;
 

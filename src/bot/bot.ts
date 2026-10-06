@@ -26,7 +26,7 @@ class Bot extends Methods {
   // Registry for event handlers, categorized by event type (e.g., 'inline', 'update')
   public handlers: {
     [K in keyof ContextMap<unknown>]: Handler<ContextMap<unknown>[K]>[];
-  } = { inline: [], update: [] };
+  } = { inline: [], update: [], events: [] };
 
   public logger: EnhancedLogger<Bot>;
 

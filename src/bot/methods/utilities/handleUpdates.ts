@@ -3,9 +3,18 @@ import Inline from "../../contexts/inline";
 import Update from "../../contexts/update";
 import { UpdateTypeEnum } from "../../types/enums";
 import { checkFilters } from "../../../utils";
-import { InlineMessage, UpdateMessage } from "../../types/interfaces";
+import {
+  InlineMessage,
+  UpdateMessage,
+  EventMessage,
+} from "../../types/interfaces";
+import Event from "../../contexts/event";
 
-type UpdateResult = { inline_message: InlineMessage; update: UpdateMessage };
+type UpdateResult = {
+  inline_message: InlineMessage;
+  update: UpdateMessage;
+  event_data: EventMessage;
+};
 const checkTypes = [
   UpdateTypeEnum.UpdatedMessage,
   UpdateTypeEnum.RemovedMessage,
@@ -63,6 +72,23 @@ async function handleUpdates(this: Bot, req: Request) {
           this.logger.error(
             `Error in inline handler for message #${data.inline_message}:` +
               err,
+          );
+        }
+      }
+    }
+  }
+
+  if ("event_data" in data) {
+    for (const { filters, handler } of this.handlers.events) {
+      const ctx = new Event(data.event_data, this);
+      const passed = await checkFilters(ctx, filters);
+
+      if (passed) {
+        try {
+          await handler(ctx);
+        } catch (err) {
+          this.logger.error(
+            `Error in inline handler for message #${data.event_data}:` + err,
           );
         }
       }

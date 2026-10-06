@@ -1,8 +1,10 @@
 import { Update, Inline } from "../contexts";
+import Event from "../contexts/event";
 
 export interface ContextMap<T> {
   update: Update<T>;
   inline: Inline<T>;
+  events: Event<T>;
 }
 
 export type FilterFn<T> = (ctx: T) => boolean | Promise<boolean>;

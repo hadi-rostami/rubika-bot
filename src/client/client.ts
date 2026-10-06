@@ -31,6 +31,7 @@ export default class Client extends Methods {
     message: [],
     activities: [],
     notifications: [],
+    voicechat:[]
   };
 
   constructor(

@@ -1,6 +1,6 @@
 {
   "name": "rubika",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "author": "Hadi Rostami",
   "main": "src/index.ts",
   "description": "A modern library for Rubika built with Bun.",
@@ -14,6 +14,12 @@
     "bun",
     "rubika"
   ],
+   "permissions": [
+      {
+        "name": "package",
+        "action": "write"
+      }
+    ],
   "scripts": {
     "lint": "eslint ."
   },

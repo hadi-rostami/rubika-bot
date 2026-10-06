@@ -10,6 +10,7 @@ const TYPES = {
   message: "message_updates",
   activities: "show_activities",
   notifications: "show_notifications",
+  voicechat: "group_voice_chat_updates",
 };
 
 export async function setupWebSocket(network: Network) {

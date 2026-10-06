@@ -217,6 +217,7 @@ export interface EventData {
   join_type?: EventJoinTypeEnum;
 }
 
+
 export interface EventMessage {
   type: UpdateTypeEnum;
   chat_id: string;

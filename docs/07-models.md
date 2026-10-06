@@ -5,10 +5,9 @@ id: learn-bot-models
 sidebar_label: مدل‌ها و انوم‌ها
 
 last_update:
-  date: '2026-02-18'
-  author: 'hadi-rostami'
+  date: "2026-02-18"
+  author: "hadi-rostami"
 ---
-
 
 # مدل‌ها
 
@@ -176,19 +175,45 @@ last_update:
 | AskLocation      | درخواست مکان          |
 | Barcode          | بارکد                 |
 
+### EventTypeEnum
+
+| مقدار                 | توضیح            |
+| --------------------- | ---------------- |
+| BotJoined             | افزوده شدن بات   |
+| BotRemoved            | حذف بات          |
+| BotPermissionsChanged | تغییر دسترسی بات |
+
+### EnumChatAccess
+
+| مقدار                   | توضیح                          |
+| ----------------------- | ------------------------------ |
+| SendMessages            | ارسال پیام                     |
+| EditMyMessages          | ویرایش پیام ارسال شده توسط بات |
+| EditAllMessages         | ویرایش همه پیام ها             |
+| DeleteGlobalAllMessages | پاک کردن همه پیام ها           |
+| ViewMembers             | دیدن اعضا                      |
+| BanMember               | مسدود کردن عضو                 |
+
+### EventJoinTypeEnum
+
+| مقدار  | توضیح |
+| ------ | ----- |
+| Member | کاربر |
+| Admin  | مدیر  |
+
 ## Interfaces
 
 ### Chat
 
-| فیلد       | نوع                                             | توضیح        |
-| ---------- | ----------------------------------------------- | ------------ |
-| chat_id    | `string`                                        | شناسه چت     |
+| فیلد       | نوع                                       | توضیح        |
+| ---------- | ----------------------------------------- | ------------ |
+| chat_id    | `string`                                  | شناسه چت     |
 | chat_type  | [ChatTypeEnum](/docs/models#chattypeenum) | نوع چت       |
-| user_id    | `string`                                        | شناسه کاربر  |
-| first_name | `string`                                        | نام کوچک     |
-| last_name  | `string`                                        | نام خانوادگی |
-| title      | `string`                                        | عنوان چت     |
-| username   | `string`                                        | نام کاربری   |
+| user_id    | `string`                                  | شناسه کاربر  |
+| first_name | `string`                                  | نام کوچک     |
+| last_name  | `string`                                  | نام خانوادگی |
+| title      | `string`                                  | عنوان چت     |
+| username   | `string`                                  | نام کاربری   |
 
 ### File
 
@@ -200,18 +225,18 @@ last_update:
 
 ### ForwardedFrom
 
-| فیلد           | نوع                                                       | توضیح            |
-| -------------- | --------------------------------------------------------- | ---------------- |
+| فیلد           | نوع                                                 | توضیح            |
+| -------------- | --------------------------------------------------- | ---------------- |
 | type_from      | [ForwardedFromEnum](/docs/models#forwardedfromenum) | نوع فرستنده اصلی |
-| message_id     | `string`                                                  | شناسه پیام اصلی  |
-| from_chat_id   | `string`                                                  | شناسه چت فرستنده |
-| from_sender_id | `string`                                                  | شناسه فرستنده    |
+| message_id     | `string`                                            | شناسه پیام اصلی  |
+| from_chat_id   | `string`                                            | شناسه چت فرستنده |
+| from_sender_id | `string`                                            | شناسه فرستنده    |
 
 ### PaymentStatus
 
-| فیلد       | نوع                                                       | توضیح        |
-| ---------- | --------------------------------------------------------- | ------------ |
-| payment_id | `string`                                                  | شناسه پرداخت |
+| فیلد       | نوع                                                 | توضیح        |
+| ---------- | --------------------------------------------------- | ------------ |
+| payment_id | `string`                                            | شناسه پرداخت |
 | status     | [PaymentStatusEnum](/docs/models#paymentstatusenum) | وضعیت پرداخت |
 
 ### MessageTextUpdate
@@ -223,15 +248,15 @@ last_update:
 
 ### Bot
 
-| فیلد          | نوع                             | توضیح             |
-| ------------- | ------------------------------- | ----------------- |
-| bot_id        | `string`                        | شناسه ربات        |
-| bot_title     | `string`                        | عنوان ربات        |
+| فیلد          | نوع                       | توضیح             |
+| ------------- | ------------------------- | ----------------- |
+| bot_id        | `string`                  | شناسه ربات        |
+| bot_title     | `string`                  | عنوان ربات        |
 | avatar        | [File](/docs/models#file) | آواتار ربات       |
-| description   | `string`                        | توضیحات ربات      |
-| username      | `string`                        | نام کاربری ربات   |
-| start_message | `string`                        | پیام شروع ربات    |
-| share_url     | `string`                        | لینک اشتراک گذاری |
+| description   | `string`                  | توضیحات ربات      |
+| username      | `string`                  | نام کاربری ربات   |
+| start_message | `string`                  | پیام شروع ربات    |
+| share_url     | `string`                  | لینک اشتراک گذاری |
 
 ### BotCommand
 
@@ -242,11 +267,11 @@ last_update:
 
 ### Sticker
 
-| فیلد            | نوع                             | توضیح        |
-| --------------- | ------------------------------- | ------------ |
-| sticker_id      | `string`                        | شناسه استیکر |
+| فیلد            | نوع                       | توضیح        |
+| --------------- | ------------------------- | ------------ |
+| sticker_id      | `string`                  | شناسه استیکر |
 | file            | [File](/docs/models#file) | فایل استیکر  |
-| emoji_character | `string`                        | ایموجی مرتبط |
+| emoji_character | `string`                  | ایموجی مرتبط |
 
 ### ContactMessage
 
@@ -258,20 +283,20 @@ last_update:
 
 ### PollStatus
 
-| فیلد                 | نوع                                                 | توضیح                  |
-| -------------------- | --------------------------------------------------- | ---------------------- |
+| فیلد                 | نوع                                           | توضیح                  |
+| -------------------- | --------------------------------------------- | ---------------------- |
 | state                | [PollStatusEnum](/docs/models#pollstatusenum) | وضعیت نظرسنجی          |
-| selection_index      | `number`                                            | ایندکس انتخاب شده      |
-| percent_vote_options | `number[]`                                          | درصد آرا برای گزینه‌ها |
-| total_vote           | `number`                                            | مجموع آرا              |
-| show_total_votes     | `boolean`                                           | نمایش مجموع آرا        |
+| selection_index      | `number`                                      | ایندکس انتخاب شده      |
+| percent_vote_options | `number[]`                                    | درصد آرا برای گزینه‌ها |
+| total_vote           | `number`                                      | مجموع آرا              |
+| show_total_votes     | `boolean`                                     | نمایش مجموع آرا        |
 
 ### Poll
 
-| فیلد        | نوع                                         | توضیح             |
-| ----------- | ------------------------------------------- | ----------------- |
-| question    | `string`                                    | سوال نظرسنجی      |
-| options     | `string[]`                                  | گزینه‌های نظرسنجی |
+| فیلد        | نوع                                   | توضیح             |
+| ----------- | ------------------------------------- | ----------------- |
+| question    | `string`                              | سوال نظرسنجی      |
+| options     | `string[]`                            | گزینه‌های نظرسنجی |
 | poll_status | [PollStatus](/docs/models#pollstatus) | وضعیت نظرسنجی     |
 
 ### Location
@@ -283,44 +308,44 @@ last_update:
 
 ### LiveLocation
 
-| فیلد             | نوع                                                                 | توضیح                  |
-| ---------------- | ------------------------------------------------------------------- | ---------------------- |
-| start_time       | `string`                                                            | زمان شروع              |
-| live_period      | `number`                                                            | مدت زمان زنده بودن     |
+| فیلد             | نوع                                                           | توضیح                  |
+| ---------------- | ------------------------------------------------------------- | ---------------------- |
+| start_time       | `string`                                                      | زمان شروع              |
+| live_period      | `number`                                                      | مدت زمان زنده بودن     |
 | current_location | [Location](/docs/models#location)                             | موقعیت فعلی            |
-| user_id          | `string`                                                            | شناسه کاربر            |
+| user_id          | `string`                                                      | شناسه کاربر            |
 | status           | [LiveLocationStatusEnum](/docs/models#livelocationstatusenum) | وضعیت مکان زنده        |
-| last_update_time | `string`                                                            | زمان آخرین به‌روزرسانی |
+| last_update_time | `string`                                                      | زمان آخرین به‌روزرسانی |
 
 ### ButtonSelectionItem
 
-| فیلد      | نوع                                                                   | توضیح      |
-| --------- | --------------------------------------------------------------------- | ---------- |
-| text      | `string`                                                              | متن دکمه   |
-| image_url | `string`                                                              | لینک تصویر |
+| فیلد      | نوع                                                             | توضیح      |
+| --------- | --------------------------------------------------------------- | ---------- |
+| text      | `string`                                                        | متن دکمه   |
+| image_url | `string`                                                        | لینک تصویر |
 | type      | [ButtonSelectionTypeEnum](/docs/models#buttonselectiontypeenum) | نوع دکمه   |
 
 ### ButtonSelection
 
-| فیلد               | نوع                                                             | توضیح           |
-| ------------------ | --------------------------------------------------------------- | --------------- |
-| selection_id       | `string`                                                        | شناسه انتخاب    |
-| search_type        | `string`                                                        | نوع جستجو       |
-| get_type           | `string`                                                        | نوع دریافت      |
+| فیلد               | نوع                                                       | توضیح           |
+| ------------------ | --------------------------------------------------------- | --------------- |
+| selection_id       | `string`                                                  | شناسه انتخاب    |
+| search_type        | `string`                                                  | نوع جستجو       |
+| get_type           | `string`                                                  | نوع دریافت      |
 | items              | [[]ButtonSelectionItem](/docs/models#buttonselectionitem) | آیتم‌های انتخاب |
-| is_multi_selection | `boolean`                                                       | انتخاب چندگانه  |
-| columns_count      | `string`                                                        | تعداد ستون‌ها   |
-| title              | `string`                                                        | عنوان           |
+| is_multi_selection | `boolean`                                                 | انتخاب چندگانه  |
+| columns_count      | `string`                                                  | تعداد ستون‌ها   |
+| title              | `string`                                                  | عنوان           |
 
 ### ButtonCalendar
 
-| فیلد           | نوع                                                                 | توضیح         |
-| -------------- | ------------------------------------------------------------------- | ------------- |
-| default_value? | `string` _(اختیاری)_                                                | مقدار پیش‌فرض |
+| فیلد           | نوع                                                           | توضیح         |
+| -------------- | ------------------------------------------------------------- | ------------- |
+| default_value? | `string` _(اختیاری)_                                          | مقدار پیش‌فرض |
 | type           | [ButtonCalendarTypeEnum](/docs/models#buttoncalendartypeenum) | نوع تقویم     |
-| min_year       | `string`                                                            | حداقل سال     |
-| max_year       | `string`                                                            | حداکثر سال    |
-| title          | `string`                                                            | عنوان         |
+| min_year       | `string`                                                      | حداقل سال     |
+| max_year       | `string`                                                      | حداکثر سال    |
+| title          | `string`                                                      | عنوان         |
 
 ### ButtonNumberPicker
 
@@ -341,23 +366,23 @@ last_update:
 
 ### ButtonTextbox
 
-| فیلد           | نوع                                                                           | توضیح         |
-| -------------- | ----------------------------------------------------------------------------- | ------------- |
+| فیلد           | نوع                                                                     | توضیح         |
+| -------------- | ----------------------------------------------------------------------- | ------------- |
 | type_line      | [ButtonTextboxTypeLineEnum](/docs/models#buttontextboxtypelineenum)     | نوع خط        |
 | type_keypad    | [ButtonTextboxTypeKeypadEnum](/docs/models#buttontextboxtypekeypadenum) | نوع کیبورد    |
-| place_holder?  | `string` _(اختیاری)_                                                          | متن راهنما    |
-| title?         | `string` _(اختیاری)_                                                          | عنوان         |
-| default_value? | `string` _(اختیاری)_                                                          | مقدار پیش‌فرض |
+| place_holder?  | `string` _(اختیاری)_                                                    | متن راهنما    |
+| title?         | `string` _(اختیاری)_                                                    | عنوان         |
+| default_value? | `string` _(اختیاری)_                                                    | مقدار پیش‌فرض |
 
 ### ButtonLocation
 
-| فیلد                     | نوع                                                                 | توضیح                 |
-| ------------------------ | ------------------------------------------------------------------- | --------------------- |
+| فیلد                     | نوع                                                           | توضیح                 |
+| ------------------------ | ------------------------------------------------------------- | --------------------- |
 | default_pointer_location | [Location](/docs/models#location)                             | مکان پیش‌فرض اشاره‌گر |
 | default_map_location     | [Location](/docs/models#location)                             | مکان پیش‌فرض نقشه     |
 | type                     | [ButtonLocationTypeEnum](/docs/models#buttonlocationtypeenum) | نوع مکان              |
-| title?                   | `string` _(اختیاری)_                                                | عنوان                 |
-| location_image_url       | `string`                                                            | URL تصویر مکان        |
+| title?                   | `string` _(اختیاری)_                                          | عنوان                 |
+| location_image_url       | `string`                                                      | URL تصویر مکان        |
 
 ### AuxData
 
@@ -368,11 +393,11 @@ last_update:
 
 ### Button
 
-| فیلد                  | نوع                                                                     | توضیح                 |
-| --------------------- | ----------------------------------------------------------------------- | --------------------- |
-| id                    | `string`                                                                | شناسه دکمه            |
+| فیلد                  | نوع                                                               | توضیح                 |
+| --------------------- | ----------------------------------------------------------------- | --------------------- |
+| id                    | `string`                                                          | شناسه دکمه            |
 | type                  | [ButtonTypeEnum](/docs/models#buttontypeenum)                     | نوع دکمه              |
-| button_text           | `string`                                                                | متن دکمه              |
+| button_text           | `string`                                                          | متن دکمه              |
 | button_selection?     | [ButtonSelection](/docs/models#buttonselection) _(اختیاری)_       | تنظیمات انتخاب دکمه   |
 | button_calendar?      | [ButtonCalendar](/docs/models#buttoncalendar) _(اختیاری)_         | تنظیمات تقویم دکمه    |
 | button_number_picker? | [ButtonNumberPicker](/docs/models#buttonnumberpicker) _(اختیاری)_ | تنظیمات عددی دکمه     |
@@ -382,46 +407,46 @@ last_update:
 
 ### KeypadRow
 
-| فیلد    | نوع                                   | توضیح                |
-| ------- | ------------------------------------- | -------------------- |
+| فیلد    | نوع                             | توضیح                |
+| ------- | ------------------------------- | -------------------- |
 | buttons | [[]Button](/docs/models#button) | دکمه‌های ردیف کیبورد |
 
 ### Keypad
 
-| فیلد              | نوع                                         | توضیح               |
-| ----------------- | ------------------------------------------- | ------------------- |
+| فیلد              | نوع                                   | توضیح               |
+| ----------------- | ------------------------------------- | ------------------- |
 | rows              | [[]KeypadRow](/docs/models#keypadrow) | ردیف‌های کیبورد     |
-| resize_keyboard?  | `boolean` _(اختیاری)_                       | تغییر اندازه کیبورد |
-| on_time_keyboard? | `boolean` _(اختیاری)_                       | کیبورد یک‌بار مصرف  |
+| resize_keyboard?  | `boolean` _(اختیاری)_                 | تغییر اندازه کیبورد |
+| on_time_keyboard? | `boolean` _(اختیاری)_                 | کیبورد یک‌بار مصرف  |
 
 ### InlineKeypad
 
-| فیلد | نوع                                         | توضیح                   |
-| ---- | ------------------------------------------- | ----------------------- |
+| فیلد | نوع                                   | توضیح                   |
+| ---- | ------------------------------------- | ----------------------- |
 | rows | [[]KeypadRow](/docs/models#keypadrow) | ردیف‌های کیبورد اینلاین |
 
 ### MessageKeypadUpdate
 
-| فیلد          | نوع                                 | توضیح               |
-| ------------- | ----------------------------------- | ------------------- |
-| message_id    | `string`                            | شناسه پیام          |
+| فیلد          | نوع                           | توضیح               |
+| ------------- | ----------------------------- | ------------------- |
+| message_id    | `string`                      | شناسه پیام          |
 | inline_keypad | [Keypad](/docs/models#keypad) | کیبورد اینلاین پیام |
 
 ### Message
 
-| فیلد                 | نوع                                                             | توضیح                       |
-| -------------------- | --------------------------------------------------------------- | --------------------------- |
-| message_id           | `string`                                                        | شناسه پیام                  |
-| text?                | `string` _(اختیاری)_                                            | متن پیام                    |
-| time                 | `number`                                                        | زمان ارسال پیام (timestamp) |
-| is_edited            | `boolean`                                                       | آیا پیام ویرایش شده است؟    |
+| فیلد                 | نوع                                                       | توضیح                       |
+| -------------------- | --------------------------------------------------------- | --------------------------- |
+| message_id           | `string`                                                  | شناسه پیام                  |
+| text?                | `string` _(اختیاری)_                                      | متن پیام                    |
+| time                 | `number`                                                  | زمان ارسال پیام (timestamp) |
+| is_edited            | `boolean`                                                 | آیا پیام ویرایش شده است؟    |
 | sender_type          | [MessageSenderEnum](/docs/models#messagesenderenum)       | نوع ارسال‌کننده             |
-| sender_id            | `string`                                                        | شناسه ارسال‌کننده           |
+| sender_id            | `string`                                                  | شناسه ارسال‌کننده           |
 | aux_data?            | [AuxData](/docs/models#auxdata) _(اختیاری)_               | داده‌های کمکی               |
 | file?                | [File](/docs/models#file) _(اختیاری)_                     | فایل پیوست                  |
-| reply_to_message_id? | `string` _(اختیاری)_                                            | پاسخ به پیام دیگر           |
+| reply_to_message_id? | `string` _(اختیاری)_                                      | پاسخ به پیام دیگر           |
 | forwarded_from?      | [ForwardedFrom](/docs/models#forwardedfrom) _(اختیاری)_   | اطلاعات پیام فوروارد شده    |
-| forwarded_no_link?   | `string` _(اختیاری)_                                            | فوروارد بدون لینک           |
+| forwarded_no_link?   | `string` _(اختیاری)_                                      | فوروارد بدون لینک           |
 | location?            | [Location](/docs/models#location) _(اختیاری)_             | موقعیت جغرافیایی            |
 | sticker?             | [Sticker](/docs/models#sticker) _(اختیاری)_               | استیکر                      |
 | contact_message?     | [ContactMessage](/docs/models#contactmessage) _(اختیاری)_ | پیام مخاطب                  |
@@ -430,33 +455,34 @@ last_update:
 
 ### Update
 
-| فیلد                | نوع                                                           | توضیح                  |
-| ------------------- | ------------------------------------------------------------- | ---------------------- |
+| فیلد                | نوع                                                     | توضیح                  |
+| ------------------- | ------------------------------------------------------- | ---------------------- |
 | type                | [UpdateTypeEnum](/docs/models#updatetypeenum)           | نوع به‌روزرسانی        |
-| chat_id             | `string`                                                      | شناسه چت               |
-| removed_message_id? | `string` _(اختیاری)_                                          | شناسه پیام حذف شده     |
+| chat_id             | `string`                                                | شناسه چت               |
+| removed_message_id? | `string` _(اختیاری)_                                    | شناسه پیام حذف شده     |
 | new_message?        | [Message](/docs/models#message) _(اختیاری)_             | پیام جدید              |
 | updated_message?    | [Message](/docs/models#message) _(اختیاری)_             | پیام به‌روزرسانی شده   |
 | updated_payment?    | [PaymentStatus](/docs/models#paymentstatus) _(اختیاری)_ | پرداخت به‌روزرسانی شده |
 
+### EventData
+
+| فیلد        | نوع                                                 | توضیح                                                              |
+| ----------- | --------------------------------------------------- | ------------------------------------------------------------------ |
+| type        | [UpdateTypeEnum](/docs/models#updatetypeenum)       | نوع رویداد (مثل افزوده شدن بات، حذف بات، و …).                     |
+| access_list | [EnumChatAccess](/docs/models#enumchataccess)       | لیست دسترسی (مثل ارسال پیام، ویرایش پیام ارسال شده توسط بات، و …). |
+| join_type?  | [EventJoinTypeEnum](/docs/models#eventjointypeenum) | نوع عضویت (مثل کاربر یا مدیر).                                     |
+
 ### InlineMessage
 
-| فیلد       | نوع                                                 | توضیح            |
-| ---------- | --------------------------------------------------- | ---------------- |
-| sender_id  | `string`                                            | شناسه فرستنده    |
-| text       | `string`                                            | متن پیام         |
+| فیلد       | نوع                                           | توضیح            |
+| ---------- | --------------------------------------------- | ---------------- |
+| sender_id  | `string`                                      | شناسه فرستنده    |
+| text       | `string`                                      | متن پیام         |
 | file?      | [File](/docs/models#file) _(اختیاری)_         | فایل پیوست       |
 | location?  | [Location](/docs/models#location) _(اختیاری)_ | موقعیت جغرافیایی |
 | aux_data?  | [AuxData](/docs/models#auxdata) _(اختیاری)_   | داده‌های کمکی    |
-| message_id | `string`                                            | شناسه پیام       |
-| chat_id    | `string`                                            |
-
-      <!-- export interface Commend {
-    command: string;
-    description: string;
-
-} -->
-| شناسه چت |
+| message_id | `string`                                      | شناسه پیام       |
+| chat_id    | `string`                                      | شناسه چت         |
 
 ### Commend
 

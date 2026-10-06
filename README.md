@@ -37,17 +37,17 @@
 
 It provides a clean event-driven API around:
 
-* Bot updates
-* Commands
-* Composable filters
-* Typed contexts
-* Messages & media
-* Keypads
-* Webhooks & polling
-* Client sessions
-* Chat & user management
-* Text formatting
-* Temporary handler state
+- Bot updates
+- Commands
+- Composable filters
+- Typed contexts
+- Messages & media
+- Keypads
+- Webhooks & polling
+- Client sessions
+- Chat & user management
+- Text formatting
+- Temporary handler state
 
 Instead of dealing with raw API requests, you work with a small set of predictable primitives:
 
@@ -85,13 +85,13 @@ Instead of dealing with raw API requests, you work with a small set of predictab
 
 Build Rubika bots with:
 
-* Event handlers
-* Commands
-* Regex commands
-* Filters
-* Typed contexts
-* Polling
-* Webhooks
+- Event handlers
+- Commands
+- Regex commands
+- Filters
+- Typed contexts
+- Polling
+- Webhooks
 
 </td>
 <td width="50%">
@@ -100,13 +100,13 @@ Build Rubika bots with:
 
 Build Rubika & Shad client applications with:
 
-* Persistent sessions
-* Events
-* Commands
-* Filters
-* Messaging
-* Chat management
-* Moderation
+- Persistent sessions
+- Events
+- Commands
+- Filters
+- Messaging
+- Chat management
+- Moderation
 
 </td>
 </tr>
@@ -179,13 +179,14 @@ bot.command("/start", async (ctx) => {
   await ctx.reply("سلام! 👋");
 });
 
-bot.on(
-  "update",
-  [Filters.isText],
-  async (ctx) => {
-    await ctx.reply("پیام شما دریافت شد.");
-  },
-);
+bot.on("events", async (ctx) => {
+  if (ctx.event_data.type === EventTypeEnum.BotPermissionsChanged)
+    await ctx.reply("Bot permissions changed");
+});
+
+bot.on("update", [Filters.isText], async (ctx) => {
+  await ctx.reply("پیام شما دریافت شد.");
+});
 
 bot.run();
 ```
@@ -211,21 +212,13 @@ Need parameters?
 Use regular expressions:
 
 ```ts
-bot.command(
-  /^\/sum_(\d+)_(\d+)$/,
-  [Filters.isNewMessage],
-  async (ctx) => {
-    const text = Filters.findKey(ctx, "text");
+bot.command(/^\/sum_(\d+)_(\d+)$/, [Filters.isNewMessage], async (ctx) => {
+  const text = Filters.findKey(ctx, "text");
 
-    const [a, b] = text
-      .split("_")
-      .slice(1);
+  const [a, b] = text.split("_").slice(1);
 
-    await ctx.reply(
-      `${a} + ${b} = ${Number(a) + Number(b)}`,
-    );
-  },
-);
+  await ctx.reply(`${a} + ${b} = ${Number(a) + Number(b)}`);
+});
 ```
 
 This keeps command parsing inside the command system instead of spreading string parsing across your handlers.
@@ -239,18 +232,9 @@ Filters are one of the core concepts of Rubika.
 A handler can accept one filter or a complete filter pipeline:
 
 ```ts
-bot.on(
-  "update",
-  [
-    Filters.isText,
-    Filters.isGroup,
-  ],
-  async (ctx) => {
-    await ctx.reply(
-      "A text message inside a group.",
-    );
-  },
-);
+bot.on("update", [Filters.isText, Filters.isGroup], async (ctx) => {
+  await ctx.reply("A text message inside a group.");
+});
 ```
 
 You can compose filters to create precise handlers:
@@ -314,14 +298,9 @@ That means creating your own filter is straightforward:
 
 ```ts
 const isAdmin = (ctx) => {
-  const admins = [
-    "USER_ID_1",
-    "USER_ID_2",
-  ];
+  const admins = ["USER_ID_1", "USER_ID_2"];
 
-  return admins.includes(
-    ctx.new_message?.sender_id,
-  );
+  return admins.includes(ctx.new_message?.sender_id);
 };
 ```
 
@@ -330,15 +309,9 @@ Use it together with built-in filters:
 ```ts
 bot.on(
   "update",
-  [
-    Filters.isNewMessage,
-    Filters.isText,
-    isAdmin,
-  ],
+  [Filters.isNewMessage, Filters.isText, isAdmin],
   async (ctx) => {
-    await ctx.reply(
-      "Admin access granted.",
-    );
+    await ctx.reply("Admin access granted.");
   },
 );
 ```
@@ -362,14 +335,14 @@ bot.on("update", async (ctx) => {
 A context can provide:
 
 ```ts
-ctx.type
-ctx.chat_id
-ctx.new_message
-ctx.updated_message
-ctx.removed_message_id
-ctx.updated_payment
-ctx.store
-ctx.bot
+ctx.type;
+ctx.chat_id;
+ctx.new_message;
+ctx.updated_message;
+ctx.removed_message_id;
+ctx.updated_payment;
+ctx.store;
+ctx.bot;
 ```
 
 And message operations:
@@ -377,10 +350,7 @@ And message operations:
 ```ts
 await ctx.reply("Hello");
 
-await ctx.replyImage(
-  "image.jpg",
-  "Image caption",
-);
+await ctx.replyImage("image.jpg", "Image caption");
 
 await ctx.delete();
 ```
@@ -418,13 +388,9 @@ You can also work with other Rubika message types such as files, music, voice, l
 Build interactive keypads directly from your handlers.
 
 ```ts
-import Bot, {
-  ButtonTypeEnum,
-} from "rubika/bot";
+import Bot, { ButtonTypeEnum } from "rubika/bot";
 
-const bot = new Bot(
-  "YOUR_BOT_TOKEN",
-);
+const bot = new Bot("YOUR_BOT_TOKEN");
 
 const keypad = {
   rows: [
@@ -441,21 +407,12 @@ const keypad = {
 };
 
 bot.on("update", async (ctx) => {
-  await ctx.reply(
-    "Choose an option:",
-    keypad,
-  );
+  await ctx.reply("Choose an option:", keypad);
 });
 
-bot.on(
-  "update",
-  [Filters.kypadID("profile")],
-  async (ctx) => {
-    await ctx.reply(
-      "Profile selected.",
-    );
-  },
-);
+bot.on("update", [Filters.kypadID("profile")], async (ctx) => {
+  await ctx.reply("Profile selected.");
+});
 ```
 
 This makes interactive menus easy to build without manually processing raw callback data.
@@ -476,14 +433,9 @@ Populate it inside a filter:
 
 ```ts
 const checkAdmin = (ctx) => {
-  const admins = [
-    "USER_ID",
-  ];
+  const admins = ["USER_ID"];
 
-  ctx.store.isAdmin =
-    admins.includes(
-      ctx.new_message?.sender_id ?? "",
-    );
+  ctx.store.isAdmin = admins.includes(ctx.new_message?.sender_id ?? "");
 
   return true;
 };
@@ -492,20 +444,11 @@ const checkAdmin = (ctx) => {
 Then consume it inside the handler:
 
 ```ts
-bot.on(
-  "update",
-  [
-    Filters.isNewMessage,
-    checkAdmin,
-  ],
-  async (ctx) => {
-    if (ctx.store.isAdmin) {
-      await ctx.reply(
-        "دسترسی تأیید شد.",
-      );
-    }
-  },
-);
+bot.on("update", [Filters.isNewMessage, checkAdmin], async (ctx) => {
+  if (ctx.store.isAdmin) {
+    await ctx.reply("دسترسی تأیید شد.");
+  }
+});
 ```
 
 This is useful when filters need to prepare data before the final handler executes.
@@ -523,11 +466,7 @@ bot.run();
 Deploy behind a webhook:
 
 ```ts
-bot.run(
-  WEBHOOK_URL,
-  HOST,
-  PORT,
-);
+bot.run(WEBHOOK_URL, HOST, PORT);
 ```
 
 The same bot handlers can be used in both environments.
@@ -539,14 +478,11 @@ The same bot handlers can be used in both environments.
 Configure the bot when creating it:
 
 ```ts
-const bot = new Bot(
-  "YOUR_BOT_TOKEN",
-  {
-    logLevel: "debug",
-    retryCount: 3,
-    timeout: 10000,
-  },
-);
+const bot = new Bot("YOUR_BOT_TOKEN", {
+  logLevel: "debug",
+  retryCount: 3,
+  timeout: 10000,
+});
 ```
 
 | Option       | Description               |
@@ -564,22 +500,14 @@ Rubika also provides a client API for session-based applications.
 ```ts
 import Client from "rubika/client";
 
-const client = new Client(
-  "my-rubika-session",
-  {
-    application: "Rubika",
-    platform: "Web",
-  },
-);
+const client = new Client("my-rubika-session", {
+  application: "Rubika",
+  platform: "Web",
+});
 
-client.on(
-  "message",
-  async (ctx) => {
-    console.log(
-      ctx.message_id,
-    );
-  },
-);
+client.on("message", async (ctx) => {
+  console.log(ctx.message_id);
+});
 
 client.run();
 ```
@@ -587,13 +515,10 @@ client.run();
 The same API can be used with Shad:
 
 ```ts
-const client = new Client(
-  "my-shad-session",
-  {
-    application: "Shad",
-    platform: "Web",
-  },
-);
+const client = new Client("my-shad-session", {
+  application: "Shad",
+  platform: "Web",
+});
 ```
 
 Client applications can listen to events such as:
@@ -640,22 +565,18 @@ The architecture keeps event handling, filtering, context and API operations sep
 Rubika is written for TypeScript developers.
 
 ```ts
-import Bot, {
-  Filters,
-  Contexts,
-  Utils,
-} from "rubika/bot";
+import Bot, { Filters, Contexts, Utils } from "rubika/bot";
 ```
 
 You get type information directly inside your editor for:
 
-* Bot APIs
-* Client APIs
-* Contexts
-* Filters
-* Models
-* Methods
-* Utilities
+- Bot APIs
+- Client APIs
+- Contexts
+- Filters
+- Models
+- Methods
+- Utilities
 
 No manually maintained API definitions are required.
 

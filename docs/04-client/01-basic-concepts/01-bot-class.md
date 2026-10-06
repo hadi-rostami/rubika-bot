@@ -24,14 +24,19 @@ class Client extends Methods {
 
 ```ts
 constructor(
-    private session: ClientTypes.SessionType,
-    public platform: ClientTypes.PlatformType = "Web",
-    public timeout: number = 5000,
+    private session: SessionType,
+    config: {
+      application?: "Shad" | "Rubika";
+      platform?: "Web" | "Android";
+      timeout?: number;
+      logLevel?: LogLevel;
+    }
   )
 ```
 
 - `session`: توکن یا رشته نشست برای احراز هویت در روبیکا
 - `platform`: پلتفرم کلاینت (مثلاً Web, Android)
+- `application`: نام برنامه (مثلاً Shad, Rubika)
 - `timeout`: زمان انتظار برای درخواست‌های شبکه (میلی‌ثانیه)
 
 ---

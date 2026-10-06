@@ -217,7 +217,6 @@ export interface EventData {
   join_type?: EventJoinTypeEnum;
 }
 
-
 export interface EventMessage {
   type: UpdateTypeEnum;
   chat_id: string;
@@ -284,6 +283,18 @@ export interface BanChatMember extends STATUS_MESSAGE {}
 export interface UnBanChatMember extends STATUS_MESSAGE {}
 
 export interface SetCommands extends STATUS_MESSAGE {}
+
+export interface ChatMember {
+  user_id: string;
+  status: string;
+  access_list: EnumChatAccess[];
+}
+
+export interface GetChatMember {
+  chat_member: ChatMember;
+  status_message: string;
+  status: string;
+}
 
 export interface GetUpdates extends STATUS_MESSAGE {
   updates: UpdateMessage[];

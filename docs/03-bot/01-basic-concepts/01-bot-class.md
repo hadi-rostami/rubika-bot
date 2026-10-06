@@ -24,7 +24,11 @@ class Bot extends Methods {
 ### ورودی سازنده
 
 ```ts
-constructor(token: string ,timeout: number = 10000 , retryCount: number = 3)
+constructor(token: string ,config: {
+  logLevel: "debug",
+  retryCount: 3,
+  timeout: 10000,
+})
 ```
 
 - `token`: توکن اختصاصی ربات Rubika که به صورت رشته (`string`) دریافت می‌شود. این مقدار نقش کلید اصلی را دارد و برای شناسایی هویت ربات و برقراری ارتباط امن با سرورهای Rubika استفاده می‌شود.

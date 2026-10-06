@@ -1,6 +1,6 @@
 ---
-slug: /bot/contexts/events
-id: learn-bot-contexts-events
+slug: /bot/contexts/event
+id: learn-bot-contexts-event
 sidebar_position: 2
 sidebar_label: کانتکست Events
 

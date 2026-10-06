@@ -187,7 +187,7 @@ export default class Methods {
   async unbanChatMember(
     this: Bot,
     ...args: Parameters<typeof Chat.unbanChatMember>
-  ): Promise<Types.UnBanChatMember> {
+  ): Promise<Types.GetChatMember> {
     return Chat.unbanChatMember.apply(this, args);
   }
 
@@ -201,7 +201,7 @@ export default class Methods {
   async getChatMember(
     this: Bot,
     ...args: Parameters<typeof Chat.getChatMember>
-  ): Promise<Types.SendMessage> {
+  ): Promise<Types.GetChatMember> {
     return Chat.getChatMember.apply(this, args);
   }
 
